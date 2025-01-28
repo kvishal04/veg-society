@@ -1,13 +1,13 @@
-// CustomHeading.tsx
+// Heading.tsx
 import React, { JSX } from "react";
 
-interface CustomHeadingProps {
+interface HeadingProps {
   level?: 1 | 2 | 3 | 4 | 5 | 6;
   children: React.ReactNode;
   className?: string;
 }
 
-const CustomHeading: React.FC<CustomHeadingProps> = ({
+const Heading: React.FC<HeadingProps> = ({
   level = 1,
   children,
   className = "",
@@ -16,4 +16,4 @@ const CustomHeading: React.FC<CustomHeadingProps> = ({
   return <Tag className={`font-bold ${className}`}>{children}</Tag>;
 };
 
-export default CustomHeading;
+export default Heading;

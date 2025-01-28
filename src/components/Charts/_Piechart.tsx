@@ -27,7 +27,7 @@ const CustomPieChart: React.FC <PieData>= ({data}) => {
               cy="50%"
               outerRadius={70}
               innerRadius={20}
-              paddingAngle={2}
+              paddingAngle={0}
               
             >
               {data.map((entry, index) => (

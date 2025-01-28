@@ -1,16 +1,16 @@
-// CustomParagraph.tsx
+// Paragraph.tsx
 import React from "react";
 
-interface CustomParagraphProps {
+interface ParagraphProps {
   children: React.ReactNode;
   className?: string;
 }
 
-const CustomParagraph: React.FC<CustomParagraphProps> = ({
+const Paragraph: React.FC<ParagraphProps> = ({
   children,
   className = "",
 }) => {
   return <p className={`${className}`}>{children}</p>;
 };
 
-export default CustomParagraph;
+export default Paragraph;

@@ -9,7 +9,7 @@ interface CustomSelectProps {
   className?: string;
 }
 
-const CustomSelect: React.FC<CustomSelectProps> = ({
+const Select: React.FC<CustomSelectProps> = ({
   options,
   value,
   onChange,
@@ -21,7 +21,7 @@ const CustomSelect: React.FC<CustomSelectProps> = ({
       value={value}
       onChange={onChange}
       disabled={disabled}
-      className={`w-full p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 ${
+      className={`w-full p-2 bg-white text-black border border-darkGreen hover:bg-gray-100 focus:ring-black ${
         disabled ? "opacity-50 cursor-not-allowed" : ""
       } ${className}`}
     >
@@ -34,4 +34,4 @@ const CustomSelect: React.FC<CustomSelectProps> = ({
   );
 };
 
-export default CustomSelect;
+export default Select;

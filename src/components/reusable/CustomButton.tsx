@@ -10,21 +10,15 @@ interface CustomButtonProps {
   className?: string; // Allow additional custom classes
 }
 
-const CustomButton: React.FC<CustomButtonProps> = ({
+const Button: React.FC<CustomButtonProps> = ({
   children,
   onClick,
   disabled = false,
   variant = "primary",
-  size = "md",
   fullWidth = false,
   className = "", // Default to an empty string
 }) => {
   const baseStyles = `rounded-lg font-semibold focus:outline-none focus:ring-2 focus:ring-offset-2 transition`;
-  const sizeStyles = {
-    sm: "px-3 py-1 text-sm",
-    md: "px-4 py-2 text-base",
-    lg: "px-5 py-3 text-lg",
-  };
   const variantStyles = {
     primary: "bg-blue-500 text-white hover:bg-blue-600 focus:ring-blue-500",
     secondary: "bg-gray-500 text-white hover:bg-gray-600 focus:ring-gray-500",
@@ -36,7 +30,7 @@ const CustomButton: React.FC<CustomButtonProps> = ({
 
   return (
     <button
-      className={`${baseStyles} ${sizeStyles[size]} ${variantStyles[variant]} ${
+      className={`${baseStyles} ${variantStyles[variant]} ${
         fullWidth ? "w-full" : ""
       } ${disabled ? "opacity-50 cursor-not-allowed" : ""} ${className}`}
       onClick={onClick}
@@ -47,4 +41,4 @@ const CustomButton: React.FC<CustomButtonProps> = ({
   );
 };
 
-export default CustomButton;
+export default Button;

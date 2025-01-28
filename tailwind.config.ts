@@ -14,6 +14,8 @@ export default {
         lightGreen: "#96F19A",
         darkGreen: "#00604D",
         customGreen: "rgba(0, 35, 38, 0.5)",
+        customOrange: "rgba(211, 138, 11, 1)",
+        customRed: "rgba(204, 68, 37, 1)",
         customBlack: "rgba(0, 35, 38, 1)",
         customWhite: "#F6F6F6",
       },
