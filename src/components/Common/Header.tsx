@@ -1,6 +1,6 @@
 import React from "react";
 import Button from "../reusable/CustomButton";
-import Logo from "@/styles/logo/_Logo";
+import Logo from "@/styles/logo/Logo";
 import Heading from "../reusable/CustomHeading";
 import Paragraph from "../reusable/CustomParagraph";
 

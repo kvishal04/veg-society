@@ -1,10 +1,11 @@
 "use client";
 
 import React from "react";
-import CustomPieChart from "../Charts/_Piechart";
-import Badge from "@/styles/logo/_Badge";
+import CustomPieChart from "../Charts/Piechart";
+import Badge from "@/styles/logo/Badge";
 import Paragraph from "../reusable/CustomParagraph";
-import Right from "@/styles/logo/_Right";
+import Right from "@/styles/logo/Right";
+import Wrong from "@/styles/logo/Wrong";
 
 const data = [
   { name: "Vegetarian", value: 25, color: "#A6E3A1" },
@@ -16,7 +17,7 @@ const ProductSummary: React.FC = () => {
   return (
     <div className="bg-darkGreen text-white p-6 h-auto flex flex-col lg:flex-row gap-6 w-full xl:px-40">
       {/* Left Section: Pie Chart & Legend */}
-      <div className="flex flex-col lg:flex-row items-center gap-6 w-full lg:w-2/5">
+      <div className="flex flex-col lg:flex-row lg:items-center items-start gap-6 w-full lg:w-2/5">
         <CustomPieChart data={data} />
 
         <div className="w-full text-sm">
@@ -63,8 +64,8 @@ const ProductSummary: React.FC = () => {
 
         {/* Card 3 */}
         <div className="bg-customRed p-4 rounded-lg flex flex-col items-start">
-          <div className="flex items-center gap-2">
-            <Badge className="w-14 h-14 lg:w-16 lg:h-16" />
+          <div className="flex items-center gap-8">
+            <Wrong className="w-14 h-14 lg:w-16 lg:h-16" />
             <Paragraph className="text-5xl font-bold">2</Paragraph>
           </div>
           <Paragraph className="text-sm md:text-base xl:text-lg mt-2">

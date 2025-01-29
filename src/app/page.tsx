@@ -1,5 +1,5 @@
-import Header from "@/components/Common/_Header";
-import ProductSummary from "@/components/Dashboard/_ProductSummary";
+import Header from "@/components/Common/Header";
+import ProductSummary from "@/components/Dashboard/ProductSummary";
 import Table from "@/components/Dashboard/Table/Table";
 
 export default function Home() {
