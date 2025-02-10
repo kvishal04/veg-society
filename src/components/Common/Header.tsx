@@ -42,7 +42,7 @@ const Header: React.FC<HeaderProps> = ({
             <div className="">
                 <Logo  width={70} height={80}/>
             </div>
-            <div className="flex items-center gap-2 p-2">
+            <div className="flex items-center gap-8 p-2">
               <div className=" border-r-2 border-white pr-4 lg:pr-8">
                       <Paragraph className="sm:text-xl md:text-2xl lg:text-3xl font-bold">Vegetarian</Paragraph>
                       <Paragraph className="sm:text-xl md:text-2xl lg:text-3xl font-bold">Society</Paragraph>

@@ -10,9 +10,8 @@ interface ParagraphProps {
 const Paragraph: React.FC<ParagraphProps> = ({
   children,
   className = "",
-  text=""
 }) => {
-  return <p className={`${className}`}>{text}</p>;
+  return <p className={`${className}`}>{children}</p>;
 };
 
 export default Paragraph;
