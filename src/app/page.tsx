@@ -1,13 +1,9 @@
-import Header from "@/components/Common/Header";
-import ProductSummary from "@/components/Dashboard/ProductSummary";
-import Table from "@/components/Dashboard/Table/Table";
+import Login from "@/Module/Login";
 
 export default function Home() {
   return (
     <div className=""> 
-        <Header />
-        <ProductSummary />
-        <Table/>
+       <Login/>
     </div>
   );
 }
