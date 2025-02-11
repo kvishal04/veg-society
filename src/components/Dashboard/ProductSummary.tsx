@@ -17,7 +17,7 @@ const ProductSummary: React.FC = () => {
   return (
     <div className="bg-darkGreen text-white p-6 h-auto flex flex-col lg:flex-row gap-6 w-full xl:px-40">
       {/* Left Section: Pie Chart & Legend */}
-      <div className="flex flex-col lg:flex-row lg:items-center items-start gap-6 w-full lg:w-2/5">
+      <div className="flex flex-row lg:items-center items-start gap-6 w-full lg:w-2/5">
         <CustomPieChart data={data} />
 
         <div className="w-full text-sm">
