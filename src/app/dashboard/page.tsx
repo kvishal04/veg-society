@@ -1,13 +1,13 @@
 import Header from "@/components/Common/Header";
 import ProductSummary from "@/components/Dashboard/ProductSummary";
-import Table from "@/components/Dashboard/Table/Table";
+import ProductTable from "@/components/Dashboard/ProductTable.tsx/ProductTable";
 
 export default function Dashboard() {
   return (
     <div className=""> 
         <Header />
         <ProductSummary />
-        <Table/>
+        <ProductTable/>
     </div>
   );
 }

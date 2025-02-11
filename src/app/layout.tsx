@@ -31,6 +31,9 @@ export default function RootLayout({
          <ReduxProvider>
             {children}
          </ReduxProvider>
+         <div className="md:h-24 h-12 bg-[#002326]">
+
+         </div>
       </body>
     </html>
   );

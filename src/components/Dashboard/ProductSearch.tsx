@@ -1,9 +1,9 @@
 "use client";  // This makes the component a Client Component
 
-import Select from "@/components/reusable/CustomSelect";
+import Select from "@/components/reusable/Select";
 import React, { useState } from "react";
 import { Search } from "lucide-react";
-import Input from "@/components/reusable/CustomInput";
+import Input from "@/components/reusable/Input";
 
 
 const statusData = [
@@ -18,7 +18,7 @@ const AccreditationData = [
   { value: 'Vegan', label: 'Vegan' },
 ]
 
-const SearchBar = () => {
+const ProductSearchBar = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [accreditation, setAccreditation] = useState("Plant");
   const [status, setStatus] = useState("Accredited");
@@ -61,4 +61,4 @@ const SearchBar = () => {
   );
 };
 
-export default SearchBar;
+export default ProductSearchBar;

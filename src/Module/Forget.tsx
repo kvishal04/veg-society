@@ -1,30 +1,14 @@
 "use client";
 
 import { useState } from "react";
-import { useLoginUserMutation } from "@/redux/services/api";
-import { useDispatch } from "react-redux";
-import { setUser } from "@/redux/features/authSlice";
-import { redirect } from "next/navigation";
-import Input from "@/components/reusable/CustomInput";
-import Button from "@/components/reusable/CustomButton";
+import Input from "@/components/reusable/Input";
+import Button from "@/components/reusable/Button";
 import Header from "@/components/Common/Header";
-import Paragraph from "@/components/reusable/CustomParagraph";
+import Paragraph from "@/components/reusable/Paragraph";
+import Link from "next/link";
 
 export default function Forget() {
-  const [username, setUsername] = useState("kminchelle");
-  const [password, setPassword] = useState("0lelplR");
-  const dispatch = useDispatch();
-  const [loginUser, { isLoading, error }] = useLoginUserMutation();
-
-  const handleLogin = async () => {
-    try {
-      const response = await loginUser({ username, password }).unwrap();
-      dispatch(setUser({ user: { id: response.id, email: response.email }, token: response.token }));
-        redirect("/dashboard");
-    } catch (err) {
-      console.error("Login failed", err);
-    }
-  };
+  const [email, setEmail] = useState("kminchelle");
 
   return (
     
@@ -39,14 +23,16 @@ export default function Forget() {
                         <div className="capitalize text-xl mb-2">
                             <label className="text-darkGreen">Email ID</label>
                         </div>
-                        <Input className="w-full h-12 rounded-md" placeholder="" value={""} onChange={(e)=> console.log(e)} />
+                        <Input type="email" className="w-full h-12 rounded-md p-4" placeholder="" value={email} onChange={(e)=> setEmail(e.target.value)} />
                     </div>
                     <div className="flex justify-start items-center gap-8 my-12">
                         <div className="">
                             <Button children={'Submit'} variant="dark-green" className="w-full text-lg py-4 px-20" /> 
                         </div>
                         <div className="text-darkGreen text-xl underline">
-                            <a href="#">Back to log in</a>
+                          <Link href={'/'}>
+                            Back to log in
+                          </Link>
                         </div>
                     </div>
                 </div>

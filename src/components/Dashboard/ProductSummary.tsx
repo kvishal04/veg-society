@@ -3,7 +3,7 @@
 import React from "react";
 import CustomPieChart from "../Charts/Piechart";
 import Badge from "@/styles/logo/Badge";
-import Paragraph from "../reusable/CustomParagraph";
+import Paragraph from "../reusable/Paragraph";
 import Right from "@/styles/logo/Right";
 import Wrong from "@/styles/logo/Wrong";
 

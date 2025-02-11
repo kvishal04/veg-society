@@ -1,10 +1,10 @@
 "use client";
 
 import React from "react";
-import Button from "../reusable/CustomButton";
+import Button from "../reusable/Button";
 import Logo from "@/styles/logo/Logo";
-import Heading from "../reusable/CustomHeading";
-import Paragraph from "../reusable/CustomParagraph";
+import Heading from "../reusable/Heading";
+import Paragraph from "../reusable/Paragraph";
 import { useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
 
@@ -23,12 +23,12 @@ const Header: React.FC<HeaderProps> = ({
       {/* Top Bar */}
       <div className="flex justify-end items-center px-6 lg:px-40 py-2 border-b border-white">
         <div className="flex items-center gap-12 text-sm">
-        {userData? 
+        {!userData? 
           <span className="flex items-center gap-1">
             <i className="fas fa-user"></i> Hi Johnny!
           </span>
         : <></>}
-        {userData? 
+        {!userData? 
           <Paragraph className="hover:underline ">Log out</Paragraph>
           : <></>}
         </div>
@@ -37,7 +37,7 @@ const Header: React.FC<HeaderProps> = ({
       {/* Main Header */}
       <div className="flex md:flex-row md:justify-between flex-col justify-start items-center px-6 lg:px-40 py-8">
 
-        <div className="flex flex-row justify-between items-center md:gap-4 ">
+        <div className="flex flex-row justify-between items-center ">
             {/* Logo */}
             <div className="">
                 <Logo  width={70} height={80}/>
@@ -47,13 +47,13 @@ const Header: React.FC<HeaderProps> = ({
                       <Paragraph className="sm:text-xl md:text-2xl lg:text-3xl font-bold">Vegetarian</Paragraph>
                       <Paragraph className="sm:text-xl md:text-2xl lg:text-3xl font-bold">Society</Paragraph>
               </div>
-              <Heading level={1} children={title} className="sm:text-xl md:text-2xl lg:text-3xl xl:text-5xl"></Heading>
+              <Heading level={1} children={title} className="sm:text-xl md:text-3xl lg:text-4xl xl:text-4xl"></Heading>
             </div>
             
         </div>
     
         {/* Action Button */}
-        {userData ?
+        {!userData  ?
         <div className="flex flex-row gap-8 justify-between items-center">
           <Paragraph className="underline "> Dashboard </Paragraph>
           <Button children={'Add New Product'} variant="dark-green"  className="text-sm md:text-base lg:text-lg  lg:px-5 lg:py-3  md:px-4 md:py-2  px-3 py-1 " />
