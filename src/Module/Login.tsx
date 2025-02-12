@@ -28,10 +28,10 @@ export default function Login() {
 
   return (
     
-    <div>
+    <div className="">
         <Header title={'Log in'} />
-        <div className="bg-[#F2E9DA] h-screen flex items-top justify-start">
-            <div className="bg-transparent p-6 w-full sm:mt-12 md:mt-[7.6rem] sm:ml-12 md:ml-40 ">
+        <div className="bg-[#F2E9DA] calci flex items-top justify-start">
+            <div className="bg-transparent px-6 pt-6 h-auto sm:mt-12 md:mt-[7.7rem] sm:ml-12 md:ml-40 ">
                 <form className="w-full md:w-[26.7rem]" >
                 <div>
                     <div>
@@ -48,7 +48,7 @@ export default function Login() {
                             <Input type="password" className="w-full h-12 rounded-md p-4" placeholder="" value={password} onChange={(e)=> setPassword(e.target.value)} />
                         </div>
                     </div>
-                    <div className="flex justify-start items-center gap-8 my-8">
+                    <div className="flex justify-start items-center gap-8 mt-8">
                         <div className="">
                             <Button children={'Log in'} variant="dark-green" className="w-full text-lg py-3 px-12 md:px-[5.2rem]" /> 
                         </div>

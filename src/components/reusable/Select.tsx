@@ -1,5 +1,5 @@
-// CustomSelect.tsx
 import React from "react";
+import { Triangle } from "lucide-react";
 
 interface CustomSelectProps {
   options: { value: string; label: string }[];
@@ -7,6 +7,7 @@ interface CustomSelectProps {
   onChange: (e: React.ChangeEvent<HTMLSelectElement>) => void;
   disabled?: boolean;
   className?: string;
+  optionClassName?: string;
 }
 
 const Select: React.FC<CustomSelectProps> = ({
@@ -15,22 +16,36 @@ const Select: React.FC<CustomSelectProps> = ({
   onChange,
   disabled = false,
   className = "",
+  optionClassName = ""
 }) => {
   return (
-    <select
-      value={value}
-      onChange={onChange}
-      disabled={disabled}
-      className={`w-full p-2 bg-white text-black border border-darkGreen hover:bg-gray-100 focus:ring-black ${
-        disabled ? "opacity-50 cursor-not-allowed" : ""
-      } ${className}`}
-    >
-      {options.map((option) => (
-        <option key={option.value} value={option.value}>
-          {option.label}
-        </option>
-      ))}
-    </select>
+    <div className=" w-full">
+      <div className="relative">
+        <select
+          value={value}
+          onChange={onChange}
+          disabled={disabled}
+          className={`w-full p-2 pr-10 bg-white text-black border border-darkGreen hover:bg-gray-100 focus:ring-black appearance-none ${
+            disabled ? "opacity-50 cursor-not-allowed" : ""
+          } ${className}`}
+        >
+          {options.map((option) => (
+            <option className={optionClassName} key={option.value} value={option.value}>
+              {option.label}
+            </option>
+          ))}
+        </select>
+
+        {/* Custom Dropdown Icon */}
+        <Triangle
+          strokeWidth={1.75}
+          fill="black"
+          size={12}
+          className="absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none rotate-180"
+        />
+      </div>
+    
+    </div>
   );
 };
 

@@ -30,3 +30,15 @@ export const producttabledata  = [
     { number: 29, name: "Product Name 9", accreditation: "Vegan", submitted: "29/10/2024", response: "29/10/2024", status: "Rejected" },
     { number: 30, name: "Product Name 10", accreditation: "Vegan", submitted: "29/10/2024", response: "30/10/2024", status: "Accredited" },
 ];
+
+
+export const statusData = [
+    { value: 'Pending', label: 'Pending' },
+    { value: 'Accredited', label: 'Accredited' },
+    { value: 'Rejected', label: 'Rejected' },
+]
+export const AccreditationData = [
+    { value: 'Vegetarian', label: 'Vegetarian' },
+    { value: 'Plant', label: 'Plant' },
+    { value: 'Vegan', label: 'Vegan' },
+]

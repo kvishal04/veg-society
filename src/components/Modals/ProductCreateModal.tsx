@@ -1,67 +1,82 @@
+"use client";
+
 import { CrossIcon, PlusIcon } from "lucide-react";
-import React from "react";
+import React, { useState } from "react";
+import Select from "../reusable/Select";
+import { AccreditationData as data } from "@/FakeJson/tabledata";
+import Input from "../reusable/Input";
+import Button from "../reusable/Button";
+
+
+const AccreditationData = [...data]
 
 type ModalProps = {
-  isOpen: boolean ;
-  onClose: () => void;
-  onSave: () => void;
+    isOpen: boolean;
+    onClose: () => void;
+    onSave: () => void;
 };
 
 const ProductCreateModal: React.FC<ModalProps> = ({ isOpen, onClose, onSave }) => {
-  if (!isOpen) return null;
+    if (!isOpen) return null;
 
-  return (
-    <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
-      <div className="bg-[#D9D9D9] w-[45rem] h-[40rem] rounded-lg shadow-lg p-6 relative text-black">
-        <div className="bg-white h-full rounded-lg p-8">
-                {/* Modal Header */}
-        <div className="flex justify-between items-center border-b pb-3">
-          <h2 className="text-lg font-semibold">Add New Product</h2>
-          <button onClick={onClose} className="text-gray-500 hover:text-gray-800">
-            <PlusIcon className="rotate-45 text-5xl" />
-          </button>
+    const [accreditation, setAccreditation] = useState("Plant");
+
+    const handleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+        setAccreditation(e.target.value);
+    }
+
+
+    return (
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+            <div className="bg-[#D9D9D9] w-[45rem] h-[40.5rem] rounded-xl shadow-lg p-6 relative text-black">
+                <div className="bg-white h-full rounded-lg py-4 px-8">
+                    {/* Modal Header */}
+                    <div className="flex justify-between items-center border-b pb-3">
+                        <h2 className="text-lg font-semibold">Add New Product</h2>
+                        <button onClick={onClose} className="text-gray-500 hover:text-gray-800">
+                            <PlusIcon className="rotate-45 text-5xl" />
+                        </button>
+                    </div>
+
+                    {/* Modal Body */}
+                    <div className="mt-4 text-black border-b">
+                        <div className="mb-4">
+                            <label className="block text-lg font-medium ">Product Name</label>
+                            <Input
+                                type="text"
+                                value={''}
+                                onChange={(e) => console.log(e.target.value)}
+                                placeholder="Example Product Name"
+                                className="w-full mt-2 p-3 border-2 rounded-lg focus:ring-2 bg-gray-100 focus:ring-green-500 outline-none placeholder-gray-500"
+                            />
+                        </div>
+
+                        <div className="mb-8">
+                            <label className="block text-lg font-medium">Requested Accreditation</label>
+                            <Select
+                                className="w-full p-3 mt-2 border-2 border-green-700 rounded-lg bg-white text-green-700 outline-none"
+                                options={AccreditationData}
+                                value={accreditation}
+                                onChange={handleSelectChange}
+                            />
+                        </div>
+
+                        <div className="mb-8">
+                            <label className="block text-lg font-medium">Notes</label>
+                            <textarea className="w-full mt-1 p-2 border rounded-lg bg-gray-100 h-32"></textarea>
+                        </div>
+                    </div>
+
+                    {/* Modal Footer */}
+                    <div className="flex justify-between mt-6 ">
+                        <Button children={'Save'} variant="dark-green"  className="text-sm md:text-base lg:text-lg  lg:px-[5rem] lg:py-3  md:px-4 md:py-2  px-3 py-1 " />
+                        <Button children={'Close'} variant="white"  className="text-sm md:text-base lg:text-lg  lg:px-[5rem] lg:py-3  md:px-4 md:py-2  px-3 py-1 " />
+                    </div>
+                </div>
+
+            </div>
         </div>
-
-        {/* Modal Body */}
-        <div className="mt-4 text-black">
-          <div className="mb-4">
-            <label className="block text-sm font-medium ">Product Name</label>
-            <input
-              type="text"
-              placeholder="Example Product Name"
-              className="w-full mt-1 p-2 border rounded-lg bg-gray-100"
-            />
-          </div>
-
-          <div className="mb-4">
-            <label className="block text-sm font-medium">Requested Accreditation</label>
-            <select className="w-full mt-1 p-2 border rounded-lg bg-gray-100">
-              <option value="">Please select</option>
-              <option value="Accredited">Accredited</option>
-              <option value="Pending">Pending</option>
-            </select>
-          </div>
-
-          <div className="mb-4">
-            <label className="block text-sm font-medium">Notes</label>
-            <textarea className="w-full mt-1 p-2 border rounded-lg bg-gray-100 h-24"></textarea>
-          </div>
-        </div>
-
-        {/* Modal Footer */}
-        <div className="flex justify-between mt-6">
-          <button onClick={onSave} className="bg-darkGreen text-white py-2 px-6 rounded-lg">
-            Save
-          </button>
-          <button onClick={onClose} className="border border-darkGreen text-darkGreen py-2 px-6 rounded-lg">
-            Cancel
-          </button>
-        </div>
-        </div>
-    
-      </div>
-    </div>
-  );
+    );
 };
 
 export default ProductCreateModal;

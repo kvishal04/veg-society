@@ -22,7 +22,7 @@ const Header: React.FC<HeaderProps> = ({
   return (
     <header className="bg-[#002326] text-white">
       {/* Top Bar */}
-      <div className="flex justify-end items-center px-6 lg:px-40 py-2 border-b border-white">
+      <div className="flex justify-end items-center px-6 lg:px-40 py-3 border-b border-white">
         <div className="flex items-center gap-12 text-sm">
         {!userData? 
           <span className="flex items-center gap-1">

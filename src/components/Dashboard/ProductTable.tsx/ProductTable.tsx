@@ -10,11 +10,11 @@ import {producttabledata} from '@/FakeJson/tabledata'
 const tableConfig = {
     tableClassName:  'min-w-full bg-white border border-gray-200 shadow-md rounded-lg',
     tHeadClassName: 'bg-darkGreen text-white border rounded-lg sticky top-0 z-10 ',
-    thClassName: 'py-3 px-4 text-left border-b cursor-pointer  gap-2',
-    trClassName: 'border-b hover:bg-gray-100',
+    thClassName: 'py-2 px-4 text-left border-b cursor-pointer gap-2',
+    trClassName: 'border-b hover:bg-gray-100 border-b-lightGreen',
     thIconClassName: 'flex flex-row items-center gap-2',
     tBodyClassName: '',
-    tdClassname:'py-3 px-4',
+    tdClassname:'py-2 px-4',
     showItemQuantity : 20,
     columns: [
         {
