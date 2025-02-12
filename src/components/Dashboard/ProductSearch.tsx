@@ -28,14 +28,14 @@ const ProductSearchBar = () => {
       value={searchTerm}
       onChange={(e) => setSearchTerm(e.target.value)}
       placeholder="Search"
-      className="w-full p-3 border-2 rounded-lg focus:ring-2 focus:ring-green-500 outline-none placeholder-green-700"
+      className="w-full p-2 border-2 rounded-lg focus:ring-2 focus:ring-green-500 outline-none placeholder-green-700"
     />
     <Search className="absolute right-3 text-green-700" size={18} />
   </div>
 
   {/* Accreditation Dropdown */}
   <Select
-    className="w-full p-3 border-2 border-green-700 rounded-lg bg-white text-green-700 outline-none"
+    className="w-full p-2 pr-10 bg-white border border-darkGreen hover:bg-gray-100 focus:ring-black appearance-none  rounded-lg text-darkGreen outline-none"
     options={AccreditationData}
     value={accreditation}
     onChange={handleSelectChange}
@@ -44,7 +44,7 @@ const ProductSearchBar = () => {
 
   {/* Status Dropdown */}
   <Select
-    className="w-full p-3 border-2 border-green-700 rounded-md bg-white text-green-700 outline-none"
+    className="w-full p-2 pr-10 bg-white border border-darkGreen hover:bg-gray-100 focus:ring-black appearance-none  rounded-lg text-darkGreen outline-none"
     options={statusData}
     value={status}
     onChange={handleSelectChange}

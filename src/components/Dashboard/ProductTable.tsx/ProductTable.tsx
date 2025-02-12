@@ -50,10 +50,9 @@ const tableConfig = {
             sortable: true,
             customBodyRender: (value: TableData) => {
                 return <>
-                    <div className={`font-semibold ${
-                            value.status === "Pending" ? "text-yellow-500" :
-                            value.status === "Rejected" ? "text-red-500" :
-                            "text-green-500"
+                    <div className={` ${
+                            value.status === "Pending" ? "text-black font-bold" :
+                            "text-black"
                             }`}>
                                 {value.status}
                     </div>
@@ -68,10 +67,10 @@ const tableConfig = {
             sortable: false,
             className: 'rounded-tr-lg',
             customBodyRender: (value: TableData) => {
-                return <> <div className="flex space-x-2">
-                <Eye className="text-green-700 cursor-pointer hover:text-green-500" size={18} />
-                <Pencil className="text-blue-500 cursor-pointer hover:text-blue-300" size={18} />
-                <Trash2 className="text-red-500 cursor-pointer hover:text-red-300" size={18} />
+                return <> <div className="flex space-x-4">
+                <Eye className="text-darkGreen cursor-pointer hover:text-green-500" size={18} />
+                <Pencil className="text-darkGreen cursor-pointer hover:text-blue-300" size={18} />
+                <Trash2 className="text-darkGreen cursor-pointer hover:text-red-300" size={18} />
               </div></>;
             },
         },

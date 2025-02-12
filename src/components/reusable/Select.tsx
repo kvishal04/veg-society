@@ -25,7 +25,7 @@ const Select: React.FC<CustomSelectProps> = ({
           value={value}
           onChange={onChange}
           disabled={disabled}
-          className={`w-full p-2 pr-10 bg-white text-black border border-darkGreen hover:bg-gray-100 focus:ring-black appearance-none ${
+          className={` ${
             disabled ? "opacity-50 cursor-not-allowed" : ""
           } ${className}`}
         >

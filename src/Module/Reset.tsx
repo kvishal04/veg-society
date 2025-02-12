@@ -16,7 +16,7 @@ export default function Reset() {
     
     <div>
         <Header title={'Reset password'} />
-        <div className="bg-[#F2E9DA] h-screen flex items-top justify-start p-4">
+        <div className="bg-[#F2E9DA] calci flex items-top justify-start p-4">
             <div className="bg-transparent p-6 w-full md:w-96 sm:mt-12 md:mt-32 sm:ml-12 md:ml-40 ">
                 <form className="w-full md:w-[27rem]" >
                 <div>

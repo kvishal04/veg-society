@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import Button from "@/components/reusable/Button";
 import Heading from "@/components/reusable/Heading";
 import Paragraph from "@/components/reusable/Paragraph";
@@ -18,7 +18,9 @@ const Header: React.FC<HeaderProps> = ({
   title = 'Company Name'
 }) => {
   const userData = useSelector((state: RootState) => state?.auth.token);
-
+  const [modal, setmodal] = useState<boolean>(false)
+  const openModal = () =>setmodal(true)
+  const closeModal = () =>setmodal(false)
   return (
     <header className="bg-[#002326] text-white">
       {/* Top Bar */}
@@ -51,16 +53,14 @@ const Header: React.FC<HeaderProps> = ({
         {!userData  ?
         <div className="flex flex-row gap-8 justify-between items-center mt-4">
           <Paragraph className="underline "> Dashboard </Paragraph>
-          <Button children={'Add New Product'} variant="dark-green"  className="text-sm md:text-base lg:text-lg  lg:px-[2.2rem] lg:py-3  md:px-4 md:py-2  px-3 py-1 " />
+          <Button children={'Add New Product'} onClick={openModal} variant="dark-green"  className="text-sm md:text-base lg:text-lg  lg:px-[2.2rem] lg:py-3  md:px-4 md:py-2  px-3 py-1 " />
         </div>
         : <></>}
       </div>
 
       <>
-          <ProductCreateModal isOpen={false} onClose={function (): void {
-          throw new Error("Function not implemented.");
-        } } onSave={function (): void {
-          throw new Error("Function not implemented.");
+          <ProductCreateModal isOpen={modal} onClose={closeModal} onSave={function (): void {
+          console.log("Function not implemented.");
         } } />
       </>
     </header>
