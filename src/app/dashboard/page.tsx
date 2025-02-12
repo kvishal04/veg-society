@@ -5,7 +5,6 @@ import ProductTable from "@/components/Dashboard/ProductTable.tsx/ProductTable";
 export default function Dashboard() {
   return (
     <div className=""> 
-        <Header />
         <ProductSummary />
         <ProductTable/>
     </div>

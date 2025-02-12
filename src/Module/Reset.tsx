@@ -6,7 +6,7 @@ import Button from "@/components/reusable/Button";
 import Header from "@/components/Common/Header";
 import Link from "next/link";
 
-export default function Login() {
+export default function Reset() {
   const [resetpassword, setResetPassword] = useState("");
   const [password, setPassword] = useState("");
 
@@ -36,9 +36,9 @@ export default function Login() {
                     </div>
                     <div className="flex justify-start items-center gap-8 my-8">
                         <div className="">
-                            <Button children={'Log in'} variant="dark-green" className="w-full text-lg py-4 px-20" /> 
+                            <Button children={'Submit'} variant="dark-green" className="w-full text-lg py-3 px-12 md:px-[5.2rem]" /> 
                         </div>
-                        <div className="text-darkGreen text-xl underline">
+                        <div className="text-darkGreen text-base md:text-xl underline">
                         <Link href={'/'}>
                             Back to log in
                           </Link>

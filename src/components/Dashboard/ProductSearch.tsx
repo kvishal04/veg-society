@@ -28,7 +28,7 @@ const ProductSearchBar = () => {
   }
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-5 gap-4 w-full py-8 rounded-lg">
+    <div className="grid grid-cols-1 md:grid-cols-5 gap-7 w-full pb-8 rounded-lg">
   {/* Search Input */}
   <div className="relative flex items-center w-full md:col-span-3">
     <Input
@@ -36,14 +36,14 @@ const ProductSearchBar = () => {
       value={searchTerm}
       onChange={(e) => setSearchTerm(e.target.value)}
       placeholder="Search"
-      className="w-full p-4 pl-4 pr-8 border-2 rounded-md focus:ring-2 focus:ring-green-500 outline-none placeholder-green-700"
+      className="w-full p-3 border-2 rounded-md focus:ring-2 focus:ring-green-500 outline-none placeholder-green-700"
     />
     <Search className="absolute right-3 text-green-700" size={18} />
   </div>
 
   {/* Accreditation Dropdown */}
   <Select
-    className="w-full p-4 border-2 border-green-700 rounded-md bg-white text-green-700 outline-none"
+    className="w-full p-3 border-2 border-green-700 rounded-md bg-white text-green-700 outline-none"
     options={AccreditationData}
     value={accreditation}
     onChange={handleSelectChange}
@@ -51,7 +51,7 @@ const ProductSearchBar = () => {
 
   {/* Status Dropdown */}
   <Select
-    className="w-full p-4 border-2 border-green-700 rounded-md bg-white text-green-700 outline-none"
+    className="w-full p-3 border-2 border-green-700 rounded-md bg-white text-green-700 outline-none"
     options={statusData}
     value={status}
     onChange={handleSelectChange}

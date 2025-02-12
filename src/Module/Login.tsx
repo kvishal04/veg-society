@@ -30,9 +30,9 @@ export default function Login() {
     
     <div>
         <Header title={'Log in'} />
-        <div className="bg-[#F2E9DA] h-screen flex items-top justify-start p-4">
-            <div className="bg-transparent p-6 w-full md:w-96 sm:mt-12 md:mt-32 sm:ml-12 md:ml-40 ">
-                <form className="w-full md:w-[27rem]" >
+        <div className="bg-[#F2E9DA] h-screen flex items-top justify-start">
+            <div className="bg-transparent p-6 w-full sm:mt-12 md:mt-[7.6rem] sm:ml-12 md:ml-40 ">
+                <form className="w-full md:w-[26.7rem]" >
                 <div>
                     <div>
                         <div className="capitalize text-xl mb-2">
@@ -50,9 +50,9 @@ export default function Login() {
                     </div>
                     <div className="flex justify-start items-center gap-8 my-8">
                         <div className="">
-                            <Button children={'Log in'} variant="dark-green" className="w-full text-lg py-4 px-20" /> 
+                            <Button children={'Log in'} variant="dark-green" className="w-full text-lg py-3 px-12 md:px-[5.2rem]" /> 
                         </div>
-                        <div className="text-darkGreen text-xl underline">
+                        <div className="text-darkGreen text-base md:text-xl underline">
                         <Link href={'/forgot'}>
                             Forgot password?
                           </Link>

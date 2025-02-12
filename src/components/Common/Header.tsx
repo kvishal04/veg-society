@@ -1,13 +1,13 @@
 "use client";
 
 import React from "react";
-import Button from "../reusable/Button";
-import Logo from "@/styles/logo/Logo";
-import Heading from "../reusable/Heading";
-import Paragraph from "../reusable/Paragraph";
+import Button from "@/components/reusable/Button";
+import Heading from "@/components/reusable/Heading";
+import Paragraph from "@/components/reusable/Paragraph";
 import { useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
 import Image from "next/image";
+import ProductCreateModal from "@/components/Modals/ProductCreateModal";
 
 
 interface HeaderProps {
@@ -51,10 +51,18 @@ const Header: React.FC<HeaderProps> = ({
         {!userData  ?
         <div className="flex flex-row gap-8 justify-between items-center mt-4">
           <Paragraph className="underline "> Dashboard </Paragraph>
-          <Button children={'Add New Product'} variant="dark-green"  className="text-sm md:text-base lg:text-lg  lg:px-5 lg:py-3  md:px-4 md:py-2  px-3 py-1 " />
+          <Button children={'Add New Product'} variant="dark-green"  className="text-sm md:text-base lg:text-lg  lg:px-[2.2rem] lg:py-3  md:px-4 md:py-2  px-3 py-1 " />
         </div>
         : <></>}
       </div>
+
+      <>
+          <ProductCreateModal isOpen={false} onClose={function (): void {
+          throw new Error("Function not implemented.");
+        } } onSave={function (): void {
+          throw new Error("Function not implemented.");
+        } } />
+      </>
     </header>
   );
 };

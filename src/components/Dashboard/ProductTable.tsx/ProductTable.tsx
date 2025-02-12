@@ -5,6 +5,7 @@ import React, { useState } from 'react'
 import TableComponent from '@/components/reusable/Table/Table';
 import ProductSearchBar from '../ProductSearch';
 import Pagination from '@/components/reusable/Table/Pagination';
+import {producttabledata} from '@/FakeJson/tabledata'
 
 const tableConfig = {
     tableClassName:  'min-w-full bg-white border border-gray-200 shadow-md rounded-lg',
@@ -97,35 +98,14 @@ type TableData = {
 
 const ProductTable: React.FC = () => {
 
-      const data: TableData[] = [
-        { number: 1, name: "Product Name 1", accreditation: "Vegetarian", submitted: "23/10/2024", response: "N/A", status: "Pending" },
-        { number: 2, name: "Product Name 2", accreditation: "Vegetarian", submitted: "25/10/2024", response: "26/10/2024", status: "Accredited" },
-        { number: 3, name: "Product Name 3", accreditation: "Vegan", submitted: "25/10/2024", response: "26/10/2024", status: "Accredited" },
-        { number: 4, name: "Product Name 4", accreditation: "Plant-Based", submitted: "25/10/2024", response: "26/10/2024", status: "Accredited" },
-        { number: 5, name: "Product Name 5", accreditation: "Vegan", submitted: "27/10/2024", response: "28/10/2024", status: "Accredited" },
-        { number: 6, name: "Product Name 6", accreditation: "Vegetarian", submitted: "27/10/2024", response: "28/10/2024", status: "Accredited" },
-        { number: 7, name: "Product Name 7", accreditation: "Vegetarian", submitted: "27/10/2024", response: "28/10/2024", status: "Accredited" },
-        { number: 8, name: "Product Name 8", accreditation: "Vegetarian", submitted: "29/10/2024", response: "29/10/2024", status: "Rejected" },
-        { number: 9, name: "Product Name 9", accreditation: "Vegan", submitted: "29/10/2024", response: "29/10/2024", status: "Rejected" },
-        { number: 10, name: "Product Name 10", accreditation: "Vegan", submitted: "29/10/2024", response: "30/10/2024", status: "Accredited" },
-        { number: 11, name: "Product Name 1", accreditation: "Vegetarian", submitted: "23/10/2024", response: "N/A", status: "Pending" },
-        { number: 12, name: "Product Name 2", accreditation: "Vegetarian", submitted: "25/10/2024", response: "26/10/2024", status: "Accredited" },
-        { number: 13, name: "Product Name 3", accreditation: "Vegan", submitted: "25/10/2024", response: "26/10/2024", status: "Accredited" },
-        { number: 14, name: "Product Name 4", accreditation: "Plant-Based", submitted: "25/10/2024", response: "26/10/2024", status: "Accredited" },
-        { number: 15, name: "Product Name 5", accreditation: "Vegan", submitted: "27/10/2024", response: "28/10/2024", status: "Accredited" },
-        { number: 16, name: "", accreditation: "Vegetarian", submitted: "27/10/2024", response: "28/10/2024", status: "Accredited" },
-        { number: 17, name: "Product Name 7", accreditation: "Vegetarian", submitted: "27/10/2024", response: "28/10/2024", status: "Accredited" },
-        { number: 18, name: "Product Name 8", accreditation: "Vegetarian", submitted: "29/10/2024", response: "29/10/2024", status: "Rejected" },
-        { number: 19, name: "Product Name 9", accreditation: "Vegan", submitted: "29/10/2024", response: "29/10/2024", status: "Rejected" },
-        { number: 20, name: "Product Name 10", accreditation: "Vegan", submitted: "29/10/2024", response: "30/10/2024", status: "Accredited" },
-    ];
+      const data: TableData[] = [...producttabledata]
     
 
   
     return (
-        <div className='px-6 lg:px-40 py-8'>
+        <div className='px-6 xl:px-40 py-8'>
             <ProductSearchBar />
-            <div className="max-h-[40rem] overflow-y-auto custom-scrollbar">
+            <div className="max-h-[28rem] overflow-y-auto custom-scrollbar">
                 <TableComponent data={data} config={tableConfig} />
             </div>
             <Pagination totalItems={data.length} itemsPerPage={20} currentPage={1} onPageChange={function (page: number): void {
