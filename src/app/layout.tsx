@@ -37,9 +37,9 @@ export default function RootLayout({
           <ToastProvider />
           <div className="flex-grow">{children}</div> {/* Content */}
           <Loader />
-          <Footer />
         </ReduxProvider>
         {/* Footer */}
+          <Footer />
       </body>
     </html>
   );

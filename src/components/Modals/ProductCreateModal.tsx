@@ -1,6 +1,6 @@
 "use client";
 
-import { CrossIcon, PlusIcon } from "lucide-react";
+import { PlusIcon } from "lucide-react";
 import React, { useState } from "react";
 import Select from "../reusable/Select";
 import { AccreditationData as data } from "@/FakeJson/tabledata";

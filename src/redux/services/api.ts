@@ -21,6 +21,7 @@ export const api = createApi({
     },
    
   ), 
+  tagTypes: ["Auth"], // Add this line**  
   endpoints: (builder) => ({
     loginUser: builder.mutation<dataCode, { email: string; password: string }>({
       query: (credentials) => ({
@@ -29,7 +30,17 @@ export const api = createApi({
         body: credentials,
       }),
     }),
-  }),
+
+    logoutUser: builder.mutation<dataCode, {}>({
+      query: (credentials) => ({
+        url: "/logout",
+        method: "POST",
+        body: credentials,
+      }),
+    }),
+    }),
+
+   
 });
 
-export const { useLoginUserMutation } = api;
+export const { useLoginUserMutation, useLogoutUserMutation } = api;

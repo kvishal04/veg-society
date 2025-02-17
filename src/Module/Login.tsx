@@ -14,7 +14,6 @@ import { showToast } from "@/utils/utills";
 import { debounce } from "lodash";
 import { errorCode } from "@/interface/error";
 import { ApiError } from "@/utils/customError";
-import Withoutadmin from "@/hoc/Withoutadmin";
 import { setLoading } from "@/redux/features/loaderSlice";
 const Login: React.FC = () => {
   const [email, setEmail] = useState("vishal.kumar@123789.org");
@@ -33,6 +32,7 @@ const Login: React.FC = () => {
           console.log("Username:", email, "Password:", password, "loading", isLoading);
           const response = await loginUser({ email, password }).unwrap();
           dispatch(setUser({ user: { id: response.data.id, email: email }, token: response.data.token }));
+          showToast(response.message, 'success')
           dispatch(setLoading(false)); // End loading
           router.push("/dashboard");
         } catch (err) {

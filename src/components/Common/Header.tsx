@@ -8,6 +8,12 @@ import Image from "next/image";
 import ProductCreateModal from "@/components/Modals/ProductCreateModal";
 import { logout } from "@/redux/features/authSlice";
 import { useRouter } from "next/navigation";
+import LogutModal from "../Modals/LogutModal";
+import {useLogoutUserMutation } from "@/redux/services/api";
+import { setLoading } from "@/redux/features/loaderSlice";
+import { ApiError } from "@/utils/customError";
+import { errorCode } from "@/interface/error";
+import { showToast } from "@/utils/utills";
 
 interface HeaderProps {
   title?: string;
@@ -18,15 +24,28 @@ const Header: React.FC<HeaderProps> = ({ title = 'Company Name' }) => {
   const router = useRouter()
   const dispatch = useDispatch<AppDispatch>()
   const userData = useSelector((state: RootState) => state?.auth.token);
-  const [modal, setModal] = useState<boolean>(false);
-  const openModal = () => setModal(true);
-  const closeModal = () => setModal(false);
+  const [logoutModal, setLogoutModal] = useState<boolean>(false);
+  const [productModal, setProductModal] = useState<boolean>(false);
+  const openLogoutModal = () => setLogoutModal(true);
+  const openModal = () => setProductModal(true);
+  const closeLogoutModal = () => setLogoutModal(false);
+  const closeModal = () => setProductModal(false);
+  const [logoutUser] = useLogoutUserMutation();
   
-  const logoutUser = () =>{
-    dispatch(logout())
-    router.push('/')
-
-  }
+  const logoutUserFunc = async () => {
+    try {
+      dispatch(setLoading(true)); // Start loading
+      const res  = await logoutUser({}).unwrap()
+      dispatch(logout());
+      dispatch(setLoading(false)); // End loading
+      showToast(res.message, "success");
+      router.push("/");
+    } catch (err) {
+      console.log("isLoading err", err);
+      dispatch(setLoading(false)); // End loading
+    }
+  };
+  
   // State to check if the component is mounted
   const [isMounted, setIsMounted] = useState(false);
 
@@ -48,7 +67,7 @@ const Header: React.FC<HeaderProps> = ({ title = 'Company Name' }) => {
               <i className="fas fa-user"></i> Hi Johnny!
             </p>
           ) : null}
-          {userData ? <p onClick={logoutUser} className="hover:underline">Log out</p> : null}
+          {userData ? <p onClick={openLogoutModal} className="hover:underline">Log out</p> : null}
         </div>
       </div>
 
@@ -85,13 +104,14 @@ const Header: React.FC<HeaderProps> = ({ title = 'Company Name' }) => {
         ) : null}
       </div>
 
-      <ProductCreateModal
-        isOpen={modal}
-        onClose={closeModal}
-        onSave={() => {
-          console.log("Function not implemented.");
-        }}
+      <ProductCreateModal isOpen={productModal}   
+      onClose={closeModal}
+      onSave={closeModal}    
       />
+
+      <LogutModal isOpen={logoutModal}
+        onClose={closeLogoutModal}
+        onSave={() => {logoutUserFunc()}}/>
     </header>
   );
 };
