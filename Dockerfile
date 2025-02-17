@@ -9,7 +9,7 @@ RUN adduser -S appuser \
 WORKDIR /app
 
 # Copy package and config files and folders
-COPY package.json package-lock.json postcss.config.mjs tailwind.config.ts tsconfig.json next.config.ts ./
+COPY package.json postcss.config.mjs tailwind.config.ts tsconfig.json next.config.ts ./
 COPY src/ ./src/
 COPY public/ ./public/
 
