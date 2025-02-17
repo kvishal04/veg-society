@@ -2,6 +2,10 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "@/styles/globals.css";
 import ReduxProvider from "@/redux/provider";
+import ToastProvider from "@/components/Toast/Toaster";
+import Footer from "@/Module/Footer";
+import NextTopLoader from 'nextjs-toploader';
+import Loader from "@/components/Loader/Loader";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -24,16 +28,18 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased `}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased min-h-screen flex flex-col`}
       >
-         <ReduxProvider>
-            {children}
-         </ReduxProvider>
-         <div className="md:h-[6.6rem] h-12 bg-[#002326]">
-
-         </div>
+        <ReduxProvider>
+        <NextTopLoader  showSpinner={false}/>
+          <ToastProvider />
+          <div className="flex-grow">{children}</div> {/* Content */}
+          <Loader />
+          <Footer />
+        </ReduxProvider>
+        {/* Footer */}
       </body>
     </html>
   );

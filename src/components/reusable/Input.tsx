@@ -2,7 +2,7 @@ import React from "react";
 
 interface CustomInputProps {
   type?: string;
-  value: string;
+  value?: string;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   placeholder?: string;
   className?: string;

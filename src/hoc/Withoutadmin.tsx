@@ -6,13 +6,13 @@ import { useSelector } from "react-redux";
 import { redirect } from "next/navigation";
 import Login from "@/Module/Login";
 
-const Withadmin = <P extends object>(WrappedComponent: ComponentType<P>) => {
+const Withoutadmin = <P extends object>(WrappedComponent: ComponentType<P>) => {
   const WithUserData: React.FC<P> = (props) => {
     const userData = useSelector((state: RootState) => state?.auth.token);
 
     useEffect(() => {
-      if (!userData) {
-        redirect("/");
+      if (userData) {
+        redirect("/dashboard");
       }
     }, [userData]);
 
@@ -22,4 +22,4 @@ const Withadmin = <P extends object>(WrappedComponent: ComponentType<P>) => {
   return WithUserData;
 };
 
-export default Withadmin;
+export default Withoutadmin;

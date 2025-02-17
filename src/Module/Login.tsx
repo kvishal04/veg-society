@@ -1,68 +1,135 @@
 "use client";
 
-import { useState } from "react";
+import { useCallback, useState, useEffect } from "react";
 import { useLoginUserMutation } from "@/redux/services/api";
 import { useDispatch } from "react-redux";
+import { AppDispatch } from "@/redux/store";
 import { setUser } from "@/redux/features/authSlice";
-import { redirect } from "next/navigation";
+import { useRouter } from "next/navigation";
 import Input from "@/components/reusable/Input";
 import Button from "@/components/reusable/Button";
 import Header from "@/components/Common/Header";
 import Link from "next/link";
+import { showToast } from "@/utils/utills";
+import { debounce } from "lodash";
+import { errorCode } from "@/interface/error";
+import { ApiError } from "@/utils/customError";
+import Withoutadmin from "@/hoc/Withoutadmin";
+import { setLoading } from "@/redux/features/loaderSlice";
+const Login: React.FC = () => {
+  const [email, setEmail] = useState("vishal.kumar@123789.org");
+  const [password, setPassword] = useState("Test@123");
+  const [emailError, setEmailError] = useState<string | null>(null);
 
-export default function Login() {
-  const [username, setUsername] = useState("kminchelle");
-  const [password, setPassword] = useState("0lelplR");
-  const dispatch = useDispatch();
-  const [loginUser, { isLoading, error }] = useLoginUserMutation();
+  const dispatch = useDispatch<AppDispatch>(); // Typed dispatch
+  const [loginUser, { isLoading }] = useLoginUserMutation();
+  const router = useRouter();
 
-  const handleLogin = async () => {
-    try {
-      const response = await loginUser({ username, password }).unwrap();
-      dispatch(setUser({ user: { id: response.id, email: response.email }, token: response.token }));
-        redirect("/dashboard");
-    } catch (err) {
-      console.error("Login failed", err);
+  const debouncedLogin = useCallback(
+    debounce(
+      async (email: string, password: string) => {
+        try {
+          dispatch(setLoading(true)); // Start loading
+          console.log("Username:", email, "Password:", password, "loading", isLoading);
+          const response = await loginUser({ email, password }).unwrap();
+          dispatch(setUser({ user: { id: response.data.id, email: email }, token: response.data.token }));
+          dispatch(setLoading(false)); // End loading
+          router.push("/dashboard");
+        } catch (err) {
+          console.log("isLoading err", err);
+          dispatch(setLoading(false)); // End loading
+          const errorInstance = new ApiError(err as errorCode);
+          showToast(errorInstance.message || "Login failed", "error");
+        }
+      },
+      500 // 500ms debounce time
+    ),
+    [dispatch, loginUser]
+  );
+
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    debouncedLogin(email, password);
+  };
+
+  const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const emailValue = e.target.value;
+    setEmail(emailValue);
+
+    // Email validation
+    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    if (!emailRegex.test(emailValue)) {
+      setEmailError("Invalid email");
+    } else {
+      setEmailError(null);
     }
   };
 
-  return (
-    
-    <div className="">
-        <Header title={'Log in'} />
-        <div className="bg-[#F2E9DA] calci flex items-top justify-start">
-            <div className="bg-transparent px-6 pt-6 h-auto sm:mt-12 md:mt-[7.7rem] sm:ml-12 md:ml-40 ">
-                <form className="w-full md:w-[26.7rem]" >
-                <div>
-                    <div>
-                        <div className="capitalize text-xl mb-2">
-                            <label className="text-darkGreen">Email ID</label>
-                        </div>
-                        <Input type="email" className="w-full h-12 rounded-md p-4" placeholder="" value={username} onChange={(e)=> setUsername(e.target.value)} />
-                    </div>
-                    <div className="mt-6">
-                        <div>
-                            <div className="capitalize text-xl mb-2">
-                                <label className="text-darkGreen">Password</label>
-                            </div>
-                            <Input type="password" className="w-full h-12 rounded-md p-4" placeholder="" value={password} onChange={(e)=> setPassword(e.target.value)} />
-                        </div>
-                    </div>
-                    <div className="flex justify-start items-center gap-8 mt-8">
-                        <div className="">
-                            <Button children={'Log in'} variant="dark-green" className="w-full text-lg py-3 px-12 md:px-[5.2rem]" /> 
-                        </div>
-                        <div className="text-darkGreen text-base md:text-xl underline">
-                        <Link href={'/forgot'}>
-                            Forgot password?
-                          </Link>
-                        </div>
-                    </div>
-                </div>
-                </form>
-            </div>
-        </div>
-    </div>
+  // State to check if component is mounted
+  const [isMounted, setIsMounted] = useState(false);
 
+  useEffect(() => {
+    // Set the isMounted state to true after the component mounts
+    setIsMounted(true);
+  }, []);
+
+  // Prevent rendering server-side conditional content before client-side mount
+  if (!isMounted) return null;
+
+  return (
+    <div className="">
+      <Header title={"Log in"} />
+      <div className="bg-[#F2E9DA] calci flex items-top justify-start">
+        <div className="bg-transparent px-6 pt-6 h-auto sm:mt-12 md:mt-[7.7rem] sm:ml-12 md:ml-40 ">
+          <form onSubmit={handleSubmit} className="w-full md:w-[26.7rem]">
+            <div>
+              <div>
+                <div className="capitalize text-xl mb-2">
+                  <label className="text-darkGreen">Email ID</label>
+                </div>
+                <Input
+                  type="email"
+                  className={`w-full h-12 rounded-md p-4 ${emailError ? 'border-red-500' : ''}`}
+                  placeholder=""
+                  value={email}
+                  onChange={handleEmailChange}
+                />
+                {emailError && <p className="text-red-500 text-sm">{emailError}</p>}
+              </div>
+              <div className="mt-6">
+                <div>
+                  <div className="capitalize text-xl mb-2">
+                    <label className="text-darkGreen">Password</label>
+                  </div>
+                  <Input
+                    type="password"
+                    className="w-full h-12 rounded-md p-4"
+                    placeholder=""
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                  />
+                </div>
+              </div>
+              <div className="flex justify-start items-center gap-8 mt-8">
+                <div className="">
+                  <Button
+                    type="submit"
+                    children={"Log in"}
+                    variant="dark-green"
+                    className="w-full text-lg py-3 px-12 md:px-[5.2rem]"
+                    disabled={!!emailError} // Disable button if email is invalid
+                  />
+                </div>
+                <div className="text-darkGreen text-base md:text-xl underline">
+                  <Link href={"/forgot"}>Forgot password?</Link>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
   );
 }
+
+export default Login

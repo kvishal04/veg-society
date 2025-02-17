@@ -1,13 +1,14 @@
 import React from "react";
 
 interface CustomButtonProps {
+  type?: "button" | "submit" | "reset"; 
   children: React.ReactNode;
   onClick?: () => void;
   disabled?: boolean;
   variant?: "primary" | "secondary" | "outline" | "dark-green" | "light-green" | "white";
   size?: "sm" | "md" | "lg";
   fullWidth?: boolean;
-  className?: string; // Allow additional custom classes
+  className?: string;
 }
 
 const Button: React.FC<CustomButtonProps> = ({
@@ -16,7 +17,8 @@ const Button: React.FC<CustomButtonProps> = ({
   disabled = false,
   variant = "primary",
   fullWidth = false,
-  className = "", // Default to an empty string
+  className = "",
+  type = "button", 
 }) => {
   const baseStyles = `rounded-lg font-semibold focus:outline-none focus:ring-2 focus:ring-offset-2 transition`;
   const variantStyles = {
@@ -30,6 +32,7 @@ const Button: React.FC<CustomButtonProps> = ({
 
   return (
     <button
+      type={type}
       className={`${baseStyles} ${variantStyles[variant]} ${
         fullWidth ? "w-full" : ""
       } ${disabled ? "opacity-50 cursor-not-allowed" : ""} ${className}`}

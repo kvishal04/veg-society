@@ -102,7 +102,7 @@ const ProductTable: React.FC = () => {
 
   
     return (
-        <div className='px-6 xl:px-40 py-8'>
+        <div className='px-6 xl:px-52 py-8'>
             <ProductSearchBar />
             <div className="max-h-[28rem] overflow-y-auto custom-scrollbar">
                 <TableComponent data={data} config={tableConfig} />

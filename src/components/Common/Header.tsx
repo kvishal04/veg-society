@@ -1,68 +1,97 @@
-"use client";
-
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Button from "@/components/reusable/Button";
 import Heading from "@/components/reusable/Heading";
 import Paragraph from "@/components/reusable/Paragraph";
-import { useSelector } from "react-redux";
-import { RootState } from "@/redux/store";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "@/redux/store";
 import Image from "next/image";
 import ProductCreateModal from "@/components/Modals/ProductCreateModal";
-
+import { logout } from "@/redux/features/authSlice";
+import { useRouter } from "next/navigation";
 
 interface HeaderProps {
   title?: string;
 }
 
-const Header: React.FC<HeaderProps> = ({
-  title = 'Company Name'
-}) => {
+const Header: React.FC<HeaderProps> = ({ title = 'Company Name' }) => {
+
+  const router = useRouter()
+  const dispatch = useDispatch<AppDispatch>()
   const userData = useSelector((state: RootState) => state?.auth.token);
-  const [modal, setmodal] = useState<boolean>(false)
-  const openModal = () =>setmodal(true)
-  const closeModal = () =>setmodal(false)
+  const [modal, setModal] = useState<boolean>(false);
+  const openModal = () => setModal(true);
+  const closeModal = () => setModal(false);
+  
+  const logoutUser = () =>{
+    dispatch(logout())
+    router.push('/')
+
+  }
+  // State to check if the component is mounted
+  const [isMounted, setIsMounted] = useState(false);
+
+  useEffect(() => {
+    // Set the isMounted state to true after the component mounts
+    setIsMounted(true);
+  }, []);
+
+  // Prevent rendering server-side conditional content before client-side mount
+  if (!isMounted) return null;
+
   return (
     <header className="bg-[#002326] text-white">
       {/* Top Bar */}
-      <div className="flex justify-end items-center px-6 lg:px-40 py-3 border-b border-white">
+      <div className="flex justify-end items-center px-6 lg:px-52 py-3 border-b border-white">
         <div className="flex items-center gap-12 text-sm">
-        {!userData? 
-          <span className="flex items-center gap-1">
-            <i className="fas fa-user"></i> Hi Johnny!
-          </span>
-        : <></>}
-        {!userData? 
-          <Paragraph className="hover:underline ">Log out</Paragraph>
-          : <></>}
+          {userData ? (
+            <p className="flex items-center gap-1">
+              <i className="fas fa-user"></i> Hi Johnny!
+            </p>
+          ) : null}
+          {userData ? <p onClick={logoutUser} className="hover:underline">Log out</p> : null}
         </div>
       </div>
 
       {/* Main Header */}
-      <div className="flex md:flex-row md:justify-between flex-col justify-start items-center px-6 lg:px-40 py-8">
-
+      <div className="flex md:flex-row md:justify-between flex-col justify-start items-center px-6 lg:px-52 py-8">
         <div className="flex flex-row justify-start items-center gap-8">
-            {/* Logo */}
-            <div className="  border-r-2 border-white  w-[150px] md:w-[245px] h-[75px]">
-              <Image alt='brand' width={100} height={100} className="w-32 h-full sm:w-32 md:w-44 lg:w-52  " src={`assets/images/Group.svg`} />
-            </div>
-            <Heading level={1} children={title} className=" sm:text-xl md:text-3xl lg:text-4xl xl:text-4xl"></Heading>
-            
+          {/* Logo */}
+          <div className="border-r-2 border-white w-[150px] md:w-[245px] h-[75px]">
+            <Image
+              alt="brand"
+              property="priority"
+              width={100}
+              height={100}
+              className="w-32 h-full sm:w-32 md:w-44 lg:w-52"
+              src={`assets/images/Group.svg`}
+            />
+          </div>
+          <Heading level={1} className="sm:text-xl md:text-3xl lg:text-4xl xl:text-5xl">
+            {title}
+          </Heading>
         </div>
-    
+
         {/* Action Button */}
-        {!userData  ?
-        <div className="flex flex-row gap-8 justify-between items-center mt-4">
-          <Paragraph className="underline "> Dashboard </Paragraph>
-          <Button children={'Add New Product'} onClick={openModal} variant="dark-green"  className="text-sm md:text-base lg:text-lg  lg:px-[2.2rem] lg:py-3  md:px-4 md:py-2  px-3 py-1 " />
-        </div>
-        : <></>}
+        {userData ? (
+          <div className="flex flex-row gap-8 justify-between items-center mt-4">
+            <Paragraph className="underline">Dashboard</Paragraph>
+            <Button
+              children="Add New Product"
+              onClick={openModal}
+              variant="dark-green"
+              className="text-sm md:text-base lg:text-lg lg:px-[2.2rem] lg:py-3 md:px-4 md:py-2 px-3 py-1"
+            />
+          </div>
+        ) : null}
       </div>
 
-      <>
-          <ProductCreateModal isOpen={modal} onClose={closeModal} onSave={function (): void {
+      <ProductCreateModal
+        isOpen={modal}
+        onClose={closeModal}
+        onSave={() => {
           console.log("Function not implemented.");
-        } } />
-      </>
+        }}
+      />
     </header>
   );
 };
