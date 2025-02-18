@@ -1,11 +1,11 @@
-import { errorCode } from "@/interface/error";
+import { ErrorCode } from "@/interface/error";
 
 // utils/CustomError.ts
 export class ApiError extends Error {
-    data: errorCode
+    data: ErrorCode
     statusCode: number
 
-    constructor(data: errorCode) {
+    constructor(data: ErrorCode) {
       super(data?.data.message);
       this.statusCode = data?.status;
       this.data = data;
