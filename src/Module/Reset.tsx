@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useState } from "react";
 import Input from "@/components/reusable/Input";
 import Button from "@/components/reusable/Button";
 import Header from "@/components/Common/Header";
@@ -21,13 +21,14 @@ export default function Reset() {
   const [resetPassword, setResetPassword] = useState("ASUS@rog00");
   const [passwordError, setPasswordError] = useState("");
   const [resetPasswordError, setResetPasswordError] = useState("");
-  const [token, setToken] = useState("");
-  const [email, setEmail] = useState("");
+
   const searchParams = useSearchParams();
   const router = useRouter();
   
   // Fetch query parameters
 
+  const token = searchParams.get("token")?? '';
+  const email = searchParams.get("email")?? '';
 
   const dispatch = useDispatch<AppDispatch>(); // Typed dispatch
   const [resetUser] = useResetUserMutation();
@@ -78,10 +79,7 @@ export default function Reset() {
     debouncedLogin(password, resetPassword)
   };
   
-  useEffect(() => {
-    setToken(searchParams.get("token")?? '')
-    setToken(searchParams.get("email")?? '')
-  }, [searchParams])
+
   
 
   return (

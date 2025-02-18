@@ -1,5 +1,4 @@
 import Reset from '@/Module/Reset'
-import React from 'react'
 import { Suspense } from "react";
 
 const page = () => {
