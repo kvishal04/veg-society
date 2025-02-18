@@ -11,8 +11,6 @@ import { useRouter } from "next/navigation";
 import LogutModal from "../Modals/LogutModal";
 import {useLogoutUserMutation } from "@/redux/services/api";
 import { setLoading } from "@/redux/features/loaderSlice";
-import { ApiError } from "@/utils/customError";
-import { errorCode } from "@/interface/error";
 import { showToast } from "@/utils/utills";
 
 interface HeaderProps {
@@ -67,7 +65,7 @@ const Header: React.FC<HeaderProps> = ({ title = 'Company Name' }) => {
               <i className="fas fa-user"></i> Hi Johnny!
             </p>
           ) : null}
-          {userData ? <p onClick={openLogoutModal} className="hover:underline">Log out</p> : null}
+          {userData ? <button onClick={openLogoutModal} className="hover:underline">Log out</button> : null}
         </div>
       </div>
 
@@ -82,7 +80,7 @@ const Header: React.FC<HeaderProps> = ({ title = 'Company Name' }) => {
               width={100}
               height={100}
               className="w-32 h-full sm:w-32 md:w-44 lg:w-52"
-              src={`assets/images/Group.svg`}
+              src={`/assets/images/Group.svg`}
             />
           </div>
           <Heading level={1} className="sm:text-xl md:text-3xl lg:text-4xl xl:text-5xl">
@@ -95,11 +93,10 @@ const Header: React.FC<HeaderProps> = ({ title = 'Company Name' }) => {
           <div className="flex flex-row gap-8 justify-between items-center mt-4">
             <Paragraph className="underline">Dashboard</Paragraph>
             <Button
-              children="Add New Product"
               onClick={openModal}
               variant="dark-green"
               className="text-sm md:text-base lg:text-lg lg:px-[2.2rem] lg:py-3 md:px-4 md:py-2 px-3 py-1"
-            />
+            > Add New Product </Button>
           </div>
         ) : null}
       </div>

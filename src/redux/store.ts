@@ -3,15 +3,6 @@ import { api } from "@/redux/services/api";
 import authReducer from "@/redux/features/authSlice";
 import loaderReducer from "@/redux/features/loaderSlice";
 
-// export const store = configureStore({
-//   reducer: {
-//     auth: authReducer,
-//     [api.reducerPath]: api.reducer,
-//   },
-//   middleware: (getDefaultMiddleware) =>
-//     getDefaultMiddleware().concat(api.middleware),
-// });
-
 export const makeStore = () => {
   return configureStore({
     reducer: {

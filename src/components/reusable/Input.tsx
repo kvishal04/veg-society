@@ -1,6 +1,7 @@
 import React from "react";
 
 interface CustomInputProps {
+  id: string
   type?: string;
   value?: string;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
@@ -9,6 +10,7 @@ interface CustomInputProps {
 }
 
 const Input: React.FC<CustomInputProps> = ({
+  id,
   type = "text",
   value,
   onChange,
@@ -17,6 +19,7 @@ const Input: React.FC<CustomInputProps> = ({
 }) => {
   return (
     <input
+      id={id}
       type={type}
       value={value}
       onChange={onChange}

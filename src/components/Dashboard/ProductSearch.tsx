@@ -24,6 +24,7 @@ const ProductSearchBar = () => {
   {/* Search Input */}
   <div className="relative flex items-center w-full md:col-span-3">
     <Input
+      id="search"
       type="text"
       value={searchTerm}
       onChange={(e) => setSearchTerm(e.target.value)}
@@ -35,6 +36,7 @@ const ProductSearchBar = () => {
 
   {/* Accreditation Dropdown */}
   <Select
+    id="accreditation"
     className="w-full p-2 pr-10 bg-white border border-darkGreen hover:bg-gray-100 focus:ring-black appearance-none  rounded-lg text-darkGreen outline-none"
     options={AccreditationData}
     value={accreditation}
@@ -44,6 +46,7 @@ const ProductSearchBar = () => {
 
   {/* Status Dropdown */}
   <Select
+    id="status"
     className="w-full p-2 pr-10 bg-white border border-darkGreen hover:bg-gray-100 focus:ring-black appearance-none  rounded-lg text-darkGreen outline-none"
     options={statusData}
     value={status}

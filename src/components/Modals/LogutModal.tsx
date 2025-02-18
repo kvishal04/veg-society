@@ -1,15 +1,10 @@
 "use client";
 
 import { PlusIcon } from "lucide-react";
-import React, { useState } from "react";
-import Select from "../reusable/Select";
-import { AccreditationData as data } from "@/FakeJson/tabledata";
-import Input from "../reusable/Input";
+import React from "react";
 import Button from "../reusable/Button";
 import Paragraph from "../reusable/Paragraph";
 
-
-const AccreditationData = [...data]
 
 type ModalProps = {
     isOpen: boolean;
@@ -19,13 +14,6 @@ type ModalProps = {
 
 const LogutModal: React.FC<ModalProps> = ({ isOpen, onClose, onSave }) => {
     if (!isOpen) return null;
-
-    const [accreditation, setAccreditation] = useState("Plant");
-
-    const handleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-        setAccreditation(e.target.value);
-    }
-
 
     return (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
@@ -41,14 +29,14 @@ const LogutModal: React.FC<ModalProps> = ({ isOpen, onClose, onSave }) => {
 
                     {/* Modal Body */}
                     <div className="text-black ">
-                       <Paragraph className="mb-8 text-lg" children="You are about to log out "/>
-                       <Paragraph className="text-lg" children="Are you sure? "/>
+                       <Paragraph className="mb-8 text-lg" > You are about to log out </Paragraph> 
+                       <Paragraph className="text-lg" > Are you sure? </Paragraph>
                     </div>
 
                     {/* Modal Footer */}
                     <div className="flex justify-between mt-6 border-t pt-6">
-                        <Button children={'Save'} onClick={onSave} variant="dark-green"  className="text-base lg:text-lg  lg:px-[5.5rem] lg:py-3   md:px-16 md:py-3  px-8 py-2  " />
-                        <Button children={'Close'} onClick={onClose}  variant="white"  className="text-sm text-darkGreen border-lightGreen md:text-base lg:text-lg  lg:px-[5.5rem] lg:py-3  md:px-16 md:py-3  px-8 py-2 " />
+                        <Button onClick={onSave} variant="dark-green"  className="text-base lg:text-lg  lg:px-[5.5rem] lg:py-3   md:px-16 md:py-3  px-8 py-2  "> Save </Button>
+                        <Button onClick={onClose}  variant="white"  className="text-sm text-darkGreen border-lightGreen md:text-base lg:text-lg  lg:px-[5.5rem] lg:py-3  md:px-16 md:py-3  px-8 py-2 "> Close </Button>
                     </div>
                 </div>
 

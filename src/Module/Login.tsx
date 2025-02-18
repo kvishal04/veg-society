@@ -85,9 +85,10 @@ const Login: React.FC = () => {
             <div>
               <div>
                 <div className="capitalize text-xl mb-2">
-                  <label className="text-darkGreen">Email ID</label>
+                  <label htmlFor="email" className="text-darkGreen">Email ID</label>
                 </div>
                 <Input
+                  id="email"
                   type="email"
                   className={`w-full h-12 rounded-md p-4 ${emailError ? 'border-red-500' : ''}`}
                   placeholder=""
@@ -99,9 +100,10 @@ const Login: React.FC = () => {
               <div className="mt-6">
                 <div>
                   <div className="capitalize text-xl mb-2">
-                    <label className="text-darkGreen">Password</label>
+                    <label htmlFor="" className="text-darkGreen">Password</label>
                   </div>
                   <Input
+                    id="password"
                     type="password"
                     className="w-full h-12 rounded-md p-4"
                     placeholder=""
@@ -114,11 +116,10 @@ const Login: React.FC = () => {
                 <div className="">
                   <Button
                     type="submit"
-                    children={"Log in"}
                     variant="dark-green"
                     className="w-full text-lg py-3 px-12 md:px-[5.2rem]"
                     disabled={!!emailError} // Disable button if email is invalid
-                  />
+                  > Log in </Button>
                 </div>
                 <div className="text-darkGreen text-base md:text-xl underline">
                   <Link href={"/forgot"}>Forgot password?</Link>

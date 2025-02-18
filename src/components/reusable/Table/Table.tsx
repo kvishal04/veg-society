@@ -32,6 +32,7 @@ type TableConfig = {
 type TableComponentProps = {
   data: Record<string, any>[];
   config: TableConfig;
+  showItemQuantity: number
 };
 
 const Downicon: React.FC = () =>  <Triangle strokeWidth={1.75} fill='white' size={10} className='rotate-180'/>
@@ -40,7 +41,7 @@ const Combineicon: React.FC = () => <>
     <Upicon /><Downicon />
 </>
 
-const TableComponent: React.FC<TableComponentProps> = ({ data, config }) => {
+const TableComponent: React.FC<TableComponentProps> = ({ data, config, showItemQuantity }) => {
   const [sortConfig, setSortConfig] = useState<{ key: string | null; direction: 'asc' | 'desc' }>({ key: null, direction: 'asc' });
 
   const handleSort = (key: string) => {
@@ -80,7 +81,7 @@ const TableComponent: React.FC<TableComponentProps> = ({ data, config }) => {
       </thead>
       <tbody className={config.tBodyClassName}>
         {sortedData.length > 0 ? (
-          sortedData.slice(0, config.showItemQuantity).map((row, index) => (
+          sortedData.slice(0, showItemQuantity).map((row, index) => (
             <tr key={index} className={config.trClassName}>
               {config.columns.map((col, colIndex) =>
                 col.customBodyRender ? (

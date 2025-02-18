@@ -41,8 +41,9 @@ const ProductCreateModal: React.FC<ModalProps> = ({ isOpen, onClose, onSave }) =
                     {/* Modal Body */}
                     <div className="mt-4 text-black border-b">
                         <div className="mb-4">
-                            <label className="block text-lg font-medium ">Product Name</label>
+                            <label htmlFor="product_name" className="block text-lg font-medium ">Product Name</label>
                             <Input
+                                id="product_name"
                                 type="text"
                                 value={''}
                                 onChange={(e) => console.log(e.target.value)}
@@ -52,8 +53,9 @@ const ProductCreateModal: React.FC<ModalProps> = ({ isOpen, onClose, onSave }) =
                         </div>
 
                         <div className="my-8">
-                            <label className="block text-lg font-medium">Requested Accreditation</label>
+                            <label htmlFor="accreditation" className="block text-lg font-medium">Requested Accreditation</label>
                             <Select
+                                id="accreditation"
                                 className="w-full mt-2 p-2 pr-10  border-2 focus:ring-2  hover:bg-gray-100 focus:ring-black appearance-none  rounded-lg text-black outline-none"
                                 options={AccreditationData}
                                 value={accreditation}
@@ -62,15 +64,15 @@ const ProductCreateModal: React.FC<ModalProps> = ({ isOpen, onClose, onSave }) =
                         </div>
 
                         <div className="mb-8">
-                            <label className="block text-lg font-medium">Notes</label>
-                            <textarea className="w-full mt-1 p-2 border rounded-lg bg-gray-100 h-32"></textarea>
+                            <label htmlFor="notes" className="block text-lg font-medium">Notes</label>
+                            <textarea id="notes" className="w-full mt-1 p-2 border rounded-lg bg-gray-100 h-32"></textarea>
                         </div>
                     </div>
 
                     {/* Modal Footer */}
                     <div className="flex justify-between mt-6 ">
-                        <Button children={'Save'} onClick={onSave} variant="dark-green"  className="text-base lg:text-lg  lg:px-[5.5rem] lg:py-3   md:px-16 md:py-3  px-8 py-2  " />
-                        <Button children={'Close'} onClick={onClose}  variant="white"  className="text-sm text-darkGreen border-lightGreen md:text-base lg:text-lg  lg:px-[5.5rem] lg:py-3  md:px-16 md:py-3  px-8 py-2 " />
+                        <Button onClick={onSave} variant="dark-green"  className="text-base lg:text-lg  lg:px-[5.5rem] lg:py-3   md:px-16 md:py-3  px-8 py-2 "> Save </Button>
+                        <Button  onClick={onClose}  variant="white"  className="text-sm text-darkGreen border-lightGreen md:text-base lg:text-lg  lg:px-[5.5rem] lg:py-3  md:px-16 md:py-3  px-8 py-2 " > Close </Button>
                     </div>
                 </div>
 

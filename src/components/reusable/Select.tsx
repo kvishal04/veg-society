@@ -2,6 +2,7 @@ import React from "react";
 import { Triangle } from "lucide-react";
 
 interface CustomSelectProps {
+  id: string
   options: { value: string; label: string }[];
   value: string;
   onChange: (e: React.ChangeEvent<HTMLSelectElement>) => void;
@@ -11,6 +12,7 @@ interface CustomSelectProps {
 }
 
 const Select: React.FC<CustomSelectProps> = ({
+  id,
   options,
   value,
   onChange,
@@ -22,6 +24,7 @@ const Select: React.FC<CustomSelectProps> = ({
     <div className=" w-full">
       <div className="relative">
         <select
+          id={id}
           value={value}
           onChange={onChange}
           disabled={disabled}

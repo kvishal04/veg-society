@@ -5,24 +5,23 @@ import React, { useState } from 'react'
 import TableComponent from '@/components/reusable/Table/Table';
 import ProductSearchBar from '../ProductSearch';
 import Pagination from '@/components/reusable/Table/Pagination';
-import {producttabledata} from '@/FakeJson/tabledata'
+import { producttabledata } from '@/FakeJson/tabledata'
 
 const tableConfig = {
-    tableClassName:  'min-w-full bg-white border border-gray-200 shadow-md rounded-lg',
+    tableClassName: 'min-w-full bg-white border border-gray-200 shadow-md rounded-lg',
     tHeadClassName: 'bg-darkGreen text-white border rounded-lg sticky top-0 z-10 ',
     thClassName: 'py-2 px-4 text-left border-b cursor-pointer gap-2',
     trClassName: 'border-b hover:bg-gray-100 border-b-lightGreen',
     thIconClassName: 'flex flex-row items-center gap-2',
     tBodyClassName: '',
-    tdClassname:'py-2 px-4',
-    showItemQuantity : 20,
+    tdClassname: 'py-2 px-4',
+    showItemQuantity: 20,
     columns: [
         {
             name: "number",
             keys: ['number'],
             sortable: true,
             className: 'rounded-tl-lg'
-            
         },
         {
             name: "name",
@@ -49,17 +48,12 @@ const tableConfig = {
             keys: ['status'],
             sortable: true,
             customBodyRender: (value: TableData) => {
-                return <>
-                    <div className={` ${
-                            value.status === "Pending" ? "text-black font-bold" :
-                            "text-black"
-                            }`}>
-                                {value.status}
+                return (
+                    <div className={`${value.status === "Pending" ? "text-black font-bold" : "text-black"}`}>
+                        {value.status}
                     </div>
-                </>
-                   
+                );
             },
-
         },
         {
             name: "action",
@@ -67,23 +61,23 @@ const tableConfig = {
             sortable: false,
             className: 'rounded-tr-lg',
             customBodyRender: (value: TableData) => {
-                return <> <div className="flex space-x-4">
-                <Eye className="text-darkGreen cursor-pointer hover:text-green-500" size={18} />
-                <Pencil className="text-darkGreen cursor-pointer hover:text-blue-300" size={18} />
-                <Trash2 className="text-darkGreen cursor-pointer hover:text-red-300" size={18} />
-              </div></>;
+                return (
+                    <div className="flex space-x-4">
+                        <Eye className="text-darkGreen cursor-pointer hover:text-green-500" size={18} />
+                        <Pencil className="text-darkGreen cursor-pointer hover:text-blue-300" size={18} />
+                        <Trash2 className="text-darkGreen cursor-pointer hover:text-red-300" size={18} />
+                    </div>
+                );
             },
         },
-
     ],
     rows: {
         className: ''
     },
-
     emptyState: {
         text: () => 'N/A'
     }
-}
+};
 
 type TableData = {
     number: number;
@@ -92,30 +86,34 @@ type TableData = {
     submitted: string;
     response: string;
     status: string;
-    isDisable?: boolean
-  };
+    isDisable?: boolean;
+};
 
 const ProductTable: React.FC = () => {
+    const [currentPage, setCurrentPage] = useState(1);
+    const [itemsPerPage, setItemsPerPage] = useState(24);
+    const data: TableData[] = [...producttabledata];
 
-      const data: TableData[] = [...producttabledata]
-    
+    // Pagination logic
+    const indexOfLastItem = currentPage * itemsPerPage;
+    const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+    const currentItems = data.slice(indexOfFirstItem, indexOfLastItem);
 
-  
     return (
         <div className='px-6 xl:px-52 py-8'>
             <ProductSearchBar />
             <div className="max-h-[28rem] overflow-y-auto custom-scrollbar">
-                <TableComponent data={data} config={tableConfig} />
+                <TableComponent data={currentItems} config={tableConfig}   showItemQuantity={itemsPerPage} />
             </div>
-            <Pagination totalItems={data.length} itemsPerPage={20} currentPage={1} onPageChange={function (page: number): void {
-                console.log(page);
-                
-            } } onItemsPerPageChange={function (items: number): void {
-                console.log(items);
-            } } />
-            
+            <Pagination 
+                totalItems={data.length} 
+                itemsPerPage={itemsPerPage} 
+                currentPage={currentPage} 
+                onPageChange={(page: number) => setCurrentPage(page)} 
+                onItemsPerPageChange={(items: number) => {setItemsPerPage(items), setCurrentPage(1)}}
+            />
         </div>
-    )
+    );
 }
 
-export default ProductTable
+export default ProductTable;

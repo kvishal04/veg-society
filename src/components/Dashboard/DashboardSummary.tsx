@@ -1,9 +1,9 @@
 "use client";
 
 import React from "react";
-import CustomPieChart from "../Charts/Piechart";
+import CustomPieChart from "@/components/Charts/Piechart";
 import Badge from "@/styles/logo/Badge";
-import Paragraph from "../reusable/Paragraph";
+import Paragraph from "@/components/reusable/Paragraph";
 import Right from "@/styles/logo/Right";
 import Wrong from "@/styles/logo/Wrong";
 
@@ -13,7 +13,7 @@ const data = [
   { name: "Plant Based", value: 2, color: "#032B2F" },
 ];
 
-const ProductSummary: React.FC = () => {
+const DashboardSummary: React.FC = () => {
   return (
     <div className="bg-darkGreen text-white p-8 xl:h-[11.5rem] flex flex-col lg:flex-row gap-6 w-full xl:py-8 xl:px-52">
       {/* Left Section: Pie Chart & Legend */}
@@ -77,4 +77,4 @@ const ProductSummary: React.FC = () => {
   );
 };
 
-export default ProductSummary;
+export default DashboardSummary;
