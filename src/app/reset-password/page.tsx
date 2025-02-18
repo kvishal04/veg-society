@@ -1,12 +1,16 @@
 import Reset from '@/Module/Reset'
 import React from 'react'
+import { Suspense } from "react";
 
 const page = () => {
   return (
-    <div>
+    <Suspense fallback={<div>Loading...</div>}>
         <Reset />
-    </div>
+    </Suspense>
   )
 }
 
 export default page
+
+
+
