@@ -1,4 +1,4 @@
-import { ErrorCode, ErrorData } from "@/interface/error";
+import { ErrorData } from "@/interface/error";
 
 // utils/CustomError.ts
 export class ApiError extends Error {

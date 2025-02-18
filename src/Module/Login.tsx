@@ -21,7 +21,7 @@ const Login: React.FC = () => {
   const [emailError, setEmailError] = useState<string | null>(null);
 
   const dispatch = useDispatch<AppDispatch>(); // Typed dispatch
-  const [loginUser, { isLoading }] = useLoginUserMutation();
+  const [loginUser] = useLoginUserMutation();
   const router = useRouter();
 
   const debouncedLogin = useCallback(
