@@ -19,6 +19,10 @@ const ProductSearchBar = () => {
     setAccreditation(e.target.value);
   }
 
+  const handleSelectChangeStatus = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setStatus(e.target.value);
+  }
+
   return (
     <div className="grid grid-cols-1 md:grid-cols-5 gap-7 w-full pb-7 rounded-lg">
   {/* Search Input */}
@@ -50,7 +54,7 @@ const ProductSearchBar = () => {
     className="w-full p-2 pr-10 bg-white border border-darkGreen hover:bg-gray-100 focus:ring-black appearance-none  rounded-lg text-darkGreen outline-none"
     options={statusData}
     value={status}
-    onChange={handleSelectChange}
+    onChange={handleSelectChangeStatus}
     optionClassName="text-center"
   />
 </div>

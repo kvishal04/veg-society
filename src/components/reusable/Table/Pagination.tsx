@@ -1,6 +1,6 @@
 "use client";
-
 import React from "react";
+
 
 type PaginationProps = {
   totalItems: number;
@@ -29,9 +29,9 @@ const Pagination: React.FC<PaginationProps> = ({
           className={`cursor-pointer ${currentPage === 1 ? "opacity-50 cursor-not-allowed" : ""}`}
           
         >
-          <div role="button" tabIndex={0} onClick={() => currentPage > 1 && onPageChange(currentPage - 1)}>
+          <button type="button" onClick={() => currentPage > 1 && onPageChange(currentPage - 1)}>
               &lt; Previous
-          </div>
+          </button>
          
         </li>
         {pageNumbers.map((number) => (
@@ -39,18 +39,18 @@ const Pagination: React.FC<PaginationProps> = ({
             key={number}
             className={`cursor-pointer ${currentPage === number ? "font-bold" : ""}`} 
           >
-             <div  tabIndex={0}  role="button" onClick={() => onPageChange(number)}>
+             <button type="button" onClick={() => onPageChange(number)}>
               {number}
-            </div>
+            </button>
            
           </li>
         ))}
         <li
           className={`cursor-pointer ${currentPage === totalPages ? "opacity-50 cursor-not-allowed" : ""}`}
         >
-           <div  tabIndex={0}  role="button" onClick={() => currentPage < totalPages && onPageChange(currentPage + 1)}>
+           <button type="button" onClick={() => currentPage < totalPages && onPageChange(currentPage + 1)}>
                 Next &gt;
-            </div>
+            </button>
          
         </li>
       </ul>
@@ -58,16 +58,15 @@ const Pagination: React.FC<PaginationProps> = ({
       <p>
         Show {" "}
         {itemsPerPageOptions.map((option, index) => (
-          <span
-            tabIndex={0} 
-            role="button"
+          <button
+            type="button"
             key={option}
-            className={`cursor-pointer ${itemsPerPage === option ? "font-bold" : ""}`}
+            className={`cursor-pointer mx-1 ${itemsPerPage === option ? "font-bold" : ""}`}
             onClick={() => onItemsPerPageChange(option)}
           >
             {option}
             {index !== itemsPerPageOptions.length - 1 && " / "}
-          </span>
+          </button>
         ))}
         {" "}per page
       </p>

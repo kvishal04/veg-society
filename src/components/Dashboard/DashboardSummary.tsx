@@ -26,8 +26,8 @@ const DashboardSummary: React.FC = () => {
               Products Accredited
             </Paragraph>
           </div>
-          {data.map((item, index) => (
-            <div key={index} className="flex items-center gap-2 mb-2">
+          {data.map((item) => (
+            <div key={item.name} className="flex items-center gap-2 mb-2">
               <span
                 className="w-5 h-5 inline-block rounded-full"
                 style={{ backgroundColor: item.color }}
