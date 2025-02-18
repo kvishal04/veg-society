@@ -10,8 +10,10 @@ export const makeStore = () => {
       loader: loaderReducer,
       [api.reducerPath]: api.reducer,
     },
-    middleware: (getDefaultMiddleware) =>
-      getDefaultMiddleware().concat(api.middleware),
+    middleware: (getDefaultMiddleware) => {
+      return getDefaultMiddleware()
+        .concat(api.middleware)
+    },
   })
 }
 

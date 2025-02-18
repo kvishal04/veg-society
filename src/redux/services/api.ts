@@ -21,7 +21,7 @@ export const api = createApi({
     },
    
   ), 
-  tagTypes: ["Auth"], // Add this line**  
+  tagTypes: ["Auth", "Forget"], // Add this line**  
   endpoints: (builder) => ({
     loginUser: builder.mutation<DataCode, { email: string; password: string }>({
       query: (credentials) => ({
@@ -37,10 +37,30 @@ export const api = createApi({
         method: "POST",
         body: credentials,
       }),
+    }),  
+    
+    forgetUser: builder.mutation<DataCode, {email: string}>({
+      query: (credentials) => ({
+        url: "/forgot-password",
+        method: "POST",
+        body: credentials,
+      }),
+      invalidatesTags: ['Forget'],
     }),
+
+    resetUser: builder.mutation<DataCode, {email: string, token: string, password: string, password_confirmation: string}>({
+      query: (credentials) => ({
+        url: "/reset-password",
+        method: "POST",
+        body: credentials,
+      }),
+      invalidatesTags: ['Forget'],
+    }),
+
+
     }),
 
    
 });
 
-export const { useLoginUserMutation, useLogoutUserMutation } = api;
+export const { useLoginUserMutation, useLogoutUserMutation, useForgetUserMutation, useResetUserMutation } = api;

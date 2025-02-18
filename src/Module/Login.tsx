@@ -10,13 +10,13 @@ import Input from "@/components/reusable/Input";
 import Button from "@/components/reusable/Button";
 import Header from "@/components/Common/Header";
 import Link from "next/link";
-import { showToast } from "@/utils/utills";
+import { checkEmail, showToast } from "@/utils/utills";
 import { debounce } from "lodash";
-import { ErrorCode } from "@/interface/error";
+import { ErrorCode, ErrorData } from "@/interface/error";
 import { ApiError } from "@/utils/customError";
 import { setLoading } from "@/redux/features/loaderSlice";
 const Login: React.FC = () => {
-  const [email, setEmail] = useState("vishal.kumar@123789.org");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("Test@123");
   const [emailError, setEmailError] = useState<string | null>(null);
 
@@ -29,7 +29,6 @@ const Login: React.FC = () => {
       async (email: string, password: string) => {
         try {
           dispatch(setLoading(true)); // Start loading
-          console.log("Username:", email, "Password:", password, "loading", isLoading);
           const response = await loginUser({ email, password }).unwrap();
           dispatch(setUser({ user: { id: response.data.id, email: email }, token: response.data.token }));
           showToast(response.message, 'success')
@@ -38,8 +37,9 @@ const Login: React.FC = () => {
         } catch (err) {
           console.log("isLoading err", err);
           dispatch(setLoading(false)); // End loading
-          const errorInstance = new ApiError(err as ErrorCode);
-          showToast(errorInstance.message || "Login failed", "error");
+          const error  =  err as ErrorCode
+          const errorInstance = new ApiError(error.data as ErrorData, error.status);
+          showToast(errorInstance.globalMessage || "Login failed", "error");
         }
       },
       500 // 500ms debounce time
@@ -49,6 +49,13 @@ const Login: React.FC = () => {
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    if(!checkEmail(email)){
+      setEmailError("Invalid email");
+      return
+    }else{
+      setEmailError(null);
+    }
+
     debouncedLogin(email, password);
   };
 
@@ -57,13 +64,14 @@ const Login: React.FC = () => {
     setEmail(emailValue);
 
     // Email validation
-    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-    if (!emailRegex.test(emailValue)) {
-      setEmailError("Invalid email");
-    } else {
-      setEmailError(null);
-    }
+    // Email validation
+        if(!checkEmail(emailValue)){
+          setEmailError("Invalid email");
+        }else{
+          setEmailError(null);
+        }
   };
+  
 
   // State to check if component is mounted
   const [isMounted, setIsMounted] = useState(false);

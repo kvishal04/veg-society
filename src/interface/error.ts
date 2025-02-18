@@ -1,10 +1,16 @@
+
+export interface ErrorData {
+    message: string
+    success: boolean
+    type: string
+    data?: any
+}
 export interface ErrorCode {
+    data: {
+        data : ErrorData
+    }   
     status: number
-    data : {
-        message: string
-        success: boolean
-        type: string
-    }
+   
 }
 
 export interface DataCode {

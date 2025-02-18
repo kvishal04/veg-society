@@ -10,7 +10,7 @@ export const getEnvVariable = (key: string, defaultValue?: string): string => {
     throw new Error(`Environment variable ${key} is not defined`);
   }
   return value;
-};
+};  
 
 
 export const showToast = (message: string, type: "success" | "error" | "info" = "info") => {
@@ -25,4 +25,15 @@ export const showToast = (message: string, type: "success" | "error" | "info" = 
         toast(message); // Default toast
         break;
     }
-  };
+};
+
+export const checkEmail = (value: string) => {
+  const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+  return emailRegex.test(value) 
+
+}
+
+export const checkPassword = (value: string) => {
+  const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
+  return passwordRegex.test(value);
+}
