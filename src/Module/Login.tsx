@@ -100,7 +100,7 @@ const Login: React.FC = () => {
               <div className="mt-6">
                 <div>
                   <div className="capitalize text-xl mb-2">
-                    <label htmlFor="" className="text-darkGreen">Password</label>
+                    <label htmlFor="password" className="text-darkGreen">Password</label>
                   </div>
                   <Input
                     id="password"

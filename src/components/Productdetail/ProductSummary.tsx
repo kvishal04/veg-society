@@ -1,18 +1,5 @@
 "use client";
-
 import React, { useState } from "react";
-import CustomPieChart from "@/components/Charts/Piechart";
-import Badge from "@/styles/logo/Badge";
-import Paragraph from "@/components/reusable/Paragraph";
-import Right from "@/styles/logo/Right";
-import Wrong from "@/styles/logo/Wrong";
-import Input from "../reusable/Input";
-
-const data = [
-  { name: "Vegetarian", value: 25, color: "#A6E3A1" },
-  { name: "Vegan", value: 3, color: "#f0f0f0" },
-  { name: "Plant Based", value: 2, color: "#032B2F" },
-];
 
 const ProductSummary: React.FC = () => {
   const [accreditation, setAccreditation] = useState("Vegetarian");

@@ -103,14 +103,14 @@ const ProductTable: React.FC = () => {
         <div className='px-6 xl:px-52 py-8'>
             <ProductSearchBar />
             <div className="max-h-[28rem] overflow-y-auto custom-scrollbar">
-                <TableComponent data={currentItems} config={tableConfig}   showItemQuantity={itemsPerPage} />
+                <TableComponent data={currentItems} config={tableConfig}  showItemQuantity={itemsPerPage} />
             </div>
             <Pagination 
                 totalItems={data.length} 
                 itemsPerPage={itemsPerPage} 
                 currentPage={currentPage} 
                 onPageChange={(page: number) => setCurrentPage(page)} 
-                onItemsPerPageChange={(items: number) => {setItemsPerPage(items), setCurrentPage(1)}}
+                onItemsPerPageChange={(items: number) => {setItemsPerPage(items); setCurrentPage(1)}}
             />
         </div>
     );

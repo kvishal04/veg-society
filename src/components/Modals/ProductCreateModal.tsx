@@ -17,14 +17,14 @@ type ModalProps = {
 };
 
 const ProductCreateModal: React.FC<ModalProps> = ({ isOpen, onClose, onSave }) => {
-    if (!isOpen) return null;
-
-    const [accreditation, setAccreditation] = useState("Plant");
-
+    const [accreditation, setAccreditation] = useState("Plant"); // ✅ Move this to the top
+  
+    if (!isOpen) return null; // ✅ This can stay, but hooks must be above it
+  
     const handleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-        setAccreditation(e.target.value);
-    }
-
+      setAccreditation(e.target.value);
+    };
+  
 
     return (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">

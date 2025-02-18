@@ -7,11 +7,9 @@ import Header from "@/components/Common/Header";
 import Link from "next/link";
 
 export default function Reset() {
-  const [resetpassword, setResetPassword] = useState("");
-  const [password, setPassword] = useState("");
-
-
-
+  const [resetPassword, setResetPassword] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
+  
   return (
     
     <div>
@@ -31,12 +29,12 @@ export default function Reset() {
                             <div className="capitalize text-xl mb-2">
                                 <label htmlFor="repassword" className="text-darkGreen">Confirm password</label>
                             </div>
-                            <Input id="repassword" type="password" className="w-full h-12 rounded-md p-4" placeholder="" value={resetpassword} onChange={(e)=> setResetPassword(e.target.value)} />
+                            <Input id="repassword" type="password" className="w-full h-12 rounded-md p-4" placeholder="" value={resetPassword} onChange={(e)=> setResetPassword(e.target.value)} />
                         </div>
                     </div>
                     <div className="flex justify-start items-center gap-8 my-8">
                         <div className="">
-                            <Button variant="dark-green" className="w-full text-lg py-3 px-12 md:px-[5.2rem]" > Submit </Button>
+                            <Button onClick={() => console.log(password, resetPassword)} variant="dark-green" className="w-full text-lg py-3 px-12 md:px-[5.2rem]" > Submit </Button>
                         </div>
                         <div className="text-darkGreen text-base md:text-xl underline">
                         <Link href={'/'}>

@@ -4,7 +4,6 @@ import { useEffect, ComponentType } from "react";
 import { RootState } from "@/redux/store";
 import { useSelector } from "react-redux";
 import { redirect } from "next/navigation";
-import Login from "@/Module/Login";
 import Dashboard from "@/app/dashboard/page";
 
 const Withoutadmin = <P extends object>(WrappedComponent: ComponentType<P>) => {
