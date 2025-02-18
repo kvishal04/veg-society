@@ -1,7 +1,7 @@
 import { BASE_URL} from "@/utils/utills";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { RootState } from "../store";
-import { dataCode } from "@/interface/error";
+import { DataCode } from "@/interface/error";
 
 export const api = createApi({
   reducerPath: "authApi",
@@ -23,7 +23,7 @@ export const api = createApi({
   ), 
   tagTypes: ["Auth"], // Add this line**  
   endpoints: (builder) => ({
-    loginUser: builder.mutation<dataCode, { email: string; password: string }>({
+    loginUser: builder.mutation<DataCode, { email: string; password: string }>({
       query: (credentials) => ({
         url: "/login",
         method: "POST",
@@ -31,7 +31,7 @@ export const api = createApi({
       }),
     }),
 
-    logoutUser: builder.mutation<dataCode, {}>({
+    logoutUser: builder.mutation<DataCode, {}>({
       query: (credentials) => ({
         url: "/logout",
         method: "POST",

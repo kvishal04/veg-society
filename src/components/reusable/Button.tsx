@@ -6,7 +6,6 @@ interface CustomButtonProps {
   onClick?: () => void;
   disabled?: boolean;
   variant?: "primary" | "secondary" | "outline" | "dark-green" | "light-green" | "white";
-  size?: "sm" | "md" | "lg";
   fullWidth?: boolean;
   className?: string;
 }

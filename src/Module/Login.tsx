@@ -12,7 +12,7 @@ import Header from "@/components/Common/Header";
 import Link from "next/link";
 import { showToast } from "@/utils/utills";
 import { debounce } from "lodash";
-import { errorCode } from "@/interface/error";
+import { ErrorCode } from "@/interface/error";
 import { ApiError } from "@/utils/customError";
 import { setLoading } from "@/redux/features/loaderSlice";
 const Login: React.FC = () => {
@@ -38,7 +38,7 @@ const Login: React.FC = () => {
         } catch (err) {
           console.log("isLoading err", err);
           dispatch(setLoading(false)); // End loading
-          const errorInstance = new ApiError(err as errorCode);
+          const errorInstance = new ApiError(err as ErrorCode);
           showToast(errorInstance.message || "Login failed", "error");
         }
       },

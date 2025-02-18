@@ -1,4 +1,4 @@
-export interface errorCode {
+export interface ErrorCode {
     status: number
     data : {
         message: string
@@ -7,7 +7,7 @@ export interface errorCode {
     }
 }
 
-export interface dataCode {
+export interface DataCode {
     message: string
     success: boolean
     data : any

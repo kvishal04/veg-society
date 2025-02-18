@@ -12,12 +12,7 @@
   --lightGreen: #a7f3d0;
 }
 
-/* @media (prefers-color-scheme: dark) {
-  :root {
-    --background: #000000;
-    --foreground: #ededed;
-  }
-} */
+
 
 body {
   color: var(--foreground);

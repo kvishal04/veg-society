@@ -14,7 +14,8 @@ const loadAuthState = (): AuthState => {
     const storedToken = localStorage.getItem("token");
     return {
       user: storedUser ? JSON.parse(storedUser) : null,
-      token: storedToken ? storedToken : null,
+      token: storedToken || null,
+
     };
   }
   return { user: null, token: null };

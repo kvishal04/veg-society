@@ -1,9 +1,5 @@
 import React from "react";
 
-interface logoProp {
-    width: number;
-    height: number
-}
 
 const Logo: React.FC = () => {
   return (

@@ -1,6 +1,6 @@
 "use client";
 
-import { Eye, MessageCircle, Pencil, Trash2 } from 'lucide-react';
+import { Eye, Pencil, Trash2 } from 'lucide-react';
 import React, { useState } from 'react'
 import TableComponent from '@/components/reusable/Table/Table';
 import ProductSearchBar from '../ProductSearch';

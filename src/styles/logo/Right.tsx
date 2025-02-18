@@ -1,11 +1,11 @@
 import React from "react";
 
-interface logoProp {
+interface LogoProp {
     width: number;
     height: number
 }
 
-const Right: React.FC<logoProp> = ({
+const Right: React.FC<LogoProp> = ({
     width, height
 }) => {
   return (
