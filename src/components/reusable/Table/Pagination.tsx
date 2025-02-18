@@ -29,7 +29,7 @@ const Pagination: React.FC<PaginationProps> = ({
           className={`cursor-pointer ${currentPage === 1 ? "opacity-50 cursor-not-allowed" : ""}`}
           
         >
-          <div role="button" onClick={() => currentPage > 1 && onPageChange(currentPage - 1)}>
+          <div role="button" tabIndex={0} onClick={() => currentPage > 1 && onPageChange(currentPage - 1)}>
               &lt; Previous
           </div>
          
@@ -39,7 +39,7 @@ const Pagination: React.FC<PaginationProps> = ({
             key={number}
             className={`cursor-pointer ${currentPage === number ? "font-bold" : ""}`} 
           >
-             <div role="button" onClick={() => onPageChange(number)}>
+             <div  tabIndex={0}  role="button" onClick={() => onPageChange(number)}>
               {number}
             </div>
            
@@ -48,7 +48,7 @@ const Pagination: React.FC<PaginationProps> = ({
         <li
           className={`cursor-pointer ${currentPage === totalPages ? "opacity-50 cursor-not-allowed" : ""}`}
         >
-           <div role="button" onClick={() => currentPage < totalPages && onPageChange(currentPage + 1)}>
+           <div  tabIndex={0}  role="button" onClick={() => currentPage < totalPages && onPageChange(currentPage + 1)}>
                 Next &gt;
             </div>
          
@@ -59,6 +59,7 @@ const Pagination: React.FC<PaginationProps> = ({
         Show {" "}
         {itemsPerPageOptions.map((option, index) => (
           <span
+            tabIndex={0} 
             role="button"
             key={option}
             className={`cursor-pointer ${itemsPerPage === option ? "font-bold" : ""}`}
