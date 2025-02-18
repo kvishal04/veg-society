@@ -46,7 +46,7 @@ const DashboardSummary: React.FC = () => {
             <Badge className="w-14 h-14 lg:w-16 lg:h-16" />
             <Paragraph className="text-5xl font-bold">25</Paragraph>
           </div>
-          <Paragraph className="text-sm md:text-base xl:text-lg">
+          <Paragraph className="text-sm md:text-base lg:text-[12px] 2xl:text-lg">
             Products Accredited
           </Paragraph>
         </div>
@@ -57,7 +57,7 @@ const DashboardSummary: React.FC = () => {
             <Right width={80} height={60} />
             <Paragraph className="text-5xl font-bold">3</Paragraph>
           </div>
-          <Paragraph className="text-sm md:text-base xl:text-lg">
+          <Paragraph className="text-sm md:text-base lg:text-[12px] 2xl:text-lg">
             Products Accredited
           </Paragraph>
         </div>
@@ -68,7 +68,7 @@ const DashboardSummary: React.FC = () => {
             <Wrong className="w-14 h-14 lg:w-16 lg:h-16" />
             <Paragraph className="text-5xl font-bold">2</Paragraph>
           </div>
-          <Paragraph className="text-sm md:text-base xl:text-lg">
+          <Paragraph className="text-sm md:text-base lg:text-[12px] 2xl:text-lg">
             Products Accredited
           </Paragraph>
         </div>

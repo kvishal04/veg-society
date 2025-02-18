@@ -83,7 +83,7 @@ const Header: React.FC<HeaderProps> = ({ title = 'Company Name' }) => {
               src={`/assets/images/Group.svg`}
             />
           </div>
-          <Heading level={1} className="sm:text-xl md:text-3xl lg:text-4xl xl:text-5xl">
+          <Heading level={1} className="sm:text-xl md:text-3xl lg:text-3xl xl:text-5xl">
             {title}
           </Heading>
         </div>

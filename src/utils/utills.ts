@@ -1,6 +1,6 @@
 import toast from "react-hot-toast";
 
-export const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || "http://localhost:3000"; // Default fallback
+export const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || "https://vegetariansociety.newsoftdemo.info/api/v1/"; // Default fallback
 
 export const getEnvVariable = (key: string, defaultValue?: string): string => {
   const value = process.env[key];
