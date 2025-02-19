@@ -13,7 +13,7 @@ const Heading: React.FC<HeadingProps> = ({
   className = "",
 }) => {
   const Tag = `h${level}` as keyof JSX.IntrinsicElements;
-  return <Tag className={`font-bold ${className}`}>{children}</Tag>;
+  return <Tag className={`${className}`}>{children}</Tag>;
 };
 
 export default Heading;
