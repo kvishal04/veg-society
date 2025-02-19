@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useState, useEffect } from "react";
+import { useCallback, useState } from "react";
 import { useLoginUserMutation } from "@/redux/services/api";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "@/redux/store";
@@ -16,132 +16,109 @@ import { ErrorCode, ErrorData } from "@/interface/error";
 import { ApiError } from "@/utils/customError";
 import { setLoading } from "@/redux/features/loaderSlice";
 
-const Login: React.FC = () => {
-  const [email, setEmail] = useState("vishal.kumar@123789.org");
-  const [password, setPassword] = useState("Test@123");
-  const [emailError, setEmailError] = useState<string | null>(null);
-  const [passwordError, setPasswordError] = useState<string | null>(null);
+// Debounced login function outside component to prevent re-creation on every render
+const debouncedLogin = debounce(
+  async (email: string, password: string, dispatch: AppDispatch, loginUser: any, router: any) => {
+    try {
+      dispatch(setLoading(true));
+      const response = await loginUser({ email, password }).unwrap();
+      dispatch(setUser({ user: { id: response.data.id, email }, token: response.data.token }));
+      showToast(response.message, "success");
+      dispatch(setLoading(false));
+      router.push("/dashboard");
+    } catch (err) {
+      dispatch(setLoading(false));
+      const error = err as ErrorCode;
+      const errorInstance = new ApiError(error.data as ErrorData, error.status);
+      showToast(errorInstance.globalMessage || "Login failed", "error");
+    }
+  },
+  500
+);
 
-  const dispatch = useDispatch<AppDispatch>(); // Typed dispatch
+const Login: React.FC = () => {
+  const [credentials, setCredentials] = useState({ email: "", password: "" });
+  const [errors, setErrors] = useState({ email: "", password: "" });
+
+  const dispatch = useDispatch<AppDispatch>();
   const [loginUser] = useLoginUserMutation();
   const router = useRouter();
 
-  const debouncedLogin = useCallback(
-    debounce(
-      async (email: string, password: string) => {
-        try {
-          dispatch(setLoading(true)); // Start loading
-          const response = await loginUser({ email, password }).unwrap();
-          dispatch(setUser({ user: { id: response.data.id, email: email }, token: response.data.token }));
-          showToast(response.message, 'success')
-          dispatch(setLoading(false)); // End loading
-          router.push("/dashboard");
-        } catch (err) {
-          console.log("isLoading err", err);
-          dispatch(setLoading(false)); // End loading
-          const error  =  err as ErrorCode
-          const errorInstance = new ApiError(error.data as ErrorData, error.status);
-          showToast(errorInstance.globalMessage || "Login failed", "error");
-        }
-      },
-      500 // 500ms debounce time
-    ),
-    [dispatch, loginUser]
-  );
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { id, value } = e.target;
+    setCredentials((prev) => ({ ...prev, [id]: value }));
+
+    if (id === "email") {
+      setErrors((prev) => ({ ...prev, email: checkEmail(value) ? "" : "Invalid email" }));
+    } else if (id === "password") {
+      setErrors((prev) => ({ ...prev, password: value.length ? "" : "Password is empty" }));
+    }
+  };
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if(!checkEmail(email)){
-      setEmailError("Invalid email");
-      return
+    const { email, password } = credentials;
+
+    if (!checkEmail(email) || !password.length) {
+      setErrors({
+        email: checkEmail(email) ? "" : "Invalid email",
+        password: password.length ? "" : "Password is empty",
+      });
+      return;
     }
 
-    if(!password.length){
-      setPasswordError("Paswword is empty");
-      return
-    }
-    
-    else{
-      setEmailError(null);
-    }
-
-    debouncedLogin(email, password);
+    debouncedLogin(email, password, dispatch, loginUser, router);
   };
-
-  const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const emailValue = e.target.value;
-    setEmail(emailValue);
-
-    // Email validation
-    // Email validation
-        if(!checkEmail(emailValue)){
-          setEmailError("Invalid email");
-        }else{
-          setEmailError(null);
-        }
-  };
-  
-
-  // State to check if component is mounted
-  const [isMounted, setIsMounted] = useState(false);
-
-  useEffect(() => {
-    // Set the isMounted state to true after the component mounts
-    setIsMounted(true);
-  }, []);
-
-  // Prevent rendering server-side conditional content before client-side mount
-  if (!isMounted) return null;
 
   return (
-    <div className="">
-      <Header title={"Log in"} />
+    <div>
+      <Header title="Log in" />
       <div className="bg-[#F2E9DA] calci flex items-top justify-start text-barlow">
-        <div className="bg-transparent px-6 pt-6 h-auto sm:mt-12 md:mt-[7.7rem] sm:ml-12 md:ml-40 ">
+        <div className="bg-transparent px-6 pt-6 h-auto sm:mt-12 md:mt-[7.7rem] sm:ml-12 md:ml-40">
           <form onSubmit={handleSubmit} className="w-full md:w-[26.7rem]">
             <div>
               <div>
-                <div className="capitalize text-xl mb-2">
-                  <label htmlFor="email" className="text-darkGreen ">Email ID</label>
-                </div>
+                <label htmlFor="email" className="capitalize text-xl mb-2 text-darkGreen">
+                  Email ID
+                </label>
                 <Input
                   id="email"
                   type="email"
-                  className={`w-full h-12 rounded-md p-4 ${emailError ? 'border-red-500' : ''} text-barlow`}
+                  className={`w-full h-12 rounded-md p-4 ${errors.email ? "border-red-500" : ""} text-barlow`}
                   placeholder=""
-                  value={email}
-                  onChange={handleEmailChange}
+                  value={credentials.email}
+                  onChange={handleInputChange}
                 />
-                {emailError && <p className="text-red-500 text-sm">{emailError}</p>}
+                {errors.email && <p className="text-red-500 text-sm">{errors.email}</p>}
               </div>
+
               <div className="mt-6">
-                <div>
-                  <div className="capitalize text-xl mb-2">
-                    <label htmlFor="password" className="text-darkGreen">Password</label>
-                  </div>
-                  <Input
-                    id="password"
-                    type="password"
-                    className="w-full h-12 rounded-md p-4"
-                    placeholder=""
-                    value={password}
-                    onChange={(e) => setPassword(e.target.value)}
-                  />
-                  {passwordError && <p className="text-red-500 text-sm">{passwordError}</p>}
-                </div>
+                <label htmlFor="password" className="capitalize text-xl mb-2 text-darkGreen">
+                  Password
+                </label>
+                <Input
+                  id="password"
+                  type="password"
+                  className="w-full h-12 rounded-md p-4"
+                  placeholder=""
+                  value={credentials.password}
+                  onChange={handleInputChange}
+                />
+                {errors.password && <p className="text-red-500 text-sm">{errors.password}</p>}
               </div>
+
               <div className="flex justify-start items-center gap-8 mt-8">
-                <div className="">
-                  <Button
-                    type="submit"
-                    variant="dark-green"
-                    className="w-full text-lg py-3 px-12 md:px-[4.5rem]"
-                    disabled={!!emailError} // Disable button if email is invalid
-                  > Log in </Button>
-                </div>
-                <div className="text-darkGreen text-base md:text-xl underline">
-                  <Link href={"/forgot"}>Forgot password?</Link>
-                </div>
+                <Button
+                  type="submit"
+                  variant="dark-green"
+                  className="text-lg py-3 px-12 md:px-[4.5rem]"
+                  disabled={!!errors.email || !!errors.password}
+                >
+                  Log in
+                </Button>
+                <Link href="/forgot" className="text-darkGreen text-base md:text-xl underline">
+                  Forgot password?
+                </Link>
               </div>
             </div>
           </form>
@@ -149,6 +126,6 @@ const Login: React.FC = () => {
       </div>
     </div>
   );
-}
+};
 
-export default Login
+export default Login;

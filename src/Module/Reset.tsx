@@ -17,153 +17,119 @@ import { ErrorCode, ErrorData } from "@/interface/error";
 import { ApiError } from "@/utils/customError";
 
 export default function Reset() {
-  const [password, setPassword] = useState("ASUS@rog00");
-  const [resetPassword, setResetPassword] = useState("ASUS@rog00");
-  const [passwordError, setPasswordError] = useState("");
-  const [resetPasswordError, setResetPasswordError] = useState("");
+  const [formData, setFormData] = useState({ password: "", confirmPassword: "" });
+  const [errors, setErrors] = useState({ password: "", confirmPassword: "" });
 
   const searchParams = useSearchParams();
   const router = useRouter();
-  
-  // Fetch query parameters
+  const dispatch = useDispatch<AppDispatch>();
 
-  const token = searchParams.get("token")?? '';
-  const email = searchParams.get("email")?? '';
+  const token = searchParams.get("token") ?? "";
+  const email = searchParams.get("email") ?? "";
 
-  const dispatch = useDispatch<AppDispatch>(); // Typed dispatch
   const [resetUser] = useResetUserMutation();
 
-  const debouncedLogin = useCallback(
-    debounce(
-      async (password: string, password_confirmation: string) => {
-        try {
-          dispatch(setLoading(true)); // Start loading
-          const response = await resetUser({ email: email , token: token , password, password_confirmation}).unwrap();
-          showToast(response.message, 'success')
-          router.push('/')
-          dispatch(setLoading(false)); // End loading
-        } catch (err) {
-          dispatch(setLoading(false)); // End loading
-          const error  =  err as ErrorCode
-          const errorInstance = new ApiError(error.data as ErrorData, error.status);
-          showToast(errorInstance.globalMessage || "Login failed", "error");
-        }
-      },
-      500 // 500ms debounce time
-    ),
-    [dispatch, resetUser]
-  );
-
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault()
-
-    if (!checkPasswordValidation(password)) return
-
-    if (!checkRePasswordValidation(password,resetPassword)) return
-
-    debouncedLogin(password, resetPassword)
+  const validatePassword = (password: string) => {
+    if (password.length < 8) {
+      return "Password must be at least 8 characters long.";
+    }
+    if (!checkPassword(password)) {
+      return "Password must contain mixed case letters, numbers, and symbols.";
+    }
+    return "";
   };
 
-  const checkPasswordValidation = (value: string) => {
-    
-    if (value.length < 8) {
-      setPasswordError("Password must be at least 8 characters long.");
-        return false
-    } 
+  const validateConfirmPassword = (password: string, confirmPassword: string) => {
+    return password !== confirmPassword ? "Passwords do not match." : "";
+  };
 
-    if(!checkPassword(value)){
-        setPasswordError("Password must contain mixed case letters, numbers and symbols");
-        return false
+  const debouncedResetPassword = useCallback(
+    debounce(async (password: string, confirmPassword: string) => {
+      try {
+        dispatch(setLoading(true));
+        const response = await resetUser({ email, token, password, password_confirmation: confirmPassword }).unwrap();
+        showToast(response.message, "success");
+        router.push("/");
+      } catch (err) {
+        const error = err as ErrorCode;
+        const errorInstance = new ApiError(error.data as ErrorData, error.status);
+        showToast(errorInstance.globalMessage || "Reset failed", "error");
+      } finally {
+        dispatch(setLoading(false));
+      }
+    }, 500),
+    [dispatch, resetUser, email, token, router]
+  );
+
+  const handleChange = (field: "password" | "confirmPassword", value: string) => {
+    setFormData((prev) => ({ ...prev, [field]: value }));
+    
+    setErrors((prev) => ({
+      ...prev,
+      [field]: field === "password" ? validatePassword(value) : validateConfirmPassword(formData.password, value),
+    }));
+  };
+
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    const passwordError = validatePassword(formData.password);
+    const confirmPasswordError = validateConfirmPassword(formData.password, formData.confirmPassword);
+
+    if (passwordError || confirmPasswordError) {
+      setErrors({ password: passwordError, confirmPassword: confirmPasswordError });
+      return;
     }
 
-    setPasswordError("");
-
-    if(resetPassword.length > 0 && !checkRePasswordValidation(value, resetPassword)){
-        return false
-    }
-
-
-    
-    return true
-
-  }
-
-  const checkRePasswordValidation = (value:string , revalue: string) => {
-
-    if (value !== revalue) {
-      setResetPasswordError("Passwords do not match.");
-      return false
-    } 
-
-    setResetPasswordError("");
-    return true
-
-  }
-
-  const handleChangePassword = (value: string) => {
-    setPassword(value);
-    checkPasswordValidation(value);
-
-  }
-
-  const handleChangeRePassword = (value: string) => {
-    setResetPassword(value);
-    checkRePasswordValidation(password, value);
-
-  }
-  
-
-  
+    debouncedResetPassword(formData.password, formData.confirmPassword);
+  };
 
   return (
     <div>
-      <Header title={'Reset password'} />
+      <Header title="Reset password" />
       <div className="bg-[#F2E9DA] calci flex items-top justify-start p-4 text-barlow">
         <div className="bg-transparent p-6 w-full md:w-96 sm:mt-12 md:mt-16 sm:ml-12 md:ml-40">
           <form className="w-full lg:w-[45rem]" onSubmit={handleSubmit}>
-            <div>
-                <Paragraph className="text-darkGreen text-xl" > Enter your new password.</Paragraph>
-                <Paragraph className="text-darkGreen text-base mt-4" > (Password must be atleast 8 characters long and contain mixed case letters, numbers and symbols.) </Paragraph>
-              <div className="md:w-[27rem] mt-8">
-                <div className="capitalize text-xl mb-2">
-                  <label htmlFor="password" className="text-darkGreen">Password</label>
-                </div>
-                <Input 
-                  id="password" 
-                  type="password" 
-                  className="w-full h-12 rounded-md p-4" 
-                  placeholder="" 
-                  value={password} 
-                  onChange={(e) => handleChangePassword(e.target.value)} 
-                />
-                {passwordError && <p className="text-red-500 text-sm mt-1">{passwordError}</p>}
-              </div>
-              <div className="mt-6 md:w-[27rem]">
-                <div className="capitalize text-xl mb-2">
-                  <label htmlFor="password_confirmation" className="text-darkGreen">Confirm password</label>
-                </div>
-                <Input 
-                  id="password_confirmation" 
-                  type="password" 
-                  className="w-full h-12 rounded-md p-4" 
-                  placeholder="" 
-                  value={resetPassword} 
-                  onChange={(e) => handleChangeRePassword(e.target.value)} 
-                />
-                {resetPasswordError && <p className="text-red-500 text-sm mt-1">{resetPasswordError}</p>}
-              </div>
-              <div className="flex justify-start items-center gap-8 my-8">
-                <div>
-                  <Button type="submit" variant="dark-green" className="w-full text-lg py-3 px-12 md:px-[5.2rem]">
-                    Submit
-                  </Button>
-                </div>
-                <div className="text-darkGreen text-base md:text-xl underline">
-                  <Link href={'/'}>
-                    Back to log in
-                  </Link>
-                </div>
-              </div>
+            <Paragraph className="text-darkGreen text-xl">Enter your new password.</Paragraph>
+            <Paragraph className="text-darkGreen text-base mt-4">
+              (Password must be at least 8 characters long and contain mixed case letters, numbers, and symbols.)
+            </Paragraph>
+
+            <div className="md:w-[27rem] mt-8">
+              <label htmlFor="password" className="text-darkGreen capitalize text-xl mb-2">
+                Password
+              </label>
+              <Input
+                id="password"
+                type="password"
+                className="w-full h-12 rounded-md p-4"
+                value={formData.password}
+                onChange={(e) => handleChange("password", e.target.value)}
+              />
+              {errors.password && <p className="text-red-500 text-sm mt-1">{errors.password}</p>}
+            </div>
+
+            <div className="mt-6 md:w-[27rem]">
+              <label htmlFor="confirmPassword" className="text-darkGreen capitalize text-xl mb-2">
+                Confirm password
+              </label>
+              <Input
+                id="confirmPassword"
+                type="password"
+                className="w-full h-12 rounded-md p-4"
+                value={formData.confirmPassword}
+                onChange={(e) => handleChange("confirmPassword", e.target.value)}
+              />
+              {errors.confirmPassword && <p className="text-red-500 text-sm mt-1">{errors.confirmPassword}</p>}
+            </div>
+
+            <div className="flex justify-start items-center gap-8 my-8">
+              <Button type="submit" variant="dark-green" className="text-lg py-3 px-12 md:px-[5.2rem]">
+                Submit
+              </Button>
+              <Link href="/" className="text-darkGreen text-base md:text-xl underline">
+                Back to log in
+              </Link>
             </div>
           </form>
         </div>
