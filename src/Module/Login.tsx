@@ -15,7 +15,7 @@ import { debounce } from "lodash";
 import { ErrorCode, ErrorData } from "@/interface/error";
 import { ApiError } from "@/utils/customError";
 import { setLoading } from "@/redux/features/loaderSlice";
-import Withoutadmin from "@/hoc/Withoutadmin";
+
 const Login: React.FC = () => {
   const [email, setEmail] = useState("vishal.kumar@123789.org");
   const [password, setPassword] = useState("Test@123");
