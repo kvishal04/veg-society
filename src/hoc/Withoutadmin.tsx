@@ -9,7 +9,6 @@ import Dashboard from "@/app/dashboard/page";
 const Withoutadmin = <P extends object>(WrappedComponent: ComponentType<P>) => {
   const WithUserData: React.FC<P> = (props) => {
     const userData = useSelector((state: RootState) => state?.auth.token);
-    console.log(userData, "userData")
     useEffect(() => {
       if (userData) {
         redirect("/dashboard");

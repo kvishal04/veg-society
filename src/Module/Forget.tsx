@@ -27,7 +27,6 @@ export default function Forget() {
       async (email: string) => {
         try {
           dispatch(setLoading(true)); // Start loading
-          console.log("Username:", email);
           const response = await forgetUser({ email }).unwrap();
           showToast(response.message, 'success')
           dispatch(setLoading(false)); // End loading
@@ -70,7 +69,7 @@ export default function Forget() {
     
     <div className="bg-[#F2E9DA]">
         <Header title={'Forgot your password?'} />
-        <div className="calci flex items-top justify-start pt-4 px-4 ">
+        <div className="calci flex items-top justify-start pt-4 px-4 text-barlow">
             <div className="bg-transparent p-6 w-full md:w-96 sm:mt-12 md:mt-10 sm:ml-12 md:ml-40">
               <form onSubmit={handleSubmit} className="w-full md:w-[27rem]">
                 <div className="">

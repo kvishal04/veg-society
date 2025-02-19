@@ -12,7 +12,7 @@ const tableConfig = {
     tHeadClassName: 'bg-darkGreen text-white border rounded-lg sticky top-0 z-10 ',
     thClassName: 'py-2 px-4 text-left border-b cursor-pointer gap-2',
     trClassName: 'border-b hover:bg-gray-100 border-b-lightGreen',
-    thIconClassName: 'flex flex-row items-center gap-2',
+    thIconClassName: 'flex flex-row items-center gap-2 text-barlow-semi-bold',
     tBodyClassName: '',
     tdClassname: 'py-2 px-4',
     showItemQuantity: 20,
@@ -49,7 +49,7 @@ const tableConfig = {
             sortable: true,
             customBodyRender: (value: TableData) => {
                 return (
-                    <div className={`${value.status === "Pending" ? "text-black font-bold" : "text-black"}`}>
+                    <div className={`${value.status === "Pending" ? "text-black text-barlow-bold " : "text-black"}`}>
                         {value.status}
                     </div>
                 );
@@ -63,9 +63,9 @@ const tableConfig = {
             customBodyRender: (value: TableData) => {
                 return (
                     <div className="flex space-x-4">
-                        <Eye className="text-darkGreen cursor-pointer hover:text-green-500" size={18} />
-                        <Pencil className="text-darkGreen cursor-pointer hover:text-blue-300" size={18} />
-                        <Trash2 className="text-darkGreen cursor-pointer hover:text-red-300" size={18} />
+                        <Eye id={value.name} className="text-darkGreen cursor-pointer hover:text-green-500" size={18} />
+                        <Pencil id={value.name} className="text-darkGreen cursor-pointer hover:text-blue-300" size={18} />
+                        <Trash2 id={value.name}  className="text-darkGreen cursor-pointer hover:text-red-300" size={18} />
                     </div>
                 );
             },
@@ -102,7 +102,7 @@ const ProductTable: React.FC = () => {
     return (
         <div className='px-6 xl:px-52 py-8'>
             <ProductSearchBar />
-            <div className="max-h-[28rem] overflow-y-auto custom-scrollbar">
+            <div className="max-h-[28rem] overflow-y-auto custom-scrollbar text-barlow">
                 <TableComponent data={currentItems} config={tableConfig}  showItemQuantity={itemsPerPage} />
             </div>
             <Pagination 

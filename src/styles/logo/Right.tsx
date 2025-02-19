@@ -1,17 +1,15 @@
 import React from "react";
 
 interface LogoProp {
-    width: number;
-    height: number
+  className: string
 }
 
 const Right: React.FC<LogoProp> = ({
-    width, height
+    className
 }) => {
   return (
     <svg
-    width={width}
-    height={height}
+    className={className}
     viewBox="0 0 45 47"
     fill="none"
     xmlns="http://www.w3.org/2000/svg"
@@ -25,7 +23,7 @@ const Right: React.FC<LogoProp> = ({
     </g>
     <defs>
         <clipPath id="clip0_18_56">
-        <rect width={width} height={height} fill="white" />
+        <rect width="45" height="60" fill="white" />
         </clipPath>
     </defs>
     </svg>

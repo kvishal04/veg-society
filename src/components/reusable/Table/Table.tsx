@@ -112,7 +112,7 @@ const TableComponent: React.FC<TableComponentProps> = ({
           <td key={col.name} className={config.tdClassname}>
             {col.customBodyRender
               ? col.customBodyRender(row)
-              : row[col.keys[0]] ?? config.emptyState.text()}
+              : row[col.keys[0]] || config.emptyState.text()}
           </td>
         ))}
       </tr>

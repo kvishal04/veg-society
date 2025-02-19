@@ -58,7 +58,7 @@ const Header: React.FC<HeaderProps> = ({ title = 'Company Name' }) => {
   return (
     <header className="bg-[#002326] text-white">
       {/* Top Bar */}
-      <div className="flex justify-end items-center px-6 lg:px-52 py-3 border-b border-white">
+      <div className="flex justify-end items-center px-6 lg:px-52 py-3 border-b h-10 border-white">
         <div className="flex items-center gap-12 text-sm">
           {userData ? (
             <p className="flex items-center gap-1">
@@ -70,10 +70,10 @@ const Header: React.FC<HeaderProps> = ({ title = 'Company Name' }) => {
       </div>
 
       {/* Main Header */}
-      <div className="flex md:flex-row md:justify-between flex-col justify-start items-center px-6 lg:px-52 py-8">
-        <div className="flex flex-row justify-start items-center gap-8">
+      <div className="flex md:flex-row justify-between flex-col items-center px-6 md:px-6 lg:px-52 md:py-8 py-2">
+        <div className="flex flex-row justify-end items-center gap-8 ">
           {/* Logo */}
-          <div className="border-r-2 border-white w-[150px] md:w-[245px] h-[75px]">
+          <div className="border-r-2 border-white w-[150px] md:w-[245px] mt-2 md:mt-0 h-10 md:h-[75px]">
             <Image
               alt="brand"
               property="priority"
@@ -83,14 +83,14 @@ const Header: React.FC<HeaderProps> = ({ title = 'Company Name' }) => {
               src={`/assets/images/Group.svg`}
             />
           </div>
-          <Heading level={1} className="sm:text-xl md:text-3xl lg:text-3xl xl:text-5xl">
+          <Heading level={1} className="font-henriette sm:text-xl md:text-3xl lg:text-3xl xl:text-5xl">
             {title}
           </Heading>
         </div>
 
         {/* Action Button */}
         {userData ? (
-          <div className="flex flex-row gap-8 justify-between items-center mt-4">
+          <div className="flex flex-row gap-8 justify-between items-center mt-4  w-full md:w-auto">
             <Paragraph className="underline">Dashboard</Paragraph>
             <Button
               onClick={openModal}

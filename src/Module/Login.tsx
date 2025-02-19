@@ -16,9 +16,10 @@ import { ErrorCode, ErrorData } from "@/interface/error";
 import { ApiError } from "@/utils/customError";
 import { setLoading } from "@/redux/features/loaderSlice";
 const Login: React.FC = () => {
-  const [email, setEmail] = useState("");
+  const [email, setEmail] = useState("vishal.kumar@123789.org");
   const [password, setPassword] = useState("Test@123");
   const [emailError, setEmailError] = useState<string | null>(null);
+  const [passwordError, setPasswordError] = useState<string | null>(null);
 
   const dispatch = useDispatch<AppDispatch>(); // Typed dispatch
   const [loginUser] = useLoginUserMutation();
@@ -52,7 +53,14 @@ const Login: React.FC = () => {
     if(!checkEmail(email)){
       setEmailError("Invalid email");
       return
-    }else{
+    }
+
+    if(!password.length){
+      setPasswordError("Paswword is empty");
+      return
+    }
+    
+    else{
       setEmailError(null);
     }
 
@@ -87,18 +95,18 @@ const Login: React.FC = () => {
   return (
     <div className="">
       <Header title={"Log in"} />
-      <div className="bg-[#F2E9DA] calci flex items-top justify-start">
+      <div className="bg-[#F2E9DA] calci flex items-top justify-start text-barlow">
         <div className="bg-transparent px-6 pt-6 h-auto sm:mt-12 md:mt-[7.7rem] sm:ml-12 md:ml-40 ">
           <form onSubmit={handleSubmit} className="w-full md:w-[26.7rem]">
             <div>
               <div>
                 <div className="capitalize text-xl mb-2">
-                  <label htmlFor="email" className="text-darkGreen">Email ID</label>
+                  <label htmlFor="email" className="text-darkGreen ">Email ID</label>
                 </div>
                 <Input
                   id="email"
                   type="email"
-                  className={`w-full h-12 rounded-md p-4 ${emailError ? 'border-red-500' : ''}`}
+                  className={`w-full h-12 rounded-md p-4 ${emailError ? 'border-red-500' : ''} text-barlow`}
                   placeholder=""
                   value={email}
                   onChange={handleEmailChange}
@@ -118,6 +126,7 @@ const Login: React.FC = () => {
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                   />
+                  {passwordError && <p className="text-red-500 text-sm">{passwordError}</p>}
                 </div>
               </div>
               <div className="flex justify-start items-center gap-8 mt-8">
@@ -125,7 +134,7 @@ const Login: React.FC = () => {
                   <Button
                     type="submit"
                     variant="dark-green"
-                    className="w-full text-lg py-3 px-12 md:px-[5.2rem]"
+                    className="w-full text-lg py-3 px-12 md:px-[4.5rem]"
                     disabled={!!emailError} // Disable button if email is invalid
                   > Log in </Button>
                 </div>

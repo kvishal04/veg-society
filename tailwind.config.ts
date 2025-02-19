@@ -19,6 +19,9 @@ export default {
         customBlack: "rgba(0, 35, 38, 1)",
         customWhite: "#F6F6F6",
       },
+      fontFamily: {
+        henriette: ["Henriette", "sans-serif"],
+      },
     },
   },
   plugins: [],

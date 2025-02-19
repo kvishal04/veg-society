@@ -56,28 +56,59 @@ export default function Reset() {
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-    if (password.length < 8) {
-      setPasswordError("Password must be at least 8 characters long.");
-        return
-    } else {
-      setPasswordError("");
-    }
 
-    if(!checkPassword(password)){
-        setPasswordError("Password must contain mixed case letters, numbers and symbols");
-        return
-    }else {
-        setPasswordError("");
-    }
+    if (!checkPasswordValidation(password)) return
 
-    if (password !== resetPassword) {
-      setResetPasswordError("Passwords do not match.");
-      return
-    } else {
-      setResetPasswordError("");
-    }
+    if (!checkRePasswordValidation(password,resetPassword)) return
+
     debouncedLogin(password, resetPassword)
   };
+
+  const checkPasswordValidation = (value: string) => {
+
+    if (value.length < 8) {
+      setPasswordError("Password must be at least 8 characters long.");
+        return false
+    } 
+
+    if(!checkPassword(value)){
+        setPasswordError("Password must contain mixed case letters, numbers and symbols");
+        return false
+    }
+
+    if(resetPassword.length > 0 && !checkRePasswordValidation(value, resetPassword)){
+        return false
+    }
+
+
+    setResetPasswordError("");
+    return true
+
+  }
+
+  const checkRePasswordValidation = (value:string , revalue: string) => {
+
+    if (value !== revalue) {
+      setResetPasswordError("Passwords do not match.");
+      return false
+    } 
+
+    setResetPasswordError("");
+    return true
+
+  }
+
+  const handleChangePassword = (value: string) => {
+    setPassword(value);
+    checkPasswordValidation(value);
+
+  }
+
+  const handleChangeRePassword = (value: string) => {
+    setResetPassword(value);
+    checkRePasswordValidation(password, value);
+
+  }
   
 
   
@@ -85,7 +116,7 @@ export default function Reset() {
   return (
     <div>
       <Header title={'Reset password'} />
-      <div className="bg-[#F2E9DA] calci flex items-top justify-start p-4">
+      <div className="bg-[#F2E9DA] calci flex items-top justify-start p-4 text-barlow">
         <div className="bg-transparent p-6 w-full md:w-96 sm:mt-12 md:mt-16 sm:ml-12 md:ml-40">
           <form className="w-full lg:w-[45rem]" onSubmit={handleSubmit}>
             <div>
@@ -97,11 +128,11 @@ export default function Reset() {
                 </div>
                 <Input 
                   id="password" 
-                  type="password" 
+                  type="text" 
                   className="w-full h-12 rounded-md p-4" 
                   placeholder="" 
                   value={password} 
-                  onChange={(e) => setPassword(e.target.value)} 
+                  onChange={(e) => handleChangePassword(e.target.value)} 
                 />
                 {passwordError && <p className="text-red-500 text-sm mt-1">{passwordError}</p>}
               </div>
@@ -111,11 +142,11 @@ export default function Reset() {
                 </div>
                 <Input 
                   id="password_confirmation" 
-                  type="password" 
+                  type="text" 
                   className="w-full h-12 rounded-md p-4" 
                   placeholder="" 
                   value={resetPassword} 
-                  onChange={(e) => setResetPassword(e.target.value)} 
+                  onChange={(e) => handleChangeRePassword(e.target.value)} 
                 />
                 {resetPasswordError && <p className="text-red-500 text-sm mt-1">{resetPasswordError}</p>}
               </div>

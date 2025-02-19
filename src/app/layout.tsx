@@ -35,7 +35,7 @@ export default function RootLayout({
         <ReduxProvider>
         <NextTopLoader  showSpinner={false}/>
           <ToastProvider />
-          <div className="flex-grow">{children}</div> {/* Content */}
+          <div className="">{children}</div> {/* Content */}
           <Loader />
         </ReduxProvider>
         {/* Footer */}
