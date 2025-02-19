@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useState } from "react";
+import { useState } from "react";
 import { useLoginUserMutation } from "@/redux/services/api";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "@/redux/store";
