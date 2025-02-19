@@ -65,7 +65,7 @@ export default function Reset() {
   };
 
   const checkPasswordValidation = (value: string) => {
-
+    
     if (value.length < 8) {
       setPasswordError("Password must be at least 8 characters long.");
         return false
@@ -76,12 +76,14 @@ export default function Reset() {
         return false
     }
 
+    setPasswordError("");
+
     if(resetPassword.length > 0 && !checkRePasswordValidation(value, resetPassword)){
         return false
     }
 
 
-    setResetPasswordError("");
+    
     return true
 
   }
@@ -128,7 +130,7 @@ export default function Reset() {
                 </div>
                 <Input 
                   id="password" 
-                  type="text" 
+                  type="password" 
                   className="w-full h-12 rounded-md p-4" 
                   placeholder="" 
                   value={password} 
@@ -142,7 +144,7 @@ export default function Reset() {
                 </div>
                 <Input 
                   id="password_confirmation" 
-                  type="text" 
+                  type="password" 
                   className="w-full h-12 rounded-md p-4" 
                   placeholder="" 
                   value={resetPassword} 
