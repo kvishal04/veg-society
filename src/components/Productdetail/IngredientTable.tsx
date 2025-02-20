@@ -32,6 +32,24 @@ const customBodyRender = (value: TableData, key: "Vegetarian" | "Vegan" | "Plant
 };
 
 
+const renderAlternativeNamesColumn = (value: TableData,) => {
+    return (
+        <div className={`text-black text-barlow`}>
+            {value.AlternativeNames.join(', ')}
+        </div>  
+    );
+};
+
+const renderActionColumn = (value: TableData ) => {
+    return (
+        <div className="flex space-x-4">
+            <EyeView className="text-darkGreen cursor-pointer hover:text-green-500" />
+        </div>
+    );
+};
+
+
+
 
 const IngredientTable: React.FC = () => {
   const [data, setData] = useState<TableData[]>([]);
@@ -69,9 +87,7 @@ const IngredientTable: React.FC = () => {
       {
         name: "AlternativeNames",
         keys: ["AlternativeNames"],
-        customBodyRender: (value: TableData) => {
-          return <div className={`text-black text-barlow`}>{value.AlternativeNames.join(", ")}</div>;
-        },
+        customBodyRender: (value: TableData) => renderAlternativeNamesColumn(value),
         sortable: true,
       },
       {
@@ -103,13 +119,7 @@ const IngredientTable: React.FC = () => {
         keys: ["action"],
         sortable: false,
         className: "rounded-tr-lg",
-        customBodyRender: () => {
-          return (
-            <div className="flex space-x-4">
-              <EyeView className="text-darkGreen cursor-pointer hover:text-green-500" />
-            </div>
-          );
-        },
+        customBodyRender: (value: TableData) => renderActionColumn(value),
       },
     ],
     rows: {

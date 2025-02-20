@@ -125,7 +125,7 @@ const TableComponent: React.FC<TableComponentProps> = ({
                   }`}
                   onClick={(e) => {
                     e.stopPropagation();
-                    onCellClick && onCellClick(col.keys[0], row);
+                    onCellClick?.(col.keys[0], row);
                   }}
                 >
                   {col.customBodyRender

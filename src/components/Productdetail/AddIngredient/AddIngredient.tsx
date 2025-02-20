@@ -19,8 +19,24 @@ interface TableData {
     isDisable?: boolean;
 };
 
+const renderNumberColumn = (value: TableData, dataLength: number) => {
+    return (
+        <div className="text-black text-barlow">
+            {value.Number === 1 ? `${dataLength + 1}` : ""}
+        </div>
+    );
+};
 
-const customBodyRender =  (value: TableData, key: 'Vegetarian' | 'Vegan' | 'PlantBased') => {
+const renderAlternativeNamesColumn = (value: TableData, dataLength: number) => {
+    return (
+        <div className={`text-black text-barlow`}>
+            {value.AlternativeNames.join(', ')}
+        </div>  
+    );
+};
+
+
+const customData =  (value: TableData, key: 'Vegetarian' | 'Vegan' | 'PlantBased') => {
     let bgColor = "bg-customOrange"; // Default case
 
     if (value[key] === 1) {
@@ -34,7 +50,7 @@ const customBodyRender =  (value: TableData, key: 'Vegetarian' | 'Vegan' | 'Plan
 
 const AddIngredient: React.FC = () => {
     const [selectedRows, setSelectedRows] = useState<TableData[]>([]);
-    const [data, setData] = useState<TableData[]>([...IngredientData]);
+    const [data, setData] = useState<TableData[]>([]);
 
 
 
@@ -65,13 +81,7 @@ const AddIngredient: React.FC = () => {
                 keys: ['Number'],
                 sortable: true,
                 className: 'rounded-tl-lg',
-                customBodyRender: (value: TableData) => {
-                    return (
-                        <div className={`text-black text-barlow`}>
-                            {value.Number === 1 ? `${data.length+1}` : ''}
-                        </div>
-                    );
-                },
+                customBodyRender: (value: TableData) => renderNumberColumn(value, data.length),
             },
             {
                 name: "Ingredient",
@@ -81,14 +91,7 @@ const AddIngredient: React.FC = () => {
             {
                 name: "AlternativeNames",
                 keys: ['AlternativeNames'],
-                customBodyRender: (value: TableData) => {
-                    return (
-                        <div className={`text-black text-barlow`}>
-                            {value.AlternativeNames.join(', ')}
-                        </div>
-                    );
-                },
-    
+                customBodyRender:(value: TableData) => renderAlternativeNamesColumn(value, data.length),
                 sortable: true
             },
             {
@@ -96,7 +99,7 @@ const AddIngredient: React.FC = () => {
                 keys: ['Vegetarian'],
                 customBodyRender: (value: TableData) => {
                     return (
-                        customBodyRender(value,'Vegetarian')
+                        customData(value,'Vegetarian')
                     );
                 },
                 sortable: true
@@ -106,7 +109,7 @@ const AddIngredient: React.FC = () => {
                 keys: ['Vegan'],
                 customBodyRender: (value: TableData) => {
                     return (
-                        customBodyRender(value, 'Vegan')
+                        customData(value, 'Vegan')
                     );
                 },
                 rowclassName: '',
@@ -118,7 +121,7 @@ const AddIngredient: React.FC = () => {
                 sortable: true,
                 customBodyRender: (value: TableData) => {
                     return (
-                       customBodyRender(value, 'PlantBased')
+                        customData(value, 'PlantBased')
                     );
                 },
             },
@@ -134,6 +137,7 @@ const AddIngredient: React.FC = () => {
 
     useEffect(() => {
         console.log("Selected Rows:", selectedRows);
+        setData(IngredientData)
     }, [selectedRows]);
 
     return (
