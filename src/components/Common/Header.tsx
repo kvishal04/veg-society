@@ -33,9 +33,9 @@ const Header: React.FC<HeaderProps> = ({ title = 'Company Name' }) => {
   const logoutUserFunc = async () => {
     try {
       dispatch(setLoading(true)); // Start loading
-      const res  = await logoutUser({}).unwrap()
       dispatch(logout());
       dispatch(setLoading(false)); // End loading
+      const res  = await logoutUser({}).unwrap()
       showToast(res.message, "success");
       router.push("/");
     } catch (err) {

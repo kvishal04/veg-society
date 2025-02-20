@@ -1,21 +1,29 @@
 "use client";
 
-import { useEffect, ComponentType } from "react";
+import { useEffect, useState, ComponentType } from "react";
 import { RootState } from "@/redux/store";
 import { useSelector } from "react-redux";
-import { redirect } from "next/navigation";
-import Dashboard from "@/app/dashboard/page";
+import { useRouter } from "next/navigation";
 
 const Withoutadmin = <P extends object>(WrappedComponent: ComponentType<P>) => {
   const WithUserData: React.FC<P> = (props) => {
+    const [isChecked, setIsChecked] = useState(false);
     const userData = useSelector((state: RootState) => state?.auth.token);
-    useEffect(() => {
-      if (userData) {
-        redirect("/dashboard");
-      }
-    }, [userData]);
+    const router = useRouter();
 
-    return userData ? <Dashboard /> : <WrappedComponent {...props} />;
+    useEffect(() => {
+      if (userData !== undefined) {
+        if (userData) {
+          router.replace("/dashboard"); // Redirect if logged in
+        } else {
+          setIsChecked(true); // Allow rendering if not logged in
+        }
+      }
+    }, [userData, router]);
+
+    if (!isChecked) return null; // Avoid hydration issues by waiting
+
+    return <WrappedComponent {...props} />;
   };
 
   return WithUserData;

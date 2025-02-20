@@ -1,7 +1,11 @@
 import Login from "@/Module/Login";
 
-export default function Home() {
+const Page = ()=> {
   return (
-    <Login/>
+    <div>
+      <Login />
+    </div>
   );
 }
+
+export default Page;

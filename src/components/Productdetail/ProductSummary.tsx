@@ -1,40 +1,44 @@
 "use client";
 import React, { useState } from "react";
+import Input from "../reusable/Input";
+import Select from "../reusable/Select";
+import { AccreditationData as data } from "@/FakeJson/tabledata";
 
+const AccreditationData = [...data]
 const ProductSummary: React.FC = () => {
   const [accreditation, setAccreditation] = useState("Vegetarian");
   const [productName, setProductName] = useState("Product Name 1");
 
   return (
-    <div className="bg-darkGreen text-white p-8 xl:h-auto flex flex-col gap-6 w-full xl:py-8 xl:px-52">
+    <div className="bg-darkGreen text-white p-8 xl:h-auto flex flex-col gap-2 w-full xl:py-8 xl:px-52 font-henriette">
       
       {/* Product Name Label and Input */}
       <div className="flex flex-row w-full items-center">
-        <label className="w-40 text-lg font-medium mb-1" htmlFor="productName">
+        <label className="w-48 text-2xl font-medium " htmlFor="productName">
           Product Name:
         </label>
-        <input
+        <Input
           id="productName"
           type="text"
           value={productName}
           onChange={(e) => setProductName(e.target.value)}
-          className="w-full p-2 text-darkGreen rounded-md border border-green-600"
+          className="w-full p-3 bg-[#004537] rounded-md border border-green-600"
         />
       </div>
 
-      <hr className="border-green-700" />
+      <hr className="border-white" />
 
     <div className="flex justify-between gap-8 items-center">
     <div className="flex justify-start gap-8 items-start">
           {/* Accreditation Status */}
-      <div className="flex flex-col items-start justify-start border-r-2 border-white px-4 ">
-        <div className="flex items-center gap-2">
-          <span className="text-md">Accreditation Status:</span>
-          <span className="font-semibold">Pending</span>
+      <div className="flex flex-col items-start justify-start border-r-2 border-white pr-4 ">
+        <div className="flex items-end gap-2 mt-3 mb-4">
+          <div className="text-2xl">Accreditation Status:</div>
+          <span className="text-2xl font-semibold">Pending</span>
         </div>
 
-        <div className="flex items-center gap-4">
-          <span className="flex items-center gap-1">
+        <div className="flex items-center gap-4 text-xl">
+          <span className="flex items-center gap-1 ">
             <span className="w-3 h-3 bg-green-500 rounded-full"></span> Vegetarian
           </span>
           <span className="flex items-center gap-1">
@@ -48,24 +52,24 @@ const ProductSummary: React.FC = () => {
 
       {/* Requested Accreditation */}
       <div className="flex flex-col items-start justify-start">
-        <div className="flex items-center  gap-2">
-          <span>Requested Accreditation:</span>
-          <select
-            id="accreditation"
-            className="bg-green-800 text-white p-2 rounded border border-green-600"
-            value={accreditation}
-            onChange={(e) => setAccreditation(e.target.value)}
-          >
-            <option value="Vegetarian">Vegetarian</option>
-            <option value="Vegan">Vegan</option>
-            <option value="Plant-Based">Plant-Based</option>
-          </select>
+        <div className="flex items-center  gap-2 text-2xl mb-2">
+          <span className="w-[18rem]">Requested Accreditation:</span>
+          <div className="w-52">
+            <Select
+              options={AccreditationData}
+              id="accreditation"
+              className="w-full py-2 px-4 bg-[#004537]  border border-darkGreen  focus:ring-black appearance-none  rounded-lg text-white outline-none"
+              value={accreditation}
+              onChange={(e) => setAccreditation(e.target.value)}
+            />
+          </div>
+         
         </div>
 
         {/* Submission & Response Dates */}
-        <div className="text-sm flex justify-start items-start gap-4">
-          <p>Submitted on: <span className="font-semibold">23-10-2024</span></p>
-          <p>Response Date: <span className="font-semibold">25-10-2024</span></p>
+        <div className="flex justify-start items-start gap-4 text-xl">
+          <p>Submitted on: <span className="">23-10-2024</span></p>
+          <p>Response Date: <span className="">25-10-2024</span></p>
         </div>
       </div>
     </div>

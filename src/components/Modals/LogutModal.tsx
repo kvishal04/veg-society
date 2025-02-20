@@ -16,7 +16,7 @@ const LogutModal: React.FC<ModalProps> = ({ isOpen, onClose, onSave }) => {
     if (!isOpen) return null;
 
     return (
-        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+        <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50 text-barlow">
             <div className="bg-[#D9D9D9] w-[90%] md:w-[46rem] h-[25.5rem] rounded-xl shadow-lg p-6 relative text-black">
                 <div className="bg-white h-full rounded-lg p-6 flex flex-col justify-around">
                     {/* Modal Header */}
@@ -35,8 +35,8 @@ const LogutModal: React.FC<ModalProps> = ({ isOpen, onClose, onSave }) => {
 
                     {/* Modal Footer */}
                     <div className="flex justify-between mt-6 border-t pt-6">
-                        <Button onClick={onSave} variant="dark-green"  className="text-base lg:text-lg  lg:px-[5.5rem] lg:py-3   md:px-16 md:py-3  px-8 py-2  "> Save </Button>
-                        <Button onClick={onClose}  variant="white"  className="text-sm text-darkGreen border-lightGreen md:text-base lg:text-lg  lg:px-[5.5rem] lg:py-3  md:px-16 md:py-3  px-8 py-2 "> Close </Button>
+                        <Button onClick={onSave} variant="dark-green"  className="text-base lg:text-lg  lg:px-[5.5rem] lg:py-3   md:px-16 md:py-3  px-8 py-2  "> Log out </Button>
+                        <Button onClick={onClose}  variant="white"  className="text-sm text-darkGreen border-lightGreen md:text-base lg:text-lg  lg:px-[5.5rem] lg:py-3  md:px-16 md:py-3  px-8 py-2 "> Cancel </Button>
                     </div>
                 </div>
 

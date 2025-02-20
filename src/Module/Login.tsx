@@ -15,6 +15,9 @@ import { debounce } from "lodash";
 import { ErrorCode, ErrorData } from "@/interface/error";
 import { ApiError } from "@/utils/customError";
 import { setLoading } from "@/redux/features/loaderSlice";
+import Withoutadmin from "@/hoc/Withoutadmin";
+
+
 
 // Debounced login function outside component to prevent re-creation on every render
 const debouncedLogin = debounce(
@@ -71,7 +74,7 @@ const Login: React.FC = () => {
   };
 
   return (
-    <div>
+    <div className="login">
       <Header title="Log in" />
       <div className="bg-[#F2E9DA] calci flex items-top justify-start text-barlow">
         <div className="bg-transparent px-6 pt-6 h-auto sm:mt-12 md:mt-[7.7rem] sm:ml-12 md:ml-40">
@@ -128,4 +131,4 @@ const Login: React.FC = () => {
   );
 };
 
-export default Login;
+export default Withoutadmin(Login);
