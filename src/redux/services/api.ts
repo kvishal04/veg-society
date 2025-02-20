@@ -9,17 +9,15 @@ export const api = createApi({
     { baseUrl: BASE_URL ,
       prepareHeaders: (headers, { getState }) => {
         const myState: RootState = getState() as RootState;
-        const userData = myState.auth
-  
-        if (userData?.token) {
-          headers.set('Authorization', `Bearer ${userData?.token}`);
-        }
-  
+        const userData = myState.auth;
         headers.set('Content-Type', 'application/json');
+        if (userData.token) {
+          headers.set('Authorization', `Bearer ${userData.token}`);
+        }
+
         return headers;
       },
     },
-   
   ), 
   tagTypes: ["Auth", "Forget"], // Add this line**  
   endpoints: (builder) => ({
@@ -31,11 +29,10 @@ export const api = createApi({
       }),
     }),
 
-    logoutUser: builder.mutation<DataCode, {}>({
-      query: (credentials) => ({
+    logoutUser: builder.mutation<DataCode, void>({
+      query: () => ({
         url: "/logout",
-        method: "POST",
-        body: credentials,
+        method: "POST"
       }),
     }),  
     

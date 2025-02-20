@@ -33,10 +33,10 @@ const Header: React.FC<HeaderProps> = ({ title = 'Company Name' }) => {
   const logoutUserFunc = async () => {
     try {
       dispatch(setLoading(true)); // Start loading
-      dispatch(logout());
       dispatch(setLoading(false)); // End loading
-      const res  = await logoutUser({}).unwrap()
+      const res  = await logoutUser().unwrap()
       showToast(res.message, "success");
+      dispatch(logout());
       router.push("/");
     } catch (err) {
       console.log("isLoading err", err);
