@@ -21,7 +21,7 @@ const Header: React.FC<HeaderProps> = ({ title = 'Company Name' }) => {
 
   const router = useRouter()
   const dispatch = useDispatch<AppDispatch>()
-  const userData = useSelector((state: RootState) => state?.auth.token);
+  const {user, token} = useSelector((state: RootState) => state?.auth);
   const [logoutModal, setLogoutModal] = useState<boolean>(false);
   const [productModal, setProductModal] = useState<boolean>(false);
   const openLogoutModal = () => setLogoutModal(true);
@@ -60,12 +60,12 @@ const Header: React.FC<HeaderProps> = ({ title = 'Company Name' }) => {
       {/* Top Bar */}
       <div className="flex justify-end items-center px-6 lg:px-52 py-3 border-b h-10 border-white">
         <div className="flex items-center gap-12 text-sm">
-          {userData ? (
+          {token ? (
             <p className="flex items-center gap-1">
-              <i className="fas fa-user"></i> Hi Johnny!
+              <i className="fas fa-user"></i> {user?.name}
             </p>
           ) : null}
-          {userData ? <button onClick={openLogoutModal} className="hover:underline">Log out</button> : null}
+          {token ? <button onClick={openLogoutModal} className="hover:underline">Log out</button> : null}
         </div>
       </div>
 
@@ -89,7 +89,7 @@ const Header: React.FC<HeaderProps> = ({ title = 'Company Name' }) => {
         </div>
 
         {/* Action Button */}
-        {userData ? (
+        {token ? (
           <div className="flex flex-row gap-8 justify-between items-center mt-4  w-full md:w-auto">
             <Paragraph className="underline">Dashboard</Paragraph>
             <Button

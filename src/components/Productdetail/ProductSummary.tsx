@@ -3,6 +3,8 @@ import React, { useState } from "react";
 import Input from "../reusable/Input";
 import Select from "../reusable/Select";
 import { AccreditationData as data } from "@/FakeJson/tabledata";
+import Image from "next/image";
+import Details from "@/styles/logo/Details";
 
 const AccreditationData = [...data]
 const ProductSummary: React.FC = () => {
@@ -22,7 +24,7 @@ const ProductSummary: React.FC = () => {
           type="text"
           value={productName}
           onChange={(e) => setProductName(e.target.value)}
-          className="w-full p-3 bg-[#004537] rounded-md border border-green-600"
+          className="w-full p-3 text-2xl bg-[#004537] rounded-md border border-green-600"
         />
       </div>
 
@@ -38,27 +40,27 @@ const ProductSummary: React.FC = () => {
         </div>
 
         <div className="flex items-center gap-4 text-xl">
-          <span className="flex items-center gap-1 ">
-            <span className="w-3 h-3 bg-green-500 rounded-full"></span> Vegetarian
+          <span className="flex items-center gap-2 ">
+            <span className="w-5 h-5 bg-green-500 rounded-full"></span> Vegetarian
           </span>
-          <span className="flex items-center gap-1">
-            <span className="w-3 h-3 bg-orange-500 rounded-full"></span> Vegan
+          <span className="flex items-center gap-2">
+            <span className="w-5 h-5 bg-orange-500 rounded-full"></span> Vegan
           </span>
-          <span className="flex items-center gap-1">
-            <span className="w-3 h-3 bg-red-500 rounded-full"></span> Plant-Based
+          <span className="flex items-center gap-2">
+            <span className="w-5 h-5 bg-red-500 rounded-full"></span> Plant-Based
           </span>
         </div>
       </div>
 
       {/* Requested Accreditation */}
       <div className="flex flex-col items-start justify-start">
-        <div className="flex items-center  gap-2 text-2xl mb-2">
+        <div className="flex items-center gap-1 text-2xl mb-2">
           <span className="w-[18rem]">Requested Accreditation:</span>
-          <div className="w-52">
+          <div className="w-36">
             <Select
               options={AccreditationData}
               id="accreditation"
-              className="w-full py-2 px-4 bg-[#004537]  border border-darkGreen  focus:ring-black appearance-none  rounded-lg text-white outline-none"
+              className="w-full py-2 text-xl px-2 bg-[#004537]  border border-darkGreen  focus:ring-black appearance-none  rounded-lg text-white outline-none"
               value={accreditation}
               onChange={(e) => setAccreditation(e.target.value)}
             />
@@ -68,8 +70,8 @@ const ProductSummary: React.FC = () => {
 
         {/* Submission & Response Dates */}
         <div className="flex justify-start items-start gap-4 text-xl">
-          <p>Submitted on: <span className="">23-10-2024</span></p>
-          <p>Response Date: <span className="">25-10-2024</span></p>
+          <p>Submitted on: <span className="ml-3">23-10-2024</span></p>
+          <p>Response Date: <span className="ml-3">25-10-2024</span></p>
         </div>
       </div>
     </div>
@@ -78,8 +80,9 @@ const ProductSummary: React.FC = () => {
       {/* Floating Initials and View Notes Button */}
       <div className="mt-4 flex justify-between items-center">
 
-        <button className="bg-white text-green-900 font-semibold px-4 py-2 rounded-lg shadow hover:bg-gray-200">
-          📋 View Notes
+        <button className= "flex gap-2 justify-start items-center bg-white text-green-900 font-semibold pr-16 pl-4 p py-2 rounded-lg shadow hover:bg-gray-200">
+          <Details className="text-xl text-darkGreen" />
+          <span> View Notes </span>
         </button>
       </div>
     </div>

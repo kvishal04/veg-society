@@ -63,7 +63,7 @@ export default function Reset() {
 
   const handleChange = (field: "password" | "confirmPassword", value: string) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
-    
+
     setErrors((prev) => ({
       ...prev,
       [field]: field === "password" ? validatePassword(value) : validateConfirmPassword(formData.password, value),
@@ -91,7 +91,7 @@ export default function Reset() {
         <div className="bg-transparent p-6 w-full md:w-96 sm:mt-12 md:mt-16 sm:ml-12 md:ml-40">
           <form className="w-full lg:w-[45rem]" onSubmit={handleSubmit}>
             <Paragraph className="text-darkGreen text-xl">Enter your new password.</Paragraph>
-            <Paragraph className="text-darkGreen text-base mt-4">
+            <Paragraph className="text-darkGreen text-base mt-4 font-henriette">
               (Password must be at least 8 characters long and contain mixed case letters, numbers, and symbols.)
             </Paragraph>
 
