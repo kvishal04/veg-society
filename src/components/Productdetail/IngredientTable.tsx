@@ -7,6 +7,30 @@ import Pagination from '@/components/reusable/Table/Pagination';
 import { IngredientData } from '@/FakeJson/tabledata'
 import IngredientSearchBar from './IngredientSeach';
 
+
+interface TableData {
+    Number: number;
+    Ingredient: string;
+    AlternativeNames: string[];
+    Vegetarian: number;
+    Vegan: number;
+    PlantBased: number;
+    DateAdded: string;
+    isDisable?: boolean;
+};
+
+const customBodyRender =  (value: TableData, key: 'Vegetarian' | 'Vegan' | 'PlantBased') => {
+    let bgColor = "bg-customOrange"; // Default case
+
+    if (value[key] === 1) {
+        bgColor = "bg-lightGreen";
+    } else if (value[key] === 0) {
+        bgColor = "bg-customRed";
+    }
+
+    return <div className={`h-5 w-5 text-barlow rounded-full ${bgColor}`}></div>;
+}
+
 const tableConfig = {
     tableClassName: 'min-w-full bg-white border border-gray-200 shadow-md rounded-lg',
     tHeadClassName: 'bg-darkGreen text-white border rounded-lg sticky top-0 z-10 ',
@@ -46,9 +70,7 @@ const tableConfig = {
             keys: ['Vegetarian'],
             customBodyRender: (value: TableData) => {
                 return (
-                    <div className={`h-5 w-5 text-barlow rounded-full
-                        ${value.Vegetarian === 1 ? "bg-lightGreen " : `${value.Vegetarian === 0 ? 'bg-customRed': 'bg-customOrange'}` }`}>
-                    </div>
+                    customBodyRender(value,'Vegetarian')
                 );
             },
             sortable: true
@@ -58,10 +80,7 @@ const tableConfig = {
             keys: ['Vegan'],
             customBodyRender: (value: TableData) => {
                 return (
-                    <div className={`h-5 w-5 text-barlow rounded-full
-                        ${value.Vegan === 1 ? "bg-lightGreen " : `${value.Vegan === 0 ? 'bg-customRed': 'bg-customOrange'}` }`}>
-                        
-                    </div>
+                    customBodyRender(value, 'Vegan')
                 );
             },
             sortable: true
@@ -72,10 +91,7 @@ const tableConfig = {
             sortable: true,
             customBodyRender: (value: TableData) => {
                 return (
-                    <div className={`h-5 w-5 text-barlow rounded-full
-                        ${value.PlantBased === 1 ? "bg-lightGreen " : `${value.PlantBased === 0 ? 'bg-customRed': 'bg-customOrange'}` }`}>
-                        
-                    </div>
+                   customBodyRender(value, 'PlantBased')
                 );
             },
         },
@@ -103,16 +119,7 @@ const tableConfig = {
 
 
 
-type TableData = {
-    Number: number;
-    Ingredient: string;
-    AlternativeNames: string[];
-    Vegetarian: number;
-    Vegan: number;
-    PlantBased: number;
-    DateAdded: string;
-    isDisable?: boolean;
-};
+
 
 const IngredientTable: React.FC = () => {
     const [currentPage, setCurrentPage] = useState(1);

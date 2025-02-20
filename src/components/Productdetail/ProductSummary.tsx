@@ -3,7 +3,6 @@ import React, { useState } from "react";
 import Input from "../reusable/Input";
 import Select from "../reusable/Select";
 import { AccreditationData as data } from "@/FakeJson/tabledata";
-import Image from "next/image";
 import Details from "@/styles/logo/Details";
 
 const AccreditationData = [...data]

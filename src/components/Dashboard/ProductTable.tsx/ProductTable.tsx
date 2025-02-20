@@ -7,6 +7,18 @@ import ProductSearchBar from '../ProductSearch';
 import Pagination from '@/components/reusable/Table/Pagination';
 import { producttabledata } from '@/FakeJson/tabledata'
 
+
+interface TableData  {
+    number: number;
+    name: string;
+    accreditation: string;
+    submitted: string;
+    response: string;
+    status: string;
+    isDisable?: boolean;
+};
+
+
 const tableConfig = {
     tableClassName: 'min-w-full bg-white border border-gray-200 shadow-md rounded-lg',
     tHeadClassName: 'bg-darkGreen text-white border rounded-lg sticky top-0 z-10 ',
@@ -79,15 +91,7 @@ const tableConfig = {
     }
 };
 
-type TableData = {
-    number: number;
-    name: string;
-    accreditation: string;
-    submitted: string;
-    response: string;
-    status: string;
-    isDisable?: boolean;
-};
+
 
 const ProductTable: React.FC = () => {
     const [currentPage, setCurrentPage] = useState(1);
