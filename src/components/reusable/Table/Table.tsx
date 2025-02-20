@@ -8,6 +8,7 @@ type TableColumn = {
   keys: string[];
   sortable?: boolean;
   className?: string;
+  rowclassName?: string;
   customBodyRender?: (row: any) => JSX.Element;
 };
 
@@ -15,7 +16,9 @@ type TableConfig = {
   tableClassName: string;
   tHeadClassName: string;
   tBodyClassName: string;
-  trClassName: string;
+  trClassName: {
+    class: (row: any) => string;
+  };
   thClassName: string;
   thIconClassName: string;
   tdClassname: string;
@@ -33,6 +36,7 @@ type TableComponentProps = {
   data: Record<string, any>[];
   config: TableConfig;
   showItemQuantity: number;
+  onCellClick?: (cellData: any, row: Record<string, any>) => void;
 };
 
 const DownIcon: React.FC = () => (
@@ -52,6 +56,7 @@ const TableComponent: React.FC<TableComponentProps> = ({
   data,
   config,
   showItemQuantity,
+  onCellClick,
 }) => {
   const [sortConfig, setSortConfig] = useState<{
     key: string | null;
@@ -105,27 +110,39 @@ const TableComponent: React.FC<TableComponentProps> = ({
         </tr>
       </thead>
       <tbody className={config.tBodyClassName}>
-  {sortedData.length > 0 ? (
-    sortedData.slice(0, showItemQuantity).map((row) => (
-      <tr key={row.id || JSON.stringify(row)} className={config.trClassName}>
-        {config.columns.map((col) => (
-          <td key={col.name} className={config.tdClassname}>
-            {col.customBodyRender
-              ? col.customBodyRender(row)
-              : row[col.keys[0]] || config.emptyState.text()}
-          </td>
-        ))}
-      </tr>
-    ))
-  ) : (
-    <tr>
-      <td colSpan={config.columns.length} className={config.tdClassname}>
-        {config.emptyState.text()}
-      </td>
-    </tr>
-  )}
-</tbody>
-
+        {sortedData.length > 0 ? (
+          sortedData.slice(0, showItemQuantity).map((row) => (
+            <tr
+                key={row.id || JSON.stringify(row)}
+                className={config.trClassName.class(row)}
+               
+              >
+              {config.columns.map((col) => (
+                <td
+                  key={col.name}
+                  className={`${config.tdClassname ?? ""} ${
+                    col.rowclassName ?? ""
+                  }`}
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    onCellClick && onCellClick(col.keys[0], row);
+                  }}
+                >
+                  {col.customBodyRender
+                    ? col.customBodyRender(row)
+                    : row[col.keys[0]] || config.emptyState.text()}
+                </td>
+              ))}
+            </tr>
+          ))
+        ) : (
+          <tr>
+            <td colSpan={config.columns.length} className={config.tdClassname}>
+              {config.emptyState.text()}
+            </td>
+          </tr>
+        )}
+      </tbody>
     </table>
   );
 };

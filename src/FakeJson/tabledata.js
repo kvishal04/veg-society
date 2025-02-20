@@ -43,8 +43,6 @@ export const AccreditationData = [
     { value: 'Vegan', label: 'Vegan' },
 ]
 
-
-//  0 -  unqualified 1- qualified  2-undecided
 export const IngredientData = [
     { Number: 1, Ingredient: "Ingredient Name 1", AlternativeNames: ["Alt name A", "Alt name B"], Vegetarian: 0, Vegan: 2, PlantBased: 1, DateAdded: "23/10/2024" },
     { Number: 2, Ingredient: "Ingredient Name 2", AlternativeNames: ["Alt name B", "Alt name C"], Vegetarian: 2, Vegan: 1, PlantBased: 1, DateAdded: "25/10/2024" },
@@ -78,4 +76,4 @@ export const IngredientData = [
     { Number: 30, Ingredient: "Ingredient Name 19", AlternativeNames: ["Alt name D", "Alt name E"], Vegetarian: 0, Vegan: 1, PlantBased: 2, DateAdded: "04/11/2024" },
     { Number: 31, Ingredient: "Ingredient Name 20", AlternativeNames: ["Alt name E", "Alt name F"], Vegetarian: 1, Vegan: 0, PlantBased: 1, DateAdded: "05/11/2024" },
 
-];
+]

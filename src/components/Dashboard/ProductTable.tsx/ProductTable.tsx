@@ -1,11 +1,12 @@
 "use client";
 
-import { Eye, Pencil, Trash2 } from 'lucide-react';
+import { Pencil, Trash2 } from 'lucide-react';
 import React, { useState } from 'react'
 import TableComponent from '@/components/reusable/Table/Table';
 import ProductSearchBar from '../ProductSearch';
 import Pagination from '@/components/reusable/Table/Pagination';
 import { producttabledata } from '@/FakeJson/tabledata'
+import EyeView from '@/styles/logo/Eye';
 
 
 interface TableData  {
@@ -23,7 +24,9 @@ const tableConfig = {
     tableClassName: 'min-w-full bg-white border border-gray-200 shadow-md rounded-lg',
     tHeadClassName: 'bg-darkGreen text-white border rounded-lg sticky top-0 z-10 ',
     thClassName: 'py-2 px-4 text-left border-b cursor-pointer gap-2',
-    trClassName: 'border-b hover:bg-gray-100 border-b-lightGreen',
+    trClassName:  {
+        class: () => 'border-b hover:bg-gray-100 border-b-lightGreen'
+    },
     thIconClassName: 'flex flex-row items-center gap-2 text-barlow-semi-bold',
     tBodyClassName: '',
     tdClassname: 'py-2 px-4',
@@ -75,7 +78,7 @@ const tableConfig = {
             customBodyRender: (value: TableData) => {
                 return (
                     <div className="flex space-x-4">
-                        <Eye id={value.name} className="text-darkGreen cursor-pointer hover:text-green-500" size={18} />
+                        <EyeView  className="text-darkGreen cursor-pointer hover:text-green-500"  />
                         <Pencil id={value.name} className="text-darkGreen cursor-pointer hover:text-blue-300" size={18} />
                         <Trash2 id={value.name}  className="text-darkGreen cursor-pointer hover:text-red-300" size={18} />
                     </div>

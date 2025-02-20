@@ -1,14 +1,13 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { PieChart, Pie, Cell } from "recharts";
-
+import { PieChart, Pie, Cell, Tooltip } from "recharts";
 
 interface PieData {
-    data: {name: string, value: number, color: string}[]
+  data: { name: string; value: number; color: string }[];
 }
 
-const CustomPieChart: React.FC <PieData>= ({data}) => {
+const CustomPieChart: React.FC<PieData> = ({ data }) => {
   const [isClient, setIsClient] = useState(false);
 
   useEffect(() => {
@@ -16,29 +15,34 @@ const CustomPieChart: React.FC <PieData>= ({data}) => {
   }, []);
 
   return (
-  
-      <div>
-              {isClient && ( // Prevents hydration mismatch
-          <PieChart width={150} height={150}>
-            <Pie
-              data={data}
-              dataKey="value"
-              cx="50%"
-              cy="50%"
-              outerRadius={62}
-              innerRadius={0}
-              paddingAngle={0}
-              
-            >
-              {data.map((entry) => (
-                <Cell key={`cell-${entry.name}`} fill={entry.color} />
-              ))}
-            </Pie>
-          </PieChart>
-        )}
-      </div>
-    
+    <div>
+      {isClient && ( // Prevents hydration mismatch
+        <PieChart width={150} height={150}>
+          <Pie
+            data={data}
+            dataKey="value"
+            cx="50%"
+            cy="50%"
+            outerRadius={62}
+            innerRadius={0}
+            paddingAngle={0}
+          >
+            {data.map((entry) => (
+              <Cell key={`cell-${entry.name}`} fill={entry.color}  />
+            ))}
+          </Pie>
+          <Tooltip
+            contentStyle={{
+              backgroundColor: "white",
+              borderRadius: "5px",
+              border: "1px solid #ccc",
+              padding: "5px",
+            }}
+          />
+        </PieChart>
+      )}
+    </div>
   );
 };
 
-export default CustomPieChart
+export default CustomPieChart;

@@ -26,7 +26,7 @@ const IngredientSearchBar = () => {
       value={searchTerm}
       onChange={(e) => setSearchTerm(e.target.value)}
       placeholder="Search"
-      className="w-full p-2 border-2 rounded-lg focus:ring-2 focus:ring-green-500 outline-none placeholder-green-700"
+      className="w-full p-2 border-2 rounded-xl focus:ring-2 focus:ring-green-500 outline-none placeholder-green-700"
     />
     <Search className="absolute right-3 text-green-700" size={18} />
   </div>
