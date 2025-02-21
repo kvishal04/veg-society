@@ -77,13 +77,6 @@ const AddIngredient: React.FC = () => {
         showItemQuantity: 20,
         columns: [
             {
-                name: "Number",
-                keys: ['Number'],
-                sortable: true,
-                className: 'rounded-tl-lg w-10 ',
-                customBodyRender: (value: TableData) => renderNumberColumn(value, data.length),
-            },
-            {
                 name: "Ingredient",
                 keys: ['Ingredient'],
                 sortable: true
@@ -141,13 +134,13 @@ const AddIngredient: React.FC = () => {
     }, [selectedRows]);
 
     return (
-        <div className='max-h-[16rem] w-full border border-gray-800 mt-7 rounded-lg flex flex-row relative  bg-white'>
+        <div className='h-[25rem] md:h-[16rem] md w-full border border-gray-800 mt-7 rounded-lg flex flex-col md:flex-row relative  bg-white p-1'>
             
-            <div className="text-barlow w-[79%] px-2 overflow-y-auto no-scrollbar  bg-white">
-            <div className='sticky top-0 left-0 flex items-center gap-4 md:gap-24  bg-white'>
-                        {data.length + 1} <AddIngredientSearchBar />
-                    </div>
-                <div className='bg-white'>
+            <div className="text-barlow w-full md:w-[79%] px-2 overflow-y-auto custom-scrollbar  bg-white">
+                <div className='sticky top-0 left-0 flex items-center gap-4 md:gap-24  bg-white'>
+                            {data.length + 1} <AddIngredientSearchBar />
+                </div>
+                <div className='bg-white ml-4 md:ml-24 '>
                     
                     <TableComponent 
                         data={data} 
@@ -158,12 +151,12 @@ const AddIngredient: React.FC = () => {
                     
                 </div>
             </div>
-            <div className='flex flex-col sticky justify-evenly top-0 right-0 gap-4 px-4'>
-                        <Button onClick={()=>{}} variant="dark-green"  className="text-base lg:text-lg  lg:px-[4rem] lg:py-3   md:px-16 md:py-3  px-8 py-2  "> Next </Button>
+            <div className='flex flex-row md:flex-col mt-4 md:mt-0 md:sticky justify-start md:justify-evenly md:top-0 md:right-0 gap-4 px-4 py-4'>
+                        <Button onClick={()=>{}} variant="dark-green"  className=" flex-grow text-base lg:text-lg  lg:px-[4rem] lg:py-3   md:px-16 md:py-3 px-3 py-2  "> Next </Button>
 
-                        <Button  onClick={()=>{}}  variant="dark-green"  className="text-base lg:text-lg  lg:px-[4rem] lg:py-3   md:px-16 md:py-3  px-8 py-2  "> Not Listed? </Button>
+                        <Button  onClick={()=>{}}  variant="dark-green"  className="flex-grow text-base lg:text-lg  lg:px-[4rem] lg:py-3   md:px-16 md:py-3  px-3 py-2  "> Not Listed? </Button>
 
-                        <Button  onClick={()=>{}}  variant="light-green"  className="text-base lg:text-lg  lg:px-[4rem] lg:py-3   md:px-16 md:py-3  px-8 py-2  "> Done </Button>
+                        <Button  onClick={()=>{}}  variant="light-green"  className=" flex-grow text-base lg:text-lg  lg:px-[4rem] lg:py-3   md:px-16 md:py-3  px-4 py-3  "> Done </Button>
                 </div>
           
         </div>
