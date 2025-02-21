@@ -22,7 +22,7 @@ interface TableData {
 const renderNumberColumn = (value: TableData, dataLength: number) => {
     return (
         <div className="text-black text-barlow">
-            {value.Number === 1 ? `${dataLength + 1}` : ""}
+
         </div>
     );
 };
@@ -66,7 +66,7 @@ const AddIngredient: React.FC = () => {
     const tableConfig = {
         tableClassName: 'min-w-full bg-white border-none shadow-md rounded-lg',
         tHeadClassName: 'invisible bg-darkGreen text-white border-none rounded-lg sticky top-0 z-10 ',
-        thClassName: 'py-2 px-4 text-left border-none cursor-pointer gap-2',
+        thClassName: 'py-2 px-2 text-left border-none cursor-pointer gap-2',
         trClassName:  {
             class: (row: TableData) => `${selectedRows.includes(row) ? 'bg-gray-400 text-white': ''} border-b border-none`
         },
@@ -80,7 +80,7 @@ const AddIngredient: React.FC = () => {
                 name: "Number",
                 keys: ['Number'],
                 sortable: true,
-                className: 'rounded-tl-lg',
+                className: 'rounded-tl-lg w-10 ',
                 customBodyRender: (value: TableData) => renderNumberColumn(value, data.length),
             },
             {
@@ -141,13 +141,14 @@ const AddIngredient: React.FC = () => {
     }, [selectedRows]);
 
     return (
-        <div className='max-h-[16rem] w-full border border-gray-800 mt-7 rounded-lg overflow-y-auto custom-scrollbar flex flex-row relative'>
+        <div className='max-h-[16rem] w-full border border-gray-800 mt-7 rounded-lg flex flex-row relative  bg-white'>
             
-            <div className="text-barlow w-[79%] p-2 ">
-                <div className=''>
-                    <div className='sticky top-0 mt-2'>
-                        <AddIngredientSearchBar />
+            <div className="text-barlow w-[79%] px-2 overflow-y-auto no-scrollbar  bg-white">
+            <div className='sticky top-0 left-0 flex items-center gap-4 md:gap-24  bg-white'>
+                        {data.length + 1} <AddIngredientSearchBar />
                     </div>
+                <div className='bg-white'>
+                    
                     <TableComponent 
                         data={data} 
                         config={tableConfig}  
@@ -157,7 +158,7 @@ const AddIngredient: React.FC = () => {
                     
                 </div>
             </div>
-            <div className='flex flex-col justify-evenly sticky top-0 right-0 gap-4 p-4'>
+            <div className='flex flex-col sticky justify-evenly top-0 right-0 gap-4 px-4'>
                         <Button onClick={()=>{}} variant="dark-green"  className="text-base lg:text-lg  lg:px-[4rem] lg:py-3   md:px-16 md:py-3  px-8 py-2  "> Next </Button>
 
                         <Button  onClick={()=>{}}  variant="dark-green"  className="text-base lg:text-lg  lg:px-[4rem] lg:py-3   md:px-16 md:py-3  px-8 py-2  "> Not Listed? </Button>

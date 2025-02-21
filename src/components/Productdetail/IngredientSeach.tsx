@@ -34,11 +34,11 @@ const IngredientSearchBar = () => {
   {/* Accreditation Dropdown */}
   <Select
     id="accreditation"
-    className="w-full p-2 pr-10 bg-white border border-darkGreen hover:bg-gray-100 focus:ring-black appearance-none  rounded-lg text-darkGreen outline-none"
+    className="w-full p-2 pr-10  bg-white border border-darkGreen  focus:ring-black appearance-none  rounded-lg text-darkGreen outline-none"
     options={AccreditationData}
     value={accreditation}
     onChange={handleSelectChange}
-    optionClassName="text-center"
+    optionClassName="text-center onslecthover "
   />
 
   {/* Status Dropdown */}

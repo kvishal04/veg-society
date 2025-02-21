@@ -12,6 +12,7 @@ import LogutModal from "../Modals/LogutModal";
 import {useLogoutUserMutation } from "@/redux/services/api";
 import { setLoading } from "@/redux/features/loaderSlice";
 import { showToast } from "@/utils/utills";
+import User from "@/styles/logo/User";
 
 interface HeaderProps {
   title?: string;
@@ -58,14 +59,14 @@ const Header: React.FC<HeaderProps> = ({ title = 'Company Name' }) => {
   return (
     <header className="bg-[#002326] text-white">
       {/* Top Bar */}
-      <div className="flex justify-end items-center px-6 lg:px-52 py-3 border-b h-10 border-white">
+      <div className="flex justify-end items-center px-6 lg:px-52 py-3 border-b h-10 border-white text-barlow">
         <div className="flex items-center gap-12 text-sm">
           {token ? (
-            <p className="flex items-center gap-1">
-              <i className="fas fa-user"></i> {user?.name}
+            <p className="flex items-center gap-2">
+              <User className="h-5 w-4"/> Hi {user?.name}!
             </p>
           ) : null}
-          {token ? <button onClick={openLogoutModal} className="hover:underline">Log out</button> : null}
+          {token ? <button onClick={openLogoutModal} className="hover:underline font-bold">Log out</button> : null}
         </div>
       </div>
 

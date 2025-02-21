@@ -64,7 +64,7 @@ const IngredientTable: React.FC = () => {
   const tableConfig = {
     tableClassName: "min-w-full bg-white border border-gray-200 shadow-md rounded-lg",
     tHeadClassName: "bg-darkGreen text-white border rounded-lg sticky top-0 z-10 ",
-    thClassName: "py-2 px-4 text-left border-b cursor-pointer gap-2",
+    thClassName: "py-2 px-2 text-left border-b cursor-pointer gap-2",
     trClassName: {
       class: () => "border-b hover:bg-gray-100 border-b-lightGreen",
     },
@@ -77,12 +77,13 @@ const IngredientTable: React.FC = () => {
         name: "Number",
         keys: ["Number"],
         sortable: true,
-        className: "rounded-tl-lg",
+        className: "rounded-tl-lg max-w-16",
       },
       {
         name: "Ingredient",
         keys: ["Ingredient"],
         sortable: true,
+        className: ""
       },
       {
         name: "AlternativeNames",
@@ -136,7 +137,7 @@ const IngredientTable: React.FC = () => {
   
 
   return (
-    <div className="px-6 xl:px-52 py-8">
+    <div className="px-6 2xl:px-52 py-8">
       <IngredientSearchBar />
       <div className="max-h-[28rem] overflow-y-auto custom-scrollbar text-barlow">
         <TableComponent data={currentItems} config={tableConfig} showItemQuantity={itemsPerPage} />

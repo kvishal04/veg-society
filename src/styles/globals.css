@@ -32,6 +32,19 @@
 }
 
 
+/* add the code bellow */ 
+@layer utilities {
+  /* Hide scrollbar for Chrome, Safari and Opera */
+  .no-scrollbar::-webkit-scrollbar {
+      display: none;
+  }
+ /* Hide scrollbar for IE, Edge and Firefox */
+  .no-scrollbar {
+      -ms-overflow-style: none;  /* IE and Edge */
+      scrollbar-width: none;  /* Firefox */
+}
+}
+
 .text-barlow {
   font-family: "Barlow", sans-serif;
   font-weight: 400;
@@ -96,6 +109,16 @@ body {
   min-height: calc(100vh - 280px)
 }
 
+select option {
+  background-color: white;
+  color: black;
+}
+
+/* Apply hover effect for options */
+select option:hover {
+  background-color: #90ee90 !important; /* Light Green */
+  color: #064e3b !important; /* Dark Green */
+}
 @keyframes spin {
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
