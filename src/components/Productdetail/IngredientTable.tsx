@@ -77,7 +77,7 @@ const IngredientTable: React.FC = () => {
         name: "Number",
         keys: ["Number"],
         sortable: true,
-        className: "rounded-tl-lg max-w-16",
+        className: "rounded-tl-lg md:max-w-16",
       },
       {
         name: "Ingredient",
