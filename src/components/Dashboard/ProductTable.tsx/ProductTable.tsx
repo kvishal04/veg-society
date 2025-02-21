@@ -7,6 +7,7 @@ import ProductSearchBar from '../ProductSearch';
 import Pagination from '@/components/reusable/Table/Pagination';
 import { producttabledata } from '@/FakeJson/tabledata'
 import EyeView from '@/styles/logo/Eye';
+import Link from 'next/link';
 
 
 interface TableData  {
@@ -78,7 +79,9 @@ const tableConfig = {
             customBodyRender: (value: TableData) => {
                 return (
                     <div className="flex space-x-4">
-                        <EyeView  className="text-darkGreen cursor-pointer hover:text-green-500"  />
+                        <Link href={`/dashboard/product/${value.number}`}>
+                            <EyeView  className="text-darkGreen cursor-pointer hover:text-green-500"  />
+                        </Link>
                         <Pencil id={value.name} className="text-darkGreen cursor-pointer hover:text-blue-300" size={18} />
                         <Trash2 id={value.name}  className="text-darkGreen cursor-pointer hover:text-red-300" size={18} />
                     </div>
