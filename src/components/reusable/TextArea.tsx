@@ -9,7 +9,7 @@ interface CustomTextareaProps {
   className?: string;
 }
 
-const CustomTextarea: React.FC<CustomTextareaProps> = ({
+const Textarea: React.FC<CustomTextareaProps> = ({
   value,
   onChange,
   placeholder = "",
@@ -29,4 +29,4 @@ const CustomTextarea: React.FC<CustomTextareaProps> = ({
   );
 };
 
-export default CustomTextarea;
+export default Textarea;

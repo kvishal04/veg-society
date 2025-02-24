@@ -21,8 +21,8 @@ const ProductCreateModal: React.FC<ModalProps> = ({ isOpen, onClose, onSave }) =
   
     if (!isOpen) return null; // ✅ This can stay, but hooks must be above it
   
-    const handleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-      setAccreditation(e.target.value);
+    const handleSelectChange = (value : string) => {
+      setAccreditation(value);
     };
   
 
@@ -56,10 +56,11 @@ const ProductCreateModal: React.FC<ModalProps> = ({ isOpen, onClose, onSave }) =
                             <label htmlFor="accreditation" className="block text-lg font-medium">Requested Accreditation</label>
                             <Select
                                 id="accreditation"
-                                className="w-full mt-2 p-2 pr-10  border-2 focus:ring-2  hover:bg-gray-100 focus:ring-black appearance-none  rounded-lg text-black outline-none"
+                                className="w-full  mt-2 px-4 py-2  border-2 focus:ring-2  hover:bg-gray-100 focus:ring-black appearance-none  rounded-lg text-black outline-none"
                                 options={AccreditationData}
                                 value={accreditation}
                                 onChange={handleSelectChange}
+                                optionClassName="hover:bg-lightGreen"
                             />
                         </div>
 

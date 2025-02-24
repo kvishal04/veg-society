@@ -30,11 +30,11 @@ const ProductSummary: React.FC = () => {
       <hr className="border-white" />
 
     <div className="flex flex-col md:flex-row justify-start md:justify-between items-start  gap-8 lg:items-center">
-      <div className="flex flex-col lg:flex-row justify-start gap-4 items-start  w-full md:w-3/4 xl:w-auto">
+      <div className="flex flex-col lg:flex-row justify-start gap-4 items-start  w-full md:w-3/4  xl:w-[80%]">
             {/* Accreditation Status */}
-        <div className="flex flex-col items-start justify-start w-full">
+        <div className="flex flex-col items-start justify-start w-full  2xl:w-[55%]">
           <div className="flex items-end gap-2 mt-3 mb-4">
-            <div className=" text-lg md:text-2xl">Accreditation Status:</div>
+            <div className=" text-lg lg:text-2xl">Accreditation Status:</div>
             <span className="text-xl lg:text-2xl font-semibold">Pending</span>
           </div>
 
@@ -54,24 +54,24 @@ const ProductSummary: React.FC = () => {
         {/* Requested Accreditation */}
         <div className="flex flex-col items-start justify-start border-t-2 pt-4 lg:pt-0 lg:border-t-0 lg:border-l-2 border-white lg:pl-8 w-full">
           <div className="flex items-center gap-1 text-2xl mb-2 w-full">
-            <span className="mr-2 text-xl lg:text-lg w-1/2">Requested Accreditation:</span>
-            <div className="w-1/2">
+            <span className="mr-2 text-xl lg:text-lg">Requested Accreditation:</span>
+            <div className="">
               <Select
                 options={AccreditationData}
                 id="accreditation"
-                className="w-full hover:bg-slate-400 py-2 text-xl px-2 bg-[#004537]  border border-darkGreen  focus:ring-black appearance-none  rounded-lg text-white outline-none"
+                className="w-full hover:bg-slate-400 text-center mt-2 px-4 py-2 gap-4  text-xl bg-[#004537]  border border-darkGreen  focus:ring-black appearance-none  rounded-lg text-white outline-none"
                 value={accreditation}
-                optionClassName="hover:bg-slate-400 "
-                onChange={(e) => setAccreditation(e.target.value)}
+                optionClassName="text-base text-center hover:bg-green-400"
+                onChange={(value) => setAccreditation(value)}
               />
             </div>
           
           </div>
 
           {/* Submission & Response Dates */}
-          <div className="flex flex-col xl:flex-row justify-start items-start gap-2 text-base md:text-lg 2xl:text-xl">
-            <p>Submitted on: <span className="ml-3">23-10-2024</span></p>
-            <p>Response Date: <span className="ml-3">25-10-2024</span></p>
+          <div className="flex flex-col xl:flex-row justify-start items-start gap-2 text-base md:text-lg 2xl:text-lg md:w-full">
+            <p>Submitted on: <span className="ml-2">23-10-2024</span></p>
+            <p className="xl:ml-4">Response Date: <span className="ml-2">25-10-2024</span></p>
           </div>
         </div>
       </div>

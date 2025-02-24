@@ -15,12 +15,12 @@ const ProductSearchBar = () => {
   const [status, setStatus] = useState("Accredited");
   const [accreditation, setAccreditation] = useState("Plant");
 
-  const handleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setAccreditation(e.target.value);
+  const handleSelectChange = (value : string) => {
+    setAccreditation(value);
   }
 
-  const handleSelectChangeStatus = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setStatus(e.target.value);
+  const handleSelectChangeStatus = (value: string) => {
+    setStatus(value);
   }
 
   return (
@@ -41,17 +41,17 @@ const ProductSearchBar = () => {
   {/* Accreditation Dropdown */}
   <Select
     id="accreditation"
-    className="w-full p-2 pr-10 bg-white border border-darkGreen hover:bg-gray-100 focus:ring-black appearance-none  rounded-lg text-darkGreen outline-none"
+    className="text-center w-full px-4 py-2  bg-white border border-darkGreen focus:ring-black appearance-none  rounded-lg text-darkGreen outline-none"
     options={AccreditationData}
     value={accreditation}
     onChange={handleSelectChange}
-    optionClassName="text-center"
+    optionClassName="text-center hover:bg-lightGreen "
   />
 
   {/* Status Dropdown */}
   <Select
     id="status"
-    className="w-full p-2 pr-10 bg-white border border-darkGreen hover:bg-gray-100 focus:ring-black appearance-none  rounded-lg text-darkGreen outline-none"
+    className="w-full px-4 py-2 text-center  bg-white border border-darkGreen hover:bg-gray-100 focus:ring-black appearance-none  rounded-lg text-darkGreen outline-none"
     options={statusData}
     value={status}
     onChange={handleSelectChangeStatus}

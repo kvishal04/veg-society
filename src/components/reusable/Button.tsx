@@ -5,7 +5,7 @@ interface CustomButtonProps {
   children: React.ReactNode;
   onClick?: () => void;
   disabled?: boolean;
-  variant?: "primary" | "secondary" | "outline" | "dark-green" | "light-green" | "white";
+  variant?: "primary" | "secondary" | "outline" | "dark-green" | "light-green" | "white" | "clear-green";
   fullWidth?: boolean;
   className?: string;
 }
@@ -26,6 +26,7 @@ const Button: React.FC<CustomButtonProps> = ({
     outline: "bg-transparent border border-gray-500 text-gray-500 hover:bg-gray-100 focus:ring-gray-500",
     "dark-green": "bg-green-900 text-white border border-lightGreen hover:bg-green-800 focus:ring-green-900",
     "light-green": "bg-green-200 text-white border border-green-400 hover:bg-green-300 focus:ring-green-200",
+    "clear-green": "bg-white text-darkGreen border border-darkGreen hover:bg-green-300 focus:ring-green-200",
     white: "bg-white text-black border border-black hover:bg-gray-100 focus:ring-black",
   };
 

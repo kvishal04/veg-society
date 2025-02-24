@@ -11,6 +11,7 @@ export const api = createApi({
         const myState: RootState = getState() as RootState;
         const userData = myState.auth;
         headers.set('Content-Type', 'application/json');
+        headers.set('Accept', 'application/json');
         if (userData.token) {
           headers.set('Authorization', `Bearer ${userData.token}`);
         }

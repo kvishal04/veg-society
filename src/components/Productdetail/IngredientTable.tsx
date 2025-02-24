@@ -7,6 +7,7 @@ import { IngredientData } from "@/FakeJson/tabledata";
 import IngredientSearchBar from "./IngredientSeach";
 import EyeView from "@/styles/logo/Eye";
 import AddIngredient from "./AddIngredient/AddIngredient";
+import Button from "../reusable/Button";
 
 interface TableData {
   Number: number;
@@ -55,6 +56,7 @@ const IngredientTable: React.FC = () => {
   const [data, setData] = useState<TableData[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(24);
+  const [openAddIngredietComponent, setOpenAddIngredietComponent] = useState<boolean>(false);
 
   // Pagination logic
   const indexOfLastItem = currentPage * itemsPerPage;
@@ -142,17 +144,24 @@ const IngredientTable: React.FC = () => {
       <div className="max-h-[28rem] overflow-y-auto custom-scrollbar text-barlow">
         <TableComponent data={currentItems} config={tableConfig} showItemQuantity={itemsPerPage} />
       </div>
-      <AddIngredient  />
-      <Pagination
-        totalItems={data.length}
-        itemsPerPage={itemsPerPage}
-        currentPage={currentPage}
-        onPageChange={(page: number) => setCurrentPage(page)}
-        onItemsPerPageChange={(items: number) => {
-          setItemsPerPage(items);
-          setCurrentPage(1);
-        }}
-      />
+      <AddIngredient openAddIngredietComponent={openAddIngredietComponent} setOpenAddIngredietComponent={setOpenAddIngredietComponent} />
+
+      <div className="flex justify-between mt-8 ">
+            <Button className='px-8' onClick={() => {setOpenAddIngredietComponent(true)}} variant="dark-green"><b>+</b> Add Ingredient</Button>
+            <Pagination
+                totalItems={data.length}
+                itemsPerPage={itemsPerPage}
+                currentPage={currentPage}
+                onPageChange={(page: number) => setCurrentPage(page)}
+                onItemsPerPageChange={(items: number) => {
+                setItemsPerPage(items);
+                setCurrentPage(1);
+                }}
+            />
+            <Button className='px-8' onClick={() => {}} variant="dark-green">Submit Changes</Button>
+        </div>
+
+     
     </div>
   );
 };

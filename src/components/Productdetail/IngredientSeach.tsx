@@ -12,8 +12,8 @@ const IngredientSearchBar = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [accreditation, setAccreditation] = useState("Plant");
 
-  const handleSelectChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setAccreditation(e.target.value);
+  const handleSelectChange = (value: string) => {
+    setAccreditation(value);
   }
 
   return (
@@ -34,11 +34,11 @@ const IngredientSearchBar = () => {
   {/* Accreditation Dropdown */}
   <Select
     id="accreditation"
-    className="w-full p-2 pr-10  bg-white border border-darkGreen  focus:ring-black appearance-none  rounded-lg text-darkGreen outline-none"
+    className="w-full text-center mt-2 px-4 py-2   bg-white border border-darkGreen  focus:ring-black appearance-none  rounded-lg text-darkGreen outline-none"
     options={AccreditationData}
     value={accreditation}
     onChange={handleSelectChange}
-    optionClassName="text-center onslecthover "
+    optionClassName="text-center hover:bg-green-400 "
   />
 
   {/* Status Dropdown */}

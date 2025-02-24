@@ -71,29 +71,30 @@ body {
   font-family: Arial, Helvetica, sans-serif;
 }
 
-/* WebKit Browsers (Chrome, Edge, Safari) */
+@supports (-moz-appearance: none) {
+    .custom-scrollbar {
+        scrollbar-width: thin; 
+        scrollbar-color: #00604D #96F19A;
+    }
+}
+
+/* / WebKit Browsers (Chrome, Edge, Safari) / */
 .custom-scrollbar::-webkit-scrollbar {
-  width: 8px;
+    width: 8px;
 }
 
 .custom-scrollbar::-webkit-scrollbar-track {
-  background: #a7f3d0; /* Light Green */
-  border-radius: 10px;
+    background: #96F19A; 
+    border-radius: 10px;
 }
 
 .custom-scrollbar::-webkit-scrollbar-thumb {
-  background: #065f46; /* Dark Green */
-  border-radius: 10px;
+    background: #00604D; 
+    border-radius: 10px;
 }
 
 .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-  background: #047857; /* Slightly lighter dark green */
-}
-
-/* Firefox Support */
-.custom-scrollbar {
-  scrollbar-width: thin; /* Makes scrollbar thinner */
-  scrollbar-color: #065f46 #a7f3d0; /* thumb color | track color */
+    background: #047857; 
 }
 
 .loader {
@@ -109,16 +110,7 @@ body {
   min-height: calc(100vh - 280px)
 }
 
-select option {
-  background-color: white;
-  color: black;
-}
 
-/* Apply hover effect for options */
-select option:hover {
-  background-color: #90ee90 !important; /* Light Green */
-  color: #064e3b !important; /* Dark Green */
-}
 @keyframes spin {
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }

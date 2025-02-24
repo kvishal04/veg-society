@@ -22,7 +22,7 @@ const Pagination: React.FC<PaginationProps> = ({
   const itemsPerPageOptions = [24, 48, 72, 96];
 
   return (
-    <div className="text-center mt-8">
+    <div className="text-center">
       {/* Pagination Controls */}
       <ul className="inline-flex gap-x-3 text-grey-900 mb-1.5">
         <li
