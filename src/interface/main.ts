@@ -38,7 +38,7 @@ export interface ProductDetail {
     requested: string
 }
 
-export interface ingredientData {
+export interface IIngredientData {
     Number: number;
     Ingredient: string;
     AlternativeNames: string[];

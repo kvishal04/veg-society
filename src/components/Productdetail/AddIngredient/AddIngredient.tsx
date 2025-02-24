@@ -6,9 +6,9 @@ import { IngredientData } from '@/FakeJson/tabledata'
 import AddIngredientSearchBar from './AddIngredientSearchBar';
 import Button from '@/components/reusable/Button';
 import Textarea from '@/components/reusable/TextArea';
-import { ingredientData } from '@/interface/main';
+import { IIngredientData } from '@/interface/main';
 
-const renderAlternativeNamesColumn = (value: ingredientData, dataLength: number) => {
+const renderAlternativeNamesColumn = (value: IIngredientData, dataLength: number) => {
     return (
         <div className={`text-black text-barlow`}>
             {value.AlternativeNames.join(', ')}
@@ -17,7 +17,7 @@ const renderAlternativeNamesColumn = (value: ingredientData, dataLength: number)
 };
 
 
-const customData =  (value: ingredientData, key: 'Vegetarian' | 'Vegan' | 'PlantBased') => {
+const customData =  (value: IIngredientData, key: 'Vegetarian' | 'Vegan' | 'PlantBased') => {
     let bgColor = "bg-customOrange"; // Default case
 
     if (value[key] === 1) {
@@ -35,14 +35,14 @@ interface IngredientProps {
 }
 
 const AddIngredient: React.FC<IngredientProps> = ({openAddIngredietComponent, setOpenAddIngredietComponent}) => {
-    const [selectedRows, setSelectedRows] = useState<ingredientData[]>([]);
-    const [data, setData] = useState<ingredientData[]>([]);
+    const [selectedRows, setSelectedRows] = useState<IIngredientData[]>([]);
+    const [data, setData] = useState<IIngredientData[]>([]);
     const [showNotListedForm, setShowNotListedForm] = useState(false);
 
 
 
     const onCellClick = (key: string, row: Record<string, any>) => {
-        const typedRow = row as ingredientData; // Explicit type assertion
+        const typedRow = row as IIngredientData; // Explicit type assertion
         setSelectedRows([typedRow]);
     }
 
@@ -51,7 +51,7 @@ const AddIngredient: React.FC<IngredientProps> = ({openAddIngredietComponent, se
         tHeadClassName: 'bg-darkGreen text-white border-none rounded-lg sticky top-0 z-10 ',
         thClassName: 'py-2 px-2 text-left border-none cursor-pointer gap-2',
         trClassName:  {
-            class: (row: ingredientData) => `${selectedRows.includes(row) ? 'bg-gray-400 text-white': ''} border-b border-none`
+            class: (row: IIngredientData) => `${selectedRows.includes(row) ? 'bg-gray-400 text-white': ''} border-b border-none`
         },
         // trClassName: 'border-b hover:bg-gray-100 border-none',
         thIconClassName: 'flex flex-row items-center gap-2 text-barlow-semi-bold',
@@ -68,13 +68,13 @@ const AddIngredient: React.FC<IngredientProps> = ({openAddIngredietComponent, se
             {
                 name: "AlternativeNames",
                 keys: ['AlternativeNames'],
-                customBodyRender:(value: ingredientData) => renderAlternativeNamesColumn(value, data.length),
+                customBodyRender:(value: IIngredientData) => renderAlternativeNamesColumn(value, data.length),
                 sortable: true
             },
             {
                 name: "Vegetarian",
                 keys: ['Vegetarian'],
-                customBodyRender: (value: ingredientData) => {
+                customBodyRender: (value: IIngredientData) => {
                     return (
                         customData(value,'Vegetarian')
                     );
@@ -84,7 +84,7 @@ const AddIngredient: React.FC<IngredientProps> = ({openAddIngredietComponent, se
             {
                 name: "Vegan",
                 keys: ['Vegan'],
-                customBodyRender: (value: ingredientData) => {
+                customBodyRender: (value: IIngredientData) => {
                     return (
                         customData(value, 'Vegan')
                     );
@@ -96,7 +96,7 @@ const AddIngredient: React.FC<IngredientProps> = ({openAddIngredietComponent, se
                 name: "PlantBased",
                 keys: ['PlantBased'],
                 sortable: true,
-                customBodyRender: (value: ingredientData) => {
+                customBodyRender: (value: IIngredientData) => {
                     return (
                         customData(value, 'PlantBased')
                     );

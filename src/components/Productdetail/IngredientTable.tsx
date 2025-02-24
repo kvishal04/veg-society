@@ -8,7 +8,7 @@ import IngredientSearchBar from "./IngredientSeach";
 import EyeView from "@/styles/logo/Eye";
 import AddIngredient from "./AddIngredient/AddIngredient";
 import Button from "../reusable/Button";
-import { ingredientData, TableConfig } from "@/interface/main";
+import { IIngredientData, TableConfig } from "@/interface/main";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
 import { loadProductIngredientTable } from "@/redux/features/IngredientDataSlice";
@@ -17,7 +17,7 @@ import SkeletonLoad from "../reusable/Skeleton";
 
 
 
-const customBodyRender = (value: ingredientData, key: "Vegetarian" | "Vegan" | "PlantBased") => {
+const customBodyRender = (value: IIngredientData, key: "Vegetarian" | "Vegan" | "PlantBased") => {
   let bgColor = "bg-customOrange"; // Default case
 
   if (value[key] === 1) {
@@ -30,7 +30,7 @@ const customBodyRender = (value: ingredientData, key: "Vegetarian" | "Vegan" | "
 };
 
 
-const renderAlternativeNamesColumn = (value: ingredientData,) => {
+const renderAlternativeNamesColumn = (value: IIngredientData,) => {
     return (
         <div className={`text-black text-barlow`}>
             {value.AlternativeNames.join(', ')}
@@ -38,7 +38,7 @@ const renderAlternativeNamesColumn = (value: ingredientData,) => {
     );
 };
 
-const renderActionColumn = (value: ingredientData ) => {
+const renderActionColumn = (value: IIngredientData ) => {
     return (
         <div className="flex space-x-4">
             <EyeView className="text-darkGreen cursor-pointer hover:text-green-500" />
@@ -88,19 +88,19 @@ const IngredientTable: React.FC = () => {
       {
         name: "AlternativeNames",
         keys: ["AlternativeNames"],
-        customBodyRender: (value: ingredientData) => renderAlternativeNamesColumn(value),
+        customBodyRender: (value: IIngredientData) => renderAlternativeNamesColumn(value),
         sortable: true,
       },
       {
         name: "Vegetarian",
         keys: ["Vegetarian"],
-        customBodyRender: (value: ingredientData) => customBodyRender(value, "Vegetarian"),
+        customBodyRender: (value: IIngredientData) => customBodyRender(value, "Vegetarian"),
         sortable: true,
       },
       {
         name: "Vegan",
         keys: ["Vegan"],
-        customBodyRender: (value: ingredientData) => customBodyRender(value, "Vegan"),
+        customBodyRender: (value: IIngredientData) => customBodyRender(value, "Vegan"),
         rowclassName: "",
         sortable: true,
       },
@@ -108,7 +108,7 @@ const IngredientTable: React.FC = () => {
         name: "PlantBased",
         keys: ["PlantBased"],
         sortable: true,
-        customBodyRender: (value: ingredientData) => customBodyRender(value, "PlantBased"),
+        customBodyRender: (value: IIngredientData) => customBodyRender(value, "PlantBased"),
       },
       {
         name: "Date Added",
@@ -120,7 +120,7 @@ const IngredientTable: React.FC = () => {
         keys: ["action"],
         sortable: false,
         className: "rounded-tr-lg",
-        customBodyRender: (value: ingredientData) => renderActionColumn(value),
+        customBodyRender: (value: IIngredientData) => renderActionColumn(value),
       },
     ],
     rows: {

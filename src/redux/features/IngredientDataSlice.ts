@@ -1,11 +1,11 @@
 // redux/features/loaderSlice.ts
-import { ingredientData } from '@/interface/main';
+import { IIngredientData } from '@/interface/main';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 interface IngredientDataState {
   isLoading: boolean;
-  IngredientTableData: ingredientData[];
-  newData: ingredientData[];
+  IngredientTableData: IIngredientData[];
+  newData: IIngredientData[];
 }
 
 const initialState: IngredientDataState = {
@@ -22,15 +22,15 @@ const IngredientDataSlice = createSlice({
       state.isLoading = action.payload;
     },
 
-    loadProductIngredientTable: (state, action: PayloadAction<ingredientData[]>) => {
+    loadProductIngredientTable: (state, action: PayloadAction<IIngredientData[]>) => {
         state.IngredientTableData = [...action.payload]
     },
 
-    appendNewData:  (state, action: PayloadAction<ingredientData>) => {
+    appendNewData:  (state, action: PayloadAction<IIngredientData>) => {
         state.newData.push(action.payload)
     },
 
-    addNonexitingData:  (state, action: PayloadAction<ingredientData>) => {
+    addNonexitingData:  (state, action: PayloadAction<IIngredientData>) => {
         state.newData.push({...action.payload, notExisted: true})
     }
 

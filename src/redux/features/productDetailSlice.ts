@@ -1,11 +1,11 @@
 // redux/features/loaderSlice.ts
-import { ingredientData, ProductDetail } from '@/interface/main';
+import { IIngredientData, ProductDetail } from '@/interface/main';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 interface productDetailState {
   isLoading: boolean;
-  IngredientTableData: ingredientData[];
-  newData: ingredientData[];
+  IngredientTableData: IIngredientData[];
+  newData: IIngredientData[];
   productDetail : ProductDetail
 
 }
@@ -24,7 +24,7 @@ const initialState: productDetailState = {
 };
 
 const productDetailSlice = createSlice({
-  name: 'productDetail',
+  name: 'ProductDetail',
   initialState,
   reducers: {
     setLoading: (state, action: PayloadAction<boolean>) => {
