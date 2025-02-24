@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useState } from "react";
+import { Suspense, useCallback, useState } from "react";
 import Input from "@/components/reusable/Input";
 import Button from "@/components/reusable/Button";
 import Header from "@/components/Common/Header";
@@ -86,7 +86,9 @@ export default function Reset() {
 
   return (
     <div>
-      <Header title="Reset password" />
+       <Suspense fallback={<div>Loading...</div>}>
+          <Header title="Reset password" />
+       </Suspense>
       <div className="bg-[#F2E9DA] calci flex items-top justify-start p-4 text-barlow">
         <div className="bg-transparent p-6 w-full md:w-96 sm:mt-12 md:mt-16 sm:ml-12 md:ml-40">
           <form className="w-full lg:w-[45rem]" onSubmit={handleSubmit}>

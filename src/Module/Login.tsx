@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { Suspense, useState } from "react";
 import { useLoginUserMutation } from "@/redux/services/api";
 import { useDispatch } from "react-redux";
 import { AppDispatch } from "@/redux/store";
@@ -75,7 +75,9 @@ const Login: React.FC = () => {
 
   return (
     <div className="login">
-      <Header title="Log in" />
+      <Suspense fallback={<div>Loading...</div>}>
+        <Header title="Log in" />
+      </Suspense>
       <div className="bg-[#F2E9DA] calci flex items-top justify-start text-barlow">
         <div className="bg-transparent px-6 pt-6 h-auto sm:mt-12 md:mt-[7.7rem] sm:ml-12 md:ml-40">
           <form onSubmit={handleSubmit} className="w-full md:w-[26.7rem]">

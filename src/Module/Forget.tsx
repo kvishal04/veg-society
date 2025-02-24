@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useRef, useState } from "react";
+import { Suspense, useCallback, useRef, useState } from "react";
 import Input from "@/components/reusable/Input";
 import Button from "@/components/reusable/Button";
 import Header from "@/components/Common/Header";
@@ -56,7 +56,9 @@ export default function Forget() {
 
   return (
     <div className="bg-[#F2E9DA]">
-      <Header title="Forgot your password?" />
+      <Suspense fallback={<div>Loading...</div>}>
+        <Header title="Forgot your password?" />
+      </Suspense>
       <div className="calci flex items-top justify-start pt-4 px-4 text-barlow">
         <div className="bg-transparent p-6 w-full md:w-96 sm:mt-12 md:mt-10 sm:ml-12 md:ml-40">
           <form onSubmit={handleSubmit} className="w-full md:w-[27rem]">

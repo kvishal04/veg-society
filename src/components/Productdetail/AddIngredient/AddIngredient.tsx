@@ -6,22 +6,9 @@ import { IngredientData } from '@/FakeJson/tabledata'
 import AddIngredientSearchBar from './AddIngredientSearchBar';
 import Button from '@/components/reusable/Button';
 import Textarea from '@/components/reusable/TextArea';
+import { ingredientData } from '@/interface/main';
 
-
-
-interface TableData {
-    Number: number;
-    Ingredient: string;
-    AlternativeNames: string[];
-    Vegetarian: number;
-    Vegan: number;
-    PlantBased: number;
-    DateAdded: string;
-    isDisable?: boolean;
-};
-
-
-const renderAlternativeNamesColumn = (value: TableData, dataLength: number) => {
+const renderAlternativeNamesColumn = (value: ingredientData, dataLength: number) => {
     return (
         <div className={`text-black text-barlow`}>
             {value.AlternativeNames.join(', ')}
@@ -30,7 +17,7 @@ const renderAlternativeNamesColumn = (value: TableData, dataLength: number) => {
 };
 
 
-const customData =  (value: TableData, key: 'Vegetarian' | 'Vegan' | 'PlantBased') => {
+const customData =  (value: ingredientData, key: 'Vegetarian' | 'Vegan' | 'PlantBased') => {
     let bgColor = "bg-customOrange"; // Default case
 
     if (value[key] === 1) {
@@ -48,19 +35,15 @@ interface IngredientProps {
 }
 
 const AddIngredient: React.FC<IngredientProps> = ({openAddIngredietComponent, setOpenAddIngredietComponent}) => {
-    const [selectedRows, setSelectedRows] = useState<TableData[]>([]);
-    const [data, setData] = useState<TableData[]>([]);
+    const [selectedRows, setSelectedRows] = useState<ingredientData[]>([]);
+    const [data, setData] = useState<ingredientData[]>([]);
     const [showNotListedForm, setShowNotListedForm] = useState(false);
 
 
 
     const onCellClick = (key: string, row: Record<string, any>) => {
-        const typedRow = row as TableData; // Explicit type assertion
-    
-        setSelectedRows((prevSelectedRows) => {
-            const isAlreadySelected = prevSelectedRows.some(selected => selected.Number === typedRow.Number);
-            return isAlreadySelected ? prevSelectedRows.filter(selected => selected.Number !== typedRow.Number) : [...prevSelectedRows, typedRow];
-        });
+        const typedRow = row as ingredientData; // Explicit type assertion
+        setSelectedRows([typedRow]);
     }
 
     const tableConfig = {
@@ -68,7 +51,7 @@ const AddIngredient: React.FC<IngredientProps> = ({openAddIngredietComponent, se
         tHeadClassName: 'bg-darkGreen text-white border-none rounded-lg sticky top-0 z-10 ',
         thClassName: 'py-2 px-2 text-left border-none cursor-pointer gap-2',
         trClassName:  {
-            class: (row: TableData) => `${selectedRows.includes(row) ? 'bg-gray-400 text-white': ''} border-b border-none`
+            class: (row: ingredientData) => `${selectedRows.includes(row) ? 'bg-gray-400 text-white': ''} border-b border-none`
         },
         // trClassName: 'border-b hover:bg-gray-100 border-none',
         thIconClassName: 'flex flex-row items-center gap-2 text-barlow-semi-bold',
@@ -85,13 +68,13 @@ const AddIngredient: React.FC<IngredientProps> = ({openAddIngredietComponent, se
             {
                 name: "AlternativeNames",
                 keys: ['AlternativeNames'],
-                customBodyRender:(value: TableData) => renderAlternativeNamesColumn(value, data.length),
+                customBodyRender:(value: ingredientData) => renderAlternativeNamesColumn(value, data.length),
                 sortable: true
             },
             {
                 name: "Vegetarian",
                 keys: ['Vegetarian'],
-                customBodyRender: (value: TableData) => {
+                customBodyRender: (value: ingredientData) => {
                     return (
                         customData(value,'Vegetarian')
                     );
@@ -101,7 +84,7 @@ const AddIngredient: React.FC<IngredientProps> = ({openAddIngredietComponent, se
             {
                 name: "Vegan",
                 keys: ['Vegan'],
-                customBodyRender: (value: TableData) => {
+                customBodyRender: (value: ingredientData) => {
                     return (
                         customData(value, 'Vegan')
                     );
@@ -113,7 +96,7 @@ const AddIngredient: React.FC<IngredientProps> = ({openAddIngredietComponent, se
                 name: "PlantBased",
                 keys: ['PlantBased'],
                 sortable: true,
-                customBodyRender: (value: TableData) => {
+                customBodyRender: (value: ingredientData) => {
                     return (
                         customData(value, 'PlantBased')
                     );
@@ -167,7 +150,7 @@ const AddIngredient: React.FC<IngredientProps> = ({openAddIngredietComponent, se
                             id="ingredient"
                             placeholder="Enter ingredient name"  
                             className="border p-2 mb-2 h-12 lg:h-28 text-lg font-bold underline"
-                            value={'dcdcdc'} 
+                            value={''} 
                             onChange={(e) => {}} 
                         />
                     </div>
@@ -179,7 +162,7 @@ const AddIngredient: React.FC<IngredientProps> = ({openAddIngredietComponent, se
                             id="Alt_Names"
                             placeholder="Enter alternative names"  
                             className="border p-2 mb-2  h-16 lg:h-28 text-lg"
-                            value={'cscscs'} 
+                            value={''} 
                             onChange={(e) => {}} 
                         />
                     </div>
@@ -199,7 +182,7 @@ const AddIngredient: React.FC<IngredientProps> = ({openAddIngredietComponent, se
             
                 {/* Buttons Section */}
                     <div className="flex justify-end gap-2 mt-1">
-                        <Button className='text-base lg:text-lg lg:px-[4rem] lg:py-3 md:px-8 md:py-3 px-3 py-2' onClick={() => setShowNotListedForm(false)} variant="light-green">Back</Button>
+                        <Button className='text-base lg:text-lg lg:px-[4rem] lg:py-3 md:px-8 md:py-3 px-3 py-2' onClick={() => setShowNotListedForm(false)} variant="clear-green">Back</Button>
                         <Button className='text-base lg:text-lg lg:px-[4rem] lg:py-3 md:px-8 md:py-3 px-3 py-2' onClick={() => {setShowNotListedForm(false)}} variant="dark-green">Submit</Button>
                     </div>
                 </div>                
@@ -217,7 +200,6 @@ const AddIngredient: React.FC<IngredientProps> = ({openAddIngredietComponent, se
             )}
         </div>
         }
-        
         </>
         
     );

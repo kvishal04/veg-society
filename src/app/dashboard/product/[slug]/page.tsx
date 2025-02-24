@@ -1,11 +1,13 @@
 import IngredientTable from '@/components/Productdetail/IngredientTable'
 import ProductSummary from '@/components/Productdetail/ProductSummary'
-import React from 'react'
+import React, { Suspense } from 'react'
 
 const page = () => {
   return (
     <div className='calci'>
-        <ProductSummary />
+        <Suspense fallback={<div>Loading...</div>}>
+          <ProductSummary />
+        </Suspense>
         <IngredientTable />
     </div>
   )

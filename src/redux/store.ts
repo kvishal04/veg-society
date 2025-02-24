@@ -2,12 +2,16 @@ import { configureStore } from "@reduxjs/toolkit";
 import { api } from "@/redux/services/api";
 import authReducer from "@/redux/features/authSlice";
 import loaderReducer from "@/redux/features/loaderSlice";
+import productDetailReducer from "@/redux/features/productDetailSlice";
+import IngredientDataReducer from "@/redux/features/IngredientDataSlice";
 
 export const makeStore = () => {
   return configureStore({
     reducer: {
       auth: authReducer,
       loader: loaderReducer,
+      productDetailReducer : productDetailReducer,
+      IngredientData: IngredientDataReducer,
       [api.reducerPath]: api.reducer,
     },
     middleware: (getDefaultMiddleware) => {

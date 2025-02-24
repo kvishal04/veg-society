@@ -55,7 +55,7 @@ const ProductSearchBar = () => {
     options={statusData}
     value={status}
     onChange={handleSelectChangeStatus}
-    optionClassName="text-center"
+    optionClassName="text-center hover:bg-lightGreen"
   />
 </div>
 

@@ -1,36 +1,9 @@
 "use client";
 
+import { TableColumn, TableConfig } from "@/interface/main";
 import { Triangle } from "lucide-react";
-import React, { JSX, useState } from "react";
+import React, { useState } from "react";
 
-type TableColumn = {
-  name: string;
-  keys: string[];
-  sortable?: boolean;
-  className?: string;
-  rowclassName?: string;
-  customBodyRender?: (row: any) => JSX.Element;
-};
-
-type TableConfig = {
-  tableClassName: string;
-  tHeadClassName: string;
-  tBodyClassName: string;
-  trClassName: {
-    class: (row: any) => string;
-  };
-  thClassName: string;
-  thIconClassName: string;
-  tdClassname: string;
-  showItemQuantity: number;
-  columns: TableColumn[];
-  rows: {
-    className: string;
-  };
-  emptyState: {
-    text: () => string;
-  };
-};
 
 type TableComponentProps = {
   data: Record<string, any>[];

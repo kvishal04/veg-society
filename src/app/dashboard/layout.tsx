@@ -3,7 +3,7 @@
 import "@/styles/globals.css";
 import Withadmin from "@/hoc/Withadmin";
 import Header from "@/components/Common/Header";
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 
 
 
@@ -24,7 +24,9 @@ if (!isMounted) {
 }
         return (
             <div className="nooooo">
-              <Header />
+              <Suspense fallback={<div>Loading...</div>}>
+                <Header />
+              </Suspense>
               {props.children}
             </div>
           );

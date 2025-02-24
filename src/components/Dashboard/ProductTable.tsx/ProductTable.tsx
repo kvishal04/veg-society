@@ -8,20 +8,9 @@ import Pagination from '@/components/reusable/Table/Pagination';
 import { producttabledata } from '@/FakeJson/tabledata'
 import EyeView from '@/styles/logo/Eye';
 import Link from 'next/link';
+import { ProductData, TableConfig } from '@/interface/main';
 
-
-interface TableData  {
-    number: number;
-    name: string;
-    accreditation: string;
-    submitted: string;
-    response: string;
-    status: string;
-    isDisable?: boolean;
-};
-
-
-const tableConfig = {
+const tableConfig : TableConfig = {
     tableClassName: 'min-w-full bg-white border border-gray-200 shadow-md rounded-lg',
     tHeadClassName: 'bg-darkGreen text-white border rounded-lg sticky top-0 z-10 ',
     thClassName: 'py-2 px-4 text-left border-b cursor-pointer gap-2',
@@ -34,36 +23,36 @@ const tableConfig = {
     showItemQuantity: 20,
     columns: [
         {
-            name: "number",
+            name: "Number",
             keys: ['number'],
             sortable: true,
             className: 'rounded-tl-lg'
         },
         {
-            name: "name",
+            name: "Name",
             keys: ['name'],
             sortable: true
         },
         {
-            name: "accreditation",
+            name: "Accreditation",
             keys: ['accreditation'],
             sortable: true
         },
         {
-            name: "submitted",
+            name: "Submitted",
             keys: ['submitted'],
             sortable: true
         },
         {
-            name: "response",
+            name: "Response",
             keys: ['response'],
             sortable: true
         },
         {
-            name: "status",
+            name: "Status",
             keys: ['status'],
             sortable: true,
-            customBodyRender: (value: TableData) => {
+            customBodyRender: (value: ProductData) => {
                 return (
                     <div className={`${value.status === "Pending" ? "text-black text-barlow-bold " : "text-black"}`}>
                         {value.status}
@@ -72,17 +61,19 @@ const tableConfig = {
             },
         },
         {
-            name: "action",
+            name: "Action",
             keys: ['action'],
             sortable: false,
             className: 'rounded-tr-lg',
-            customBodyRender: (value: TableData) => {
+            customBodyRender: (value: ProductData) => {
                 return (
                     <div className="flex space-x-4">
-                        <Link href={`/dashboard/product/${value.number}`}>
+                        <Link href={`/dashboard/product/${value.number}?mode=0`}>
                             <EyeView  className="text-darkGreen cursor-pointer hover:text-green-500"  />
                         </Link>
-                        <Pencil id={value.name} className="text-darkGreen cursor-pointer hover:text-blue-300" size={18} />
+                        <Link href={`/dashboard/product/${value.number}?mode=1`}>
+                            <Pencil id={value.name} className="text-darkGreen cursor-pointer hover:text-blue-300" size={18} />
+                        </Link>
                         <Trash2 id={value.name}  className="text-darkGreen cursor-pointer hover:text-red-300" size={18} />
                     </div>
                 );
@@ -102,7 +93,7 @@ const tableConfig = {
 const ProductTable: React.FC = () => {
     const [currentPage, setCurrentPage] = useState(1);
     const [itemsPerPage, setItemsPerPage] = useState(24);
-    const data: TableData[] = [...producttabledata];
+    const data: ProductData[] = [...producttabledata];
 
     // Pagination logic
     const indexOfLastItem = currentPage * itemsPerPage;

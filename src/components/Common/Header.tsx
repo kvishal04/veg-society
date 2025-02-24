@@ -1,18 +1,18 @@
 import React, { useState, useEffect } from "react";
 import Button from "@/components/reusable/Button";
 import Heading from "@/components/reusable/Heading";
-import Paragraph from "@/components/reusable/Paragraph";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/redux/store";
 import Image from "next/image";
 import ProductCreateModal from "@/components/Modals/ProductCreateModal";
 import { logout } from "@/redux/features/authSlice";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import LogutModal from "../Modals/LogutModal";
 import {useLogoutUserMutation } from "@/redux/services/api";
 import { setLoading } from "@/redux/features/loaderSlice";
 import { showToast } from "@/utils/utills";
 import User from "@/styles/logo/User";
+import Link from "next/link";
 
 interface HeaderProps {
   title?: string;
@@ -30,6 +30,11 @@ const Header: React.FC<HeaderProps> = ({ title = 'Company Name' }) => {
   const closeLogoutModal = () => setLogoutModal(false);
   const closeModal = () => setProductModal(false);
   const [logoutUser] = useLogoutUserMutation();
+
+  const searchParams = useSearchParams();
+  const pathname = usePathname();
+  const mode = searchParams.get("mode");
+  const isProductPage = pathname.includes("/product/");
   
   const logoutUserFunc = async () => {
     try {
@@ -92,12 +97,21 @@ const Header: React.FC<HeaderProps> = ({ title = 'Company Name' }) => {
         {/* Action Button */}
         {token ? (
           <div className="flex flex-row gap-8 justify-between items-center mt-4  w-full md:w-auto">
-            <Paragraph className="underline">Dashboard</Paragraph>
-            <Button
-              onClick={openModal}
-              variant="dark-green"
-              className="text-sm md:text-base lg:text-lg lg:px-[2.2rem] lg:py-3 md:px-4 md:py-2 px-3 py-1"
-            > Add New Product </Button>
+            <Link href={'/dashboard'} className="underline">Dashboard</Link>
+            {!isProductPage ? 
+              <Button
+                onClick={openModal}
+                variant="dark-green"
+                className="text-sm md:text-base lg:text-lg lg:px-[2.2rem] lg:py-3 md:px-4 md:py-2 px-3 py-1"
+              > Add New Product </Button>
+              : mode === '0' ? <Link className="bg-darkGreen hover:bg-green-800 rounded-lg border-2 border-lightGreen text-sm md:text-base lg:text-lg lg:px-[2.2rem] lg:py-3 md:px-4 md:py-2 px-3 py-1" href={`${pathname}?mode=1`}>
+                Edit Product
+              </Link> : <Button
+                onClick={openModal}
+                variant="dark-green"
+                className="text-sm md:text-base lg:text-lg lg:px-[2.2rem] lg:py-3 md:px-4 md:py-2 px-3 py-1"
+              > Save </Button>
+            }
           </div>
         ) : null}
       </div>

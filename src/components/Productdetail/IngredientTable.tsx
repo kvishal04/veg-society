@@ -8,19 +8,16 @@ import IngredientSearchBar from "./IngredientSeach";
 import EyeView from "@/styles/logo/Eye";
 import AddIngredient from "./AddIngredient/AddIngredient";
 import Button from "../reusable/Button";
+import { ingredientData, TableConfig } from "@/interface/main";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "@/redux/store";
+import { loadProductIngredientTable } from "@/redux/features/IngredientDataSlice";
+import 'react-loading-skeleton/dist/skeleton.css'
+import SkeletonLoad from "../reusable/Skeleton";
 
-interface TableData {
-  Number: number;
-  Ingredient: string;
-  AlternativeNames: string[];
-  Vegetarian: number;
-  Vegan: number;
-  PlantBased: number;
-  DateAdded: string;
-  isDisable?: boolean;
-}
 
-const customBodyRender = (value: TableData, key: "Vegetarian" | "Vegan" | "PlantBased") => {
+
+const customBodyRender = (value: ingredientData, key: "Vegetarian" | "Vegan" | "PlantBased") => {
   let bgColor = "bg-customOrange"; // Default case
 
   if (value[key] === 1) {
@@ -33,7 +30,7 @@ const customBodyRender = (value: TableData, key: "Vegetarian" | "Vegan" | "Plant
 };
 
 
-const renderAlternativeNamesColumn = (value: TableData,) => {
+const renderAlternativeNamesColumn = (value: ingredientData,) => {
     return (
         <div className={`text-black text-barlow`}>
             {value.AlternativeNames.join(', ')}
@@ -41,7 +38,7 @@ const renderAlternativeNamesColumn = (value: TableData,) => {
     );
 };
 
-const renderActionColumn = (value: TableData ) => {
+const renderActionColumn = (value: ingredientData ) => {
     return (
         <div className="flex space-x-4">
             <EyeView className="text-darkGreen cursor-pointer hover:text-green-500" />
@@ -53,17 +50,18 @@ const renderActionColumn = (value: TableData ) => {
 
 
 const IngredientTable: React.FC = () => {
-  const [data, setData] = useState<TableData[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage, setItemsPerPage] = useState(24);
   const [openAddIngredietComponent, setOpenAddIngredietComponent] = useState<boolean>(false);
+  const { IngredientTableData , newData } = useSelector((state: RootState) => state.IngredientData); 
+  const dispatch = useDispatch()
 
   // Pagination logic
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentItems = data.slice(indexOfFirstItem, indexOfLastItem);
+  const currentItems = [...IngredientTableData, ...newData].slice(indexOfFirstItem, indexOfLastItem);
 
-  const tableConfig = {
+  const tableConfig: TableConfig = {
     tableClassName: "min-w-full bg-white border border-gray-200 shadow-md rounded-lg",
     tHeadClassName: "bg-darkGreen text-white border rounded-lg sticky top-0 z-10 ",
     thClassName: "py-2 px-2 text-left border-b cursor-pointer gap-2",
@@ -90,19 +88,19 @@ const IngredientTable: React.FC = () => {
       {
         name: "AlternativeNames",
         keys: ["AlternativeNames"],
-        customBodyRender: (value: TableData) => renderAlternativeNamesColumn(value),
+        customBodyRender: (value: ingredientData) => renderAlternativeNamesColumn(value),
         sortable: true,
       },
       {
         name: "Vegetarian",
         keys: ["Vegetarian"],
-        customBodyRender: (value: TableData) => customBodyRender(value, "Vegetarian"),
+        customBodyRender: (value: ingredientData) => customBodyRender(value, "Vegetarian"),
         sortable: true,
       },
       {
         name: "Vegan",
         keys: ["Vegan"],
-        customBodyRender: (value: TableData) => customBodyRender(value, "Vegan"),
+        customBodyRender: (value: ingredientData) => customBodyRender(value, "Vegan"),
         rowclassName: "",
         sortable: true,
       },
@@ -110,7 +108,7 @@ const IngredientTable: React.FC = () => {
         name: "PlantBased",
         keys: ["PlantBased"],
         sortable: true,
-        customBodyRender: (value: TableData) => customBodyRender(value, "PlantBased"),
+        customBodyRender: (value: ingredientData) => customBodyRender(value, "PlantBased"),
       },
       {
         name: "Date Added",
@@ -118,11 +116,11 @@ const IngredientTable: React.FC = () => {
         sortable: true,
       },
       {
-        name: "action",
+        name: "Action",
         keys: ["action"],
         sortable: false,
         className: "rounded-tr-lg",
-        customBodyRender: (value: TableData) => renderActionColumn(value),
+        customBodyRender: (value: ingredientData) => renderActionColumn(value),
       },
     ],
     rows: {
@@ -134,7 +132,9 @@ const IngredientTable: React.FC = () => {
   };
 
   useEffect(() => {
-    setData(IngredientData)
+    setTimeout(() => {
+      return dispatch(loadProductIngredientTable(IngredientData));
+    }, 2000);
   }, [])
   
 
@@ -142,14 +142,16 @@ const IngredientTable: React.FC = () => {
     <div className="px-6 2xl:px-52 py-8">
       <IngredientSearchBar />
       <div className="max-h-[28rem] overflow-y-auto custom-scrollbar text-barlow">
-        <TableComponent data={currentItems} config={tableConfig} showItemQuantity={itemsPerPage} />
+        {currentItems.length === 0 ? <SkeletonLoad count={10} /> :
+          <TableComponent data={currentItems} config={tableConfig} showItemQuantity={itemsPerPage} />
+        }
       </div>
       <AddIngredient openAddIngredietComponent={openAddIngredietComponent} setOpenAddIngredietComponent={setOpenAddIngredietComponent} />
 
       <div className="flex justify-between mt-8 ">
             <Button className='px-8' onClick={() => {setOpenAddIngredietComponent(true)}} variant="dark-green"><b>+</b> Add Ingredient</Button>
             <Pagination
-                totalItems={data.length}
+                totalItems={IngredientTableData.length + newData.length}
                 itemsPerPage={itemsPerPage}
                 currentPage={currentPage}
                 onPageChange={(page: number) => setCurrentPage(page)}
