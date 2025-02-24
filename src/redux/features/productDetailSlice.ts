@@ -23,7 +23,7 @@ const initialState: productDetailState = {
   }
 };
 
-const productDetailSlice = createSlice({
+const ProductDetailSlice = createSlice({
   name: 'ProductDetail',
   initialState,
   reducers: {
@@ -38,5 +38,5 @@ const productDetailSlice = createSlice({
   },
 });
 
-export const { setLoading, setProductDetail } = productDetailSlice.actions;
-export default productDetailSlice.reducer;
+export const { setLoading, setProductDetail } = ProductDetailSlice.actions;
+export default ProductDetailSlice.reducer;

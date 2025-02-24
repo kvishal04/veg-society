@@ -50,32 +50,41 @@ const Header: React.FC<HeaderProps> = ({ title = 'Company Name' }) => {
     }
   };
 
-  const buttonContent = isProductPage ? (
-    mode === "0" ? (
-      <Link
-        className="bg-darkGreen hover:bg-green-800 rounded-lg border-2 border-lightGreen text-sm md:text-base lg:text-lg lg:px-[2.2rem] lg:py-3 md:px-4 md:py-2 px-3 py-1"
-        href={`${pathname}?mode=1`}
-      >
-        Edit Product
-      </Link>
-    ) : (
-      <Button
-        onClick={openModal}
-        variant="dark-green"
-        className="text-sm md:text-base lg:text-lg lg:px-[2.2rem] lg:py-3 md:px-4 md:py-2 px-3 py-1"
-      >
-        Save
-      </Button>
-    )
-  ) : (
-    <Button
-      onClick={openModal}
-      variant="dark-green"
-      className="text-sm md:text-base lg:text-lg lg:px-[2.2rem] lg:py-3 md:px-4 md:py-2 px-3 py-1"
-    >
-      Add New Product
-    </Button>
-  );
+  const renderButton = () => {
+    switch (true) {
+      case isProductPage && mode === "0":
+        return (
+          <Link
+            className="bg-darkGreen hover:bg-green-800 rounded-lg border-2 border-lightGreen text-sm md:text-base lg:text-lg lg:px-[2.2rem] lg:py-3 md:px-4 md:py-2 px-3 py-1"
+            href={`${pathname}?mode=1`}
+          >
+            Edit Product
+          </Link>
+        );
+  
+      case isProductPage:
+        return (
+          <Button
+            onClick={openModal}
+            variant="dark-green"
+            className="text-sm md:text-base lg:text-lg lg:px-[2.2rem] lg:py-3 md:px-4 md:py-2 px-3 py-1"
+          >
+            Save
+          </Button>
+        );
+  
+      default:
+        return (
+          <Button
+            onClick={openModal}
+            variant="dark-green"
+            className="text-sm md:text-base lg:text-lg lg:px-[2.2rem] lg:py-3 md:px-4 md:py-2 px-3 py-1"
+          >
+            Add New Product
+          </Button>
+        );
+    }
+  };
   
   // State to check if the component is mounted
   const [isMounted, setIsMounted] = useState(false);
@@ -125,7 +134,7 @@ const Header: React.FC<HeaderProps> = ({ title = 'Company Name' }) => {
         {token ? (
           <div className="flex flex-row gap-8 justify-between items-center mt-4  w-full md:w-auto">
             <Link href={'/dashboard'} className="underline">Dashboard</Link>
-              {buttonContent}
+              {renderButton()}
           </div>
         ) : null}
       </div>
