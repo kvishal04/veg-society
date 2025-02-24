@@ -38,38 +38,34 @@ const Select: React.FC<CustomSelectProps> = ({
     <div ref={selectRef} className={`relative w-full ${disabled ? "opacity-50 cursor-not-allowed" : ""}`}>
 
       {/* Select Box */}
-      <div
+      <button
         id={id}
-        className={`flex justify-between items-center ${className}`}
+        className={`text-left flex justify-between items-center ${className}`}
         onClick={() => !disabled && setIsOpen(!isOpen)}
-        role="button"
-        tabIndex={0}
       >
-        <div className=" w-full">{options.find((opt) => opt.value === value)?.label || "Select an option"}</div>
+        <div className="w-full">{options.find((opt) => opt.value === value)?.label || "Select an option"}</div>
         <Triangle
           strokeWidth={1.75}
           fill="black"
           size={12}
           className={`transition-transform ${isOpen ? "rotate-0" : "rotate-180"}`}
         />
-      </div>
+      </button>
 
       {/* Dropdown List */}
       {isOpen && (
         <div className="absolute left-0 mt-2 w-full bg-white border border-darkGreen rounded-lg shadow-lg z-50 max-h-48 overflow-y-auto">
           {options.map((option) => (
-            <div
-              role="button"
-              tabIndex={0} 
+            <button
               key={option.value}
-              className={`p-2 text-darkGreen cursor-pointer ${optionClassName}`}
+              className={`p-2 text-left block w-full text-darkGreen cursor-pointer ${optionClassName}`}
               onClick={() => {
                 onChange(option.value);
                 setIsOpen(false);
               }}
             >
               {option.label}
-            </div>
+            </button>
           ))}
         </div>
       )}
