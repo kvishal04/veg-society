@@ -43,6 +43,7 @@ const Select: React.FC<CustomSelectProps> = ({
         className={`flex justify-between items-center ${className}`}
         onClick={() => !disabled && setIsOpen(!isOpen)}
         role="button"
+        tabIndex={0}
       >
         <div className=" w-full">{options.find((opt) => opt.value === value)?.label || "Select an option"}</div>
         <Triangle
@@ -59,6 +60,7 @@ const Select: React.FC<CustomSelectProps> = ({
           {options.map((option) => (
             <div
               role="button"
+              tabIndex={0} 
               key={option.value}
               className={`p-2 text-darkGreen cursor-pointer ${optionClassName}`}
               onClick={() => {
