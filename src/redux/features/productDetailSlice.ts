@@ -2,7 +2,7 @@
 import { IIngredientData, ProductDetail } from '@/interface/main';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
-interface productDetailState {
+interface ProductDetailState {
   isLoading: boolean;
   IngredientTableData: IIngredientData[];
   newData: IIngredientData[];
@@ -10,7 +10,7 @@ interface productDetailState {
 
 }
 
-const initialState: productDetailState = {
+const initialState: ProductDetailState = {
   isLoading: false,
   IngredientTableData: [],
   newData: [],
