@@ -162,8 +162,9 @@ const AddIngredient: React.FC<IngredientProps> = ({openAddIngredietComponent, se
                 <div className="w-full flex flex-col lg:flex-row gap-4">
                     {/* Ingredient Name */}
                     <div className="flex flex-col flex-grow basis-1/5 lg:w-full">
-                        <label className=" font-medium text-gray-700 mb-1 text-lg lg:px-4">Ingredient Name</label>
+                        <label htmlFor='ingredient' className=" font-medium text-gray-700 mb-1 text-lg lg:px-4">Ingredient Name</label>
                         <Textarea  
+                            id="ingredient"
                             placeholder="Enter ingredient name"  
                             className="border p-2 mb-2 h-12 lg:h-28 text-lg font-bold underline"
                             value={'dcdcdc'} 
@@ -173,8 +174,9 @@ const AddIngredient: React.FC<IngredientProps> = ({openAddIngredietComponent, se
             
                     {/* Alternative Names */}
                     <div className="flex flex-col flex-grow basis-1/5 lg:w-full">
-                        <label className="font-medium text-gray-700 mb-1 text-lg lg:px-4">Alternative Names</label>
+                        <label htmlFor='Alt_Names' className="font-medium text-gray-700 mb-1 text-lg lg:px-4">Alternative Names</label>
                         <Textarea 
+                            id="Alt_Names"
                             placeholder="Enter alternative names"  
                             className="border p-2 mb-2  h-16 lg:h-28 text-lg"
                             value={'cscscs'} 
@@ -184,8 +186,9 @@ const AddIngredient: React.FC<IngredientProps> = ({openAddIngredietComponent, se
             
                     {/* Notes */}
                     <div className="flex flex-col flex-grow basis-3/5 lg:w-full">
-                        <label className="font-medium text-gray-700 mb-1 text-lg lg:px-4">Notes</label>
+                        <label htmlFor='Notes' className="font-medium text-gray-700 mb-1 text-lg lg:px-4">Notes</label>
                         <Textarea  
+                            id={'Notes'}
                             placeholder="Enter notes"  
                             className="border p-2 mb-2  h-24 lg:h-28 text-lg"
                             value={''} 

@@ -2,6 +2,7 @@
 import React from "react";
 
 interface CustomTextareaProps {
+  id: string
   value: string;
   onChange: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
   placeholder?: string;
@@ -10,6 +11,7 @@ interface CustomTextareaProps {
 }
 
 const Textarea: React.FC<CustomTextareaProps> = ({
+  id,
   value,
   onChange,
   placeholder = "",
@@ -18,6 +20,7 @@ const Textarea: React.FC<CustomTextareaProps> = ({
 }) => {
   return (
     <textarea
+      id={id}
       value={value}
       onChange={onChange}
       placeholder={placeholder}
