@@ -12,11 +12,8 @@ import SkeletonLoad from "../reusable/Skeleton";
 
 const AccreditationData = [...data]
 const ProductSummary: React.FC = () => {
-  const [accreditation, setAccreditation] = useState("Vegetarian");
-  const [productName, setProductName] = useState("Product Name 1");
   const { productDetail } = useSelector((state: RootState) => state.productDetailReducer); 
   const dispatch = useDispatch()
-
 
   const searchParams = useSearchParams();
   const mode = searchParams.get("mode");
@@ -44,7 +41,7 @@ const ProductSummary: React.FC = () => {
             className="w-full hover:bg-slate-400 text-center mt-2 px-4 py-2 gap-4  text-xl bg-[#004537]  border border-darkGreen  focus:ring-black appearance-none  rounded-lg text-white outline-none"
             value={productDetail.requested}
             optionClassName="text-base text-center hover:bg-green-400"
-            onChange={(value) => setAccreditation(value)}
+            onChange={(value) => dispatch(setProductDetail({...productDetail, requested: value}))}
           />
           </div>
           
@@ -75,12 +72,12 @@ const ProductSummary: React.FC = () => {
           Product Name:
         </label>
         {productDetail.name === '' ? <p className="w-40">  <SkeletonLoad baseColor="#ffffff"  count={1} />  </p> : <>
-        {mode === '0' ? <p id="productName" className="w-full p-3 text-2xl bg-transparent"> {productName} </p> :
+        {mode === '0' ? <p id="productName" className="w-full p-3 text-2xl bg-transparent"> {productDetail.name} </p> :
           <Input
             id="productName"
             type="text"
             value={productDetail.name}
-            onChange={(e) => setProductName(e.target.value)}
+            onChange={(e) => dispatch(setProductDetail({...productDetail, name: e.target.value}))}
             className={"w-full p-3 text-2xl bg-[#004537] rounded-md border border-green-600"}
           /> }
           </>
