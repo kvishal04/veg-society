@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import Input from "../reusable/Input";
 import Select from "../reusable/Select";
 import { AccreditationData as data } from "@/FakeJson/tabledata";
