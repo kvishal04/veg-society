@@ -149,18 +149,28 @@ const IngredientTable: React.FC = () => {
       <AddIngredient openAddIngredietComponent={openAddIngredietComponent} setOpenAddIngredietComponent={setOpenAddIngredietComponent} />
 
       <div className="flex justify-between mt-8 ">
-            <Button className='px-8' onClick={() => {setOpenAddIngredietComponent(true)}} variant="dark-green"><b>+</b> Add Ingredient</Button>
+          <div>
+            <Button className='md:px-8 px-4 py-2 md:py-3 text-base md:text-lg' onClick={() => {setOpenAddIngredietComponent(true)}} variant="dark-green"><b>+</b> Add Ingredient</Button>
+          </div>
+
+          <div>
+            {!openAddIngredietComponent &&
             <Pagination
-                totalItems={IngredientTableData.length + newData.length}
-                itemsPerPage={itemsPerPage}
-                currentPage={currentPage}
-                onPageChange={(page: number) => setCurrentPage(page)}
-                onItemsPerPageChange={(items: number) => {
-                setItemsPerPage(items);
-                setCurrentPage(1);
-                }}
-            />
-            <Button className='px-8' onClick={() => {}} variant="dark-green">Submit Changes</Button>
+                  totalItems={IngredientTableData.length + newData.length}
+                  itemsPerPage={itemsPerPage}
+                  currentPage={currentPage}
+                  onPageChange={(page: number) => setCurrentPage(page)}
+                  onItemsPerPageChange={(items: number) => {
+                  setItemsPerPage(items);
+                  setCurrentPage(1);
+                  }}
+              />
+            }
+          </div>
+           
+            <div>
+              <Button className='md:px-8 px-4 py-2 md:py-3 text-base md:text-lg' onClick={() => {}} variant="dark-green">Submit Changes</Button>
+            </div>
         </div>
 
      

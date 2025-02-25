@@ -47,6 +47,7 @@ const Header: React.FC<HeaderProps> = ({ title = 'Company Name' }) => {
     } catch (err) {
       console.log("isLoading err", err);
       dispatch(setLoading(false)); // End loading
+      dispatch(logout());
     }
   };
 
