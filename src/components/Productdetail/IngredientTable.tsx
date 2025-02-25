@@ -142,7 +142,7 @@ const IngredientTable: React.FC = () => {
     <div className="px-6 2xl:px-52 py-8">
       <IngredientSearchBar />
       <div className="max-h-[28rem] overflow-y-auto custom-scrollbar text-barlow">
-        {currentItems.length === 0 ? <SkeletonLoad count={10} /> :
+        {currentItems.length === 0 ? <SkeletonLoad count={18} /> :
           <TableComponent data={currentItems} config={tableConfig} showItemQuantity={itemsPerPage} />
         }
       </div>

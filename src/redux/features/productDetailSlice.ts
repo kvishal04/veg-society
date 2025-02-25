@@ -1,19 +1,15 @@
 // redux/features/loaderSlice.ts
-import { IIngredientData, ProductDetail } from '@/interface/main';
+import { ProductDetail } from '@/interface/main';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 interface ProductDetailState {
   isLoading: boolean;
-  IngredientTableData: IIngredientData[];
-  newData: IIngredientData[];
   productDetail : ProductDetail
 
 }
 
 const initialState: ProductDetailState = {
   isLoading: false,
-  IngredientTableData: [],
-  newData: [],
   productDetail : {
       name: '',
       accreditation_status: '',

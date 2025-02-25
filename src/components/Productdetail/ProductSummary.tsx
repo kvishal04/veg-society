@@ -21,6 +21,37 @@ const ProductSummary: React.FC = () => {
   const searchParams = useSearchParams();
   const mode = searchParams.get("mode");
 
+  const renderSelect = () => {
+    switch (true) {
+      case productDetail.requested === "":
+        return (
+          <span className="w-20">  <SkeletonLoad baseColor="#ffffff"  count={1} />  </span> 
+        );
+  
+      case productDetail.requested && mode === '0':
+        return (
+          <p id="accreditation" className="w-20 p-2 text-lg bg-transparent"> 
+            {productDetail.requested} 
+          </p> 
+        );
+  
+      default:
+        return (
+          <div className="">
+            <Select
+            options={AccreditationData}
+            id="accreditation"
+            className="w-full hover:bg-slate-400 text-center mt-2 px-4 py-2 gap-4  text-xl bg-[#004537]  border border-darkGreen  focus:ring-black appearance-none  rounded-lg text-white outline-none"
+            value={productDetail.requested}
+            optionClassName="text-base text-center hover:bg-green-400"
+            onChange={(value) => setAccreditation(value)}
+          />
+          </div>
+          
+        );
+    }
+  };
+
 
   useEffect(() => {
      setTimeout(() => {
@@ -45,14 +76,14 @@ const ProductSummary: React.FC = () => {
         </label>
         {productDetail.name === '' ? <p className="w-40">  <SkeletonLoad baseColor="#ffffff"  count={1} />  </p> : <>
         {mode === '0' ? <p id="productName" className="w-full p-3 text-2xl bg-transparent"> {productName} </p> :
-        <Input
-          id="productName"
-          type="text"
-          value={productDetail.name}
-          onChange={(e) => setProductName(e.target.value)}
-          className={"w-full p-3 text-2xl bg-[#004537] rounded-md border border-green-600"}
-        /> }
-        </>
+          <Input
+            id="productName"
+            type="text"
+            value={productDetail.name}
+            onChange={(e) => setProductName(e.target.value)}
+            className={"w-full p-3 text-2xl bg-[#004537] rounded-md border border-green-600"}
+          /> }
+          </>
         }
       </div>
 
@@ -84,22 +115,7 @@ const ProductSummary: React.FC = () => {
         <div className="flex flex-col items-start justify-start border-t-2 pt-4 lg:pt-0 lg:border-t-0 lg:border-l-2 border-white lg:pl-8 w-full">
           <div className="flex items-center gap-1 text-2xl mb-2 w-full">
             <span className="mr-2 text-xl lg:text-lg">Requested Accreditation:</span>
-            {mode === '0' ? 
-              <p id="accreditation" className="w-20 p-2 text-lg bg-transparent"> 
-                {productDetail.requested || <span className="w-20">  <SkeletonLoad baseColor="#ffffff"  count={1} />  </span> } 
-              </p> :
-              <div className="">
-                <Select
-                  options={AccreditationData}
-                  id="accreditation"
-                  className="w-full hover:bg-slate-400 text-center mt-2 px-4 py-2 gap-4  text-xl bg-[#004537]  border border-darkGreen  focus:ring-black appearance-none  rounded-lg text-white outline-none"
-                  value={accreditation}
-                  optionClassName="text-base text-center hover:bg-green-400"
-                  onChange={(value) => setAccreditation(value)}
-                />
-              </div>
-            }
-          
+            { renderSelect() }
           </div>
 
           {/* Submission & Response Dates */}
@@ -120,8 +136,6 @@ const ProductSummary: React.FC = () => {
         </button>
       </div>
     </div>
-   
-
     </div>
   );
 };

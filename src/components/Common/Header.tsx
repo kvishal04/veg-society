@@ -23,12 +23,12 @@ const Header: React.FC<HeaderProps> = ({ title = 'Company Name' }) => {
   const router = useRouter()
   const dispatch = useDispatch<AppDispatch>()
   const {user, token} = useSelector((state: RootState) => state?.auth);
-  const [logoutModal, setLogoutModal] = useState<boolean>(false);
   const [productModal, setProductModal] = useState<boolean>(false);
-  const openLogoutModal = () => setLogoutModal(true);
   const openModal = () => setProductModal(true);
-  const closeLogoutModal = () => setLogoutModal(false);
   const closeModal = () => setProductModal(false);
+  const [logoutModal, setLogoutModal] = useState<boolean>(false);
+  const closeLogoutModal = () => setLogoutModal(false);
+  const openLogoutModal = () => setLogoutModal(true);
   const [logoutUser] = useLogoutUserMutation();
 
   const searchParams = useSearchParams();
