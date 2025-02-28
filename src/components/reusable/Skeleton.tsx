@@ -14,7 +14,7 @@ const SkeletonLoad: React.FC<SkeletonProps> = ({
     highlightColor='#96F19A'
 }) => {
   return (
-    <SkeletonTheme baseColor={baseColor} highlightColor={highlightColor}>
+    <SkeletonTheme width={"100%"} inline={false} baseColor={baseColor} highlightColor={highlightColor}>
         <Skeleton count={count} />
     </SkeletonTheme>
   );

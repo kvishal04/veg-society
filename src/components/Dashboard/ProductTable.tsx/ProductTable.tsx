@@ -1,61 +1,86 @@
 "use client";
 
 import { Pencil, Trash2 } from 'lucide-react';
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import TableComponent from '@/components/reusable/Table/Table';
 import ProductSearchBar from '../ProductSearch';
 import Pagination from '@/components/reusable/Table/Pagination';
-import { producttabledata } from '@/FakeJson/tabledata'
 import EyeView from '@/styles/logo/Eye';
 import Link from 'next/link';
-import { ProductData, TableConfig } from '@/interface/main';
+import { IdashboardFilterData, ProductData, TableConfig } from '@/interface/main';
 import LogutModal from '@/components/Modals/LogutModal';
+import { AppDispatch, RootState } from '@/redux/store';
+import { useDispatch, useSelector } from 'react-redux';
+import { setcurrentItem, setcurrentPage, setProductTable, setSortTableByKey, setTotalItem } from '@/redux/features/ProductDataSlice';
+import { useProductTableMutation } from '@/redux/services/dashboardApi';
+import { debounce } from 'lodash';
+import { showToast, ToastMessage } from '@/utils/utills';
+import { ErrorCode, ErrorData } from '@/interface/error';
+import { ApiError } from '@/utils/customError';
+import 'react-loading-skeleton/dist/skeleton.css'
+import SkeletonLoad from '@/components/reusable/Skeleton';
 
 
 
 const customStatusRender = (value: ProductData) => {
     return (
-            <div className={`${value.status === "Pending" ? "text-black text-barlow-bold " : "text-black"}`}>
-                {value.status}
+            <div className={`${value.accreditation_status === "Pending" ? "text-black text-barlow-bold " : "text-black"}`}>
+                {value.accreditation_status}
             </div>
         );
     };
   
   
-  
   const renderActionColumn = (value: ProductData, openModal: () => void, setSelectedProduct: Function ) => {
     return (
             <div className="flex space-x-4">
-                <Link href={`/dashboard/product/${value.number}?mode=0`}>
+                <Link href={`/dashboard/product/${value.id}?mode=0`}>
                     <EyeView  className="text-darkGreen cursor-pointer hover:text-green-500"  />
                 </Link>
-                <Link href={`/dashboard/product/${value.number}?mode=1`}>
-                    <Pencil id={value.name} className="text-darkGreen cursor-pointer hover:text-blue-300" size={18} />
+                <Link href={`/dashboard/product/${value.id}?mode=1`}>
+                    <Pencil id={value.product_name} className="text-darkGreen cursor-pointer hover:text-blue-300" size={18} />
                 </Link> 
                 <button onClick={()=>{setSelectedProduct(value); openModal();}}>
-                    <Trash2  id={value.name}  className="text-darkGreen cursor-pointer hover:text-red-300" size={18} />
+                    <Trash2  id={`${value.id}`}  className="text-darkGreen cursor-pointer hover:text-red-300" size={18} />
                 </button>
             </div>
         );
     };
   
   
-
+    const debouncedSearch = debounce(
+        async (data: IdashboardFilterData , dispatch: AppDispatch, fetchTable: any) => {
+          try {
+            const response = await fetchTable(data).unwrap();
+            dispatch(setProductTable(response.data.data));
+            dispatch(setTotalItem(response.data.total));
+            showToast(response.message, ToastMessage.SHOW_SUCCESS);
+          } catch (err) {
+            const error = err as ErrorCode;
+            const errorInstance = new ApiError(error.data as ErrorData, error.status);
+            showToast(errorInstance.globalMessage || "Login failed", "error");
+          }
+        },
+        1000
+      );
 
 const ProductTable: React.FC = () => {
-    const [currentPage, setCurrentPage] = useState(1);
-    const [itemsPerPage, setItemsPerPage] = useState(24);
-    const data: ProductData[] = [...producttabledata];
+
+
+    const dispatch = useDispatch<AppDispatch>();
+    const { productTable : { current_page, per_page, data, sort_by, sort_dir, requested_accreditation, accreditation_status, search, total } } = useSelector((state: RootState) => state.ProductData); 
+  
+
+    const tableData: ProductData[] = [...data];
+
+
     const [deleteModal, setDeleteModal] = useState<boolean>(false);
     const [selectedProduct, setSelectedProduct] = useState<ProductData>();
     const closeDeleteModal = () => setDeleteModal(false);
     const openDeleteModal = () => setDeleteModal(true);
 
+    const [fetchTableData] = useProductTableMutation();
 
-    // Pagination logic
-    const indexOfLastItem = currentPage * itemsPerPage;
-    const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-    const currentItems = data.slice(indexOfFirstItem, indexOfLastItem);
 
     const tableConfig : TableConfig = {
         tableClassName: 'min-w-full bg-white border border-gray-200 shadow-md rounded-lg',
@@ -67,37 +92,36 @@ const ProductTable: React.FC = () => {
         thIconClassName: 'flex flex-row items-center gap-2 text-barlow-semi-bold',
         tBodyClassName: '',
         tdClassname: 'py-2 px-4',
-        showItemQuantity: 20,
+        showItemQuantity: per_page,
         columns: [
             {
                 name: "Number",
-                keys: ['number'],
-                sortable: true,
+                keys: ['id'],
                 className: 'rounded-tl-lg'
             },
             {
                 name: "Name",
-                keys: ['name'],
+                keys: ['product_name'],
                 sortable: true
             },
             {
                 name: "Accreditation",
-                keys: ['accreditation'],
+                keys: ['requested_accreditation'],
                 sortable: true
             },
             {
                 name: "Submitted",
-                keys: ['submitted'],
+                keys: ['submitted_on'],
                 sortable: true
             },
             {
                 name: "Response",
-                keys: ['response'],
+                keys: ['response_date'],
                 sortable: true
             },
             {
                 name: "Status",
-                keys: ['status'],
+                keys: ['accreditation_status'],
                 sortable: true,
                 customBodyRender: (value: ProductData) => customStatusRender(value)
             },
@@ -117,22 +141,47 @@ const ProductTable: React.FC = () => {
         }
     };
     
+    const setSortKey = (key: string , value: 'asc' | 'desc') => {
+        dispatch(setSortTableByKey({key, value}))
+    }
+
+    useEffect(()=>{
+        dispatch(setProductTable([]));
+        debouncedSearch({
+            sort_by,
+            sort_dir: sort_dir as 'asc' | 'desc',
+            search,
+            requested_accreditation,
+            accreditation_status,
+            per_page,
+            page: current_page
+        }, dispatch, fetchTableData)
+    },[sort_by, sort_dir, search, requested_accreditation, accreditation_status, per_page, current_page])
 
     return (
         <div className='px-6 xl:px-52 py-8'>
             <ProductSearchBar />
-            <div className="max-h-[28rem] overflow-y-auto custom-scrollbar text-barlow">
-                <TableComponent data={currentItems} config={tableConfig}  showItemQuantity={itemsPerPage} />
-            </div>
-            <Pagination 
-                totalItems={data.length} 
-                itemsPerPage={itemsPerPage} 
-                currentPage={currentPage} 
-                onPageChange={(page: number) => setCurrentPage(page)} 
-                onItemsPerPageChange={(items: number) => {setItemsPerPage(items); setCurrentPage(1)}}
-            />
+            {tableData.length === 0 ?  
+                <div className="max-h-[28rem] w-full  overflow-y-auto custom-scrollbar text-barlow">
+                    <SkeletonLoad  count={18} />
+                </div>
+                :
+                <div>
+                    <div className="max-h-[28rem] overflow-y-auto custom-scrollbar text-barlow">
+                        <TableComponent data={tableData} config={tableConfig}  showItemQuantity={per_page} onSortClick={setSortKey} />
+                    </div>
+                    <Pagination 
+                        totalItems={total} 
+                        itemsPerPage={per_page} 
+                        currentPage={current_page} 
+                        onPageChange={(page: number) => dispatch(setcurrentPage(page))} 
+                        onItemsPerPageChange={(items: number) => dispatch(setcurrentItem(items))} 
+                    />
+                </div> 
+            }   
+            
             {/*  Treated as Deleted Modal */}
-            <LogutModal isOpen={deleteModal} itemName={selectedProduct?.name}  onClose={() => {closeDeleteModal()}} onSave={() => {closeDeleteModal()}} title='Delete' body='delete'/>
+            <LogutModal isOpen={deleteModal} itemName={selectedProduct?.product_name}  onClose={() => {closeDeleteModal()}} onSave={() => {closeDeleteModal()}} title='Delete' body='delete'/>
         </div>
     );
 }

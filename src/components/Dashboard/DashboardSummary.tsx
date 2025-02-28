@@ -13,9 +13,9 @@ import { IchartData } from "@/interface/main";
 import { setSelectedTile } from "@/redux/features/ProductDataSlice";
 
 const DashboardSummary: React.FC = () => {
-  const dispatch = useDispatch<AppDispatch>();
   const { data: productdata } = useDashboardSummaryQuery(0);
-  const { selectedTile } = useSelector((state: RootState) => state.ProductData); 
+  const dispatch = useDispatch<AppDispatch>();
+  const { productTable : { accreditation_status } } = useSelector((state: RootState) => state.ProductData); 
 
   const [chartData, setChartData] = useState<IchartData>([
     { name: "Vegetarian", value: 25, color: "#A6E3A1" },
@@ -34,7 +34,7 @@ const DashboardSummary: React.FC = () => {
   }, [productdata]);
 
   const onTileClick = (value: string) => {
-    dispatch(setSelectedTile(value));
+    dispatch(setSelectedTile(accreditation_status === value ? '' : value));
   };
 
   const cardData = [
@@ -42,18 +42,21 @@ const DashboardSummary: React.FC = () => {
       bgColor: "bg-customGreen",
       icon: <Badge className="w-10 h-14 md:w-16 md:h-16" />,
       value: productdata?.accredited,
+      label: 'Accredited',
       text: "Products Accredited",
     },
     {
       bgColor: "bg-customOrange",
       icon: <Right className="w-10 h-10 md:w-16 md:h-16" />,
       value: productdata?.pending,
+      label: 'Pending',
       text: "Products Pending",
     },
     {
       bgColor: "bg-customRed",
       icon: <Wrong className="w-10 h-10 md:w-16 md:h-16" />,
       value: productdata?.rejected,
+      label: 'Rejected',
       text: "Products Rejected",
     },
   ];
@@ -82,12 +85,12 @@ const DashboardSummary: React.FC = () => {
 
       {/* Right Section: Statistics Cards */}
       <div className="grid grid-cols-3 sm:grid-cols-3 xl:grid-cols-3 gap-4 w-full lg:w-3/5">
-        {cardData.map(({ bgColor, icon, value, text }) => (
+        {cardData.map(({ bgColor, icon, value, text, label }) => (
           <button
             key={text}
-            onClick={() => onTileClick(text)}
+            onClick={() => onTileClick(label)}
             className={`${bgColor} p-4 rounded-lg flex flex-col gap-4 items-start justify-evenly xl:justify-between xl:h-32 
-              ${selectedTile && selectedTile !== text ? "opacity-50" : "opacity-100"}`}
+              ${accreditation_status && accreditation_status !== label ? "opacity-50" : "opacity-100"}`}
           >
             <div className="flex items-center gap-2 md:gap-8">
               {icon}

@@ -51,12 +51,12 @@ export interface IIngredientData {
 }
 
 export interface ProductData  {
-    number: number;
-    name: string;
-    accreditation: string;
-    submitted: string;
-    response: string;
-    status: string;
+    id: number;
+    product_name: string;
+    requested_accreditation: string;
+    submitted_on: string;
+    response_date: string;
+    accreditation_status: string;
     isDisable?: boolean;
 };
 
@@ -75,10 +75,15 @@ export interface  IdashboardSummary {
 }
 export interface  IproductTable {
   data: ProductData[];
-  currentPage: number;
-  currentItem: number;
-  lastPage: number;
-  totalItem: number;
+  current_page: number;
+  per_page: number;
+  last_page: number;
+  total: number;
+  sort_dir: string;
+  sort_by: string;
+  search: string,
+  requested_accreditation: string,
+  accreditation_status: string,
 };
 
 interface PieData { 
@@ -94,4 +99,14 @@ export type IchartData = PieData[];
 export interface ProductNotes {
   data : { created_at: string, added_by: string, note: string }[]
   
+}
+
+export interface IdashboardFilterData { 
+  sort_by: string,
+  sort_dir: 'asc' | 'desc',
+  search: string,
+  requested_accreditation: string,
+  accreditation_status: string,
+  per_page: number,
+  page: number
 }

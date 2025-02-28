@@ -156,14 +156,14 @@ const IngredientTable: React.FC = () => {
           <div>
             {!openAddIngredietComponent &&
             <Pagination
-                  totalItems={IngredientTableData.length + newData.length}
-                  itemsPerPage={itemsPerPage}
-                  currentPage={currentPage}
-                  onPageChange={(page: number) => setCurrentPage(page)}
-                  onItemsPerPageChange={(items: number) => {
-                  setItemsPerPage(items);
-                  setCurrentPage(1);
-                  }}
+                totalItems={IngredientTableData.length + newData.length}
+                itemsPerPage={itemsPerPage}
+                currentPage={currentPage}
+                onPageChange={(page: number) => setCurrentPage(page)}
+                onItemsPerPageChange={(items: number) => {
+                setItemsPerPage(items);
+                setCurrentPage(1);
+              }}
               />
             }
           </div>

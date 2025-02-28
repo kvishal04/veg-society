@@ -1,26 +1,29 @@
 "use client";  // This makes the component a Client Component
 
 import Select from "@/components/reusable/Select";
-import React, { useState } from "react";
+import React  from "react";
 import { Search } from "lucide-react";
 import Input from "@/components/reusable/Input";
 import { AccreditationData as data, statusData as statusMenu } from "@/FakeJson/tabledata";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDispatch, RootState } from "@/redux/store";
+import { setAccreditationStatus, setRequestedAccredation, setSearch } from "@/redux/features/ProductDataSlice";
 
 
 const statusData = [...statusMenu]
 const AccreditationData = [...data]
 
 const ProductSearchBar = () => {
-  const [searchTerm, setSearchTerm] = useState("");
-  const [status, setStatus] = useState("Accredited");
-  const [accreditation, setAccreditation] = useState("Plant");
+
+  const dispatch = useDispatch<AppDispatch>();
+  const { productTable : { accreditation_status, requested_accreditation, search  } } = useSelector((state: RootState) => state.ProductData);
 
   const handleSelectChange = (value : string) => {
-    setAccreditation(value);
+      dispatch(setRequestedAccredation(value))
   }
 
   const handleSelectChangeStatus = (value: string) => {
-    setStatus(value);
+    dispatch(setAccreditationStatus(value))
   }
 
   return (
@@ -30,8 +33,8 @@ const ProductSearchBar = () => {
     <Input
       id="search"
       type="text"
-      value={searchTerm}
-      onChange={(e) => setSearchTerm(e.target.value)}
+      value={search}
+      onChange={(e) => dispatch(setSearch(e.target.value))}
       placeholder="Search"
       className="w-full p-2 border-2 rounded-lg focus:ring-2 focus:ring-green-500 outline-none placeholder-green-700"
     />
@@ -43,7 +46,7 @@ const ProductSearchBar = () => {
     id="accreditation"
     className="text-center w-full px-4 py-2  bg-white border border-darkGreen focus:ring-black appearance-none  rounded-lg text-darkGreen outline-none"
     options={AccreditationData}
-    value={accreditation}
+    value={requested_accreditation}
     onChange={handleSelectChange}
     optionClassName="text-center hover:bg-lightGreen "
   />
@@ -53,7 +56,7 @@ const ProductSearchBar = () => {
     id="status"
     className="w-full px-4 py-2 text-center  bg-white border border-darkGreen hover:bg-gray-100 focus:ring-black appearance-none  rounded-lg text-darkGreen outline-none"
     options={statusData}
-    value={status}
+    value={accreditation_status}
     onChange={handleSelectChangeStatus}
     optionClassName="text-center hover:bg-lightGreen"
   />

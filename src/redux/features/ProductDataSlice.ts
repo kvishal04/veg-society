@@ -4,7 +4,6 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 interface ProductDataState {
   isLoading: boolean;
   productData: IproductCraeteData
-  selectedTile : string
   productTable: IproductTable
 }
 
@@ -15,13 +14,18 @@ const initialState: ProductDataState = {
     requested_accreditation: '',
     notes: '',
   },
-  selectedTile: '',
   productTable: {
     data: [],
-    currentPage: 0,
-    currentItem: 0,
-    lastPage: 0,
-    totalItem: 0,
+    current_page: 1,
+    per_page: 24,
+    last_page: 0,
+    total: 0,
+    sort_dir: '',
+    sort_by: '',
+    search: '',
+    requested_accreditation: '',
+    accreditation_status: '',
+
   },
 };
 
@@ -46,28 +50,57 @@ const ProductDataSlice = createSlice({
     },
 
     setSelectedTile : (state, action: PayloadAction<string>) => {
-      state.selectedTile = action.payload;
+      state.productTable.accreditation_status = action.payload;
+    },
+
+    setSearch : (state, action: PayloadAction<string>) => {
+      state.productTable.search = action.payload;
+    },
+
+    setRequestedAccredation : (state, action: PayloadAction<string>) => {
+      state.productTable.requested_accreditation = action.payload;
+    },
+
+    setAccreditationStatus : (state, action: PayloadAction<string>) => {
+      state.productTable.accreditation_status = action.payload;
+    },
+
+    setSortTableByKey : (state, action: PayloadAction<{key: string, value: 'asc'| 'desc'}>) => {
+      state.productTable.sort_by = action.payload.key;
+      state.productTable.sort_dir = action.payload.value;
+    },
+
+    setcurrentPage :  (state,action: PayloadAction<number>) => {
+      state.productTable.current_page = action.payload || 1;
+    },
+
+    setcurrentItem :  (state,action: PayloadAction<number>) => {
+      state.productTable.per_page = action.payload || 24;
+      state.productTable.current_page = 1;
+    },
+
+    setTotalItem : (state,action: PayloadAction<number>) => {
+      state.productTable.total = action.payload || 0;
     },
 
 
     setProductTablePagination: (
       state,
       action: PayloadAction<{
-        currentPage: number;
-        currentItem: number;
-        lastPage: number;
-        totalItem: number;
+        current_page: number;
+        per_page: number;
+        last_page: number;
+        total: number;
       }>
     ) => {
-      state.productTable.currentPage = action.payload.currentPage;
-      state.productTable.currentItem = action.payload.currentItem;
-      state.productTable.lastPage = action.payload.lastPage;
-      state.productTable.totalItem = action.payload.totalItem;
+      state.productTable.current_page = action.payload.current_page;
+      state.productTable.per_page = action.payload.per_page;
+      state.productTable.last_page = action.payload.last_page;
+      state.productTable.total = action.payload.total;
     },
   },
 });
 
-export const { setLoading, setProductDetail, appendProductTable, setProductTable, setProductTablePagination, setSelectedTile } =
-  ProductDataSlice.actions;
+export const { setLoading, setProductDetail, appendProductTable, setProductTable, setProductTablePagination, setSelectedTile, setSearch, setRequestedAccredation, setAccreditationStatus, setSortTableByKey, setcurrentPage , setcurrentItem, setTotalItem } =  ProductDataSlice.actions;
 
 export default ProductDataSlice.reducer;

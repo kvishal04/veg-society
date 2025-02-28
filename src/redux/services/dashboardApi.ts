@@ -2,7 +2,8 @@ import { BASE_URL, showToast, ToastMessage} from "@/utils/utills";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { RootState } from "../store";
 import { IdashboardSummary } from "@/interface/main";
-import { DASHBOARD_SUMMARY } from "../API_URL";
+import { DASHBOARD_SUMMARY, PRODUCT_TABLE } from "../API_URL";
+import { DataCode } from "@/interface/error";
 
 export const dashboardApi = createApi({
   reducerPath: "dashboardApi",
@@ -30,16 +31,24 @@ export const dashboardApi = createApi({
             showToast( _response.message, ToastMessage.SHOW_SUCCESS);
             return _response.data
           },
-          // Pick out error and prevent nested properties in a hook or selector
-          transformErrorResponse: (_response: { status: number, data: { message: string } }) => {
+        // Pick out error and prevent nested properties in a hook or selector
+        transformErrorResponse: (_response: { status: number, data: { message: string } }) => {
             showToast( _response.data.message, ToastMessage.SHOW_ERROR);
             return _response.data.message
-          }
+        }
 
-      }),
+    }),
+
+    productTable: builder.mutation<DataCode, {sort_by: string, sort_dir: 'asc' | 'desc', search: string, requested_accreditation: string, accreditation_status: string, per_page: number, page: number }>({
+          query: (credentials) => ({
+            url: PRODUCT_TABLE,
+            method: "POST",
+            body: credentials,
+          }),
+        }),
     }),
 
    
 });
 
-export const { useDashboardSummaryQuery  } = dashboardApi;
+export const { useDashboardSummaryQuery , useProductTableMutation } = dashboardApi;

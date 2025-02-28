@@ -10,6 +10,7 @@ type TableComponentProps = {
   config: TableConfig;
   showItemQuantity: number;
   onCellClick?: (cellData: any, row: Record<string, any>) => void;
+  onSortClick?: (sort_key: string, sort_dir: 'asc' | 'desc' ) => void;
 };
 
 const DownIcon: React.FC = () => (
@@ -30,6 +31,7 @@ const TableComponent: React.FC<TableComponentProps> = ({
   config,
   showItemQuantity,
   onCellClick,
+  onSortClick
 }) => {
   const [sortConfig, setSortConfig] = useState<{
     key: string | null;
@@ -41,44 +43,12 @@ const TableComponent: React.FC<TableComponentProps> = ({
       key,
       direction: prev.key === key && prev.direction === "asc" ? "desc" : "asc",
     }));
-  };
 
-  const isDate = (value: string): boolean => /^\d{2}\/\d{2}\/\d{4}$/.test(value);
+    onSortClick?.(sortConfig.key || '', sortConfig.direction);
+  };
+  
+  const sortedData = [...data]
 
-  const parseDate = (dateStr: string): Date | null => {
-    const [day, month, year] = dateStr.split("/").map(Number);
-    return new Date(year, month - 1, day);
-  };
-  
-  const compareValues = (a: any, b: any, key: string, direction: "asc" | "desc") => {
-    let aValue = a[key];
-    let bValue = b[key];
-  
-    if (aValue == null) return direction === "asc" ? -1 : 1;
-    if (bValue == null) return direction === "asc" ? 1 : -1;
-  
-    if (isDate(aValue) && isDate(bValue)) {
-      const dateA = parseDate(aValue)?.getTime() ?? 0;
-      const dateB = parseDate(bValue)?.getTime() ?? 0;
-      return direction === "asc" ? dateA - dateB : dateB - dateA;
-    }
-  
-    if (!isNaN(aValue) && !isNaN(bValue)) {
-      return direction === "asc" ? Number(aValue) - Number(bValue) : Number(bValue) - Number(aValue);
-    }
-  
-    return direction === "asc"
-      ? String(aValue).localeCompare(String(bValue), undefined, { numeric: true })
-      : String(bValue).localeCompare(String(aValue), undefined, { numeric: true });
-  };
-  
-  const sortedData = [...data].sort((a, b) => 
-    sortConfig.key ? compareValues(a, b, sortConfig.key, sortConfig.direction) : 0
-  );
-  
-  
-  
-  
   const getSortIcon = (col: TableColumn) => {
     if (!col.sortable) return null;
     if (sortConfig.key === col.keys[0]) {
