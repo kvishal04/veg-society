@@ -36,9 +36,15 @@ const TableComponent: React.FC<TableComponentProps> = ({
 
 
   const handleSort = (key: string) => {
-    onSortClick?.(key, config.sort_by === key ? config.sort_dir === "asc" ? "desc" : 'asc' : 'desc');
+    let newSortDir : 'desc' | 'asc' = 'desc';
 
-  };
+    if (config.sort_by === key) {
+        newSortDir = config.sort_dir === "asc" ? "desc" : "asc";
+    }
+
+    onSortClick?.(key, newSortDir);
+};
+
   
   const sortedData = [...data]
 

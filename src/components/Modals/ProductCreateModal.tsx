@@ -1,7 +1,7 @@
 "use client";
 
 import { PlusIcon } from "lucide-react";
-import React, { useState } from "react";
+import React from "react";
 import Select from "../reusable/Select";
 import { AccreditationData as data } from "@/FakeJson/tabledata";
 import Input from "../reusable/Input";
