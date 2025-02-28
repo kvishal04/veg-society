@@ -62,14 +62,13 @@ const AddIngredient: React.FC<IngredientProps> = ({openAddIngredietComponent, se
             {
                 name: "Ingredient",
                 keys: ['Ingredient'],
-                sortable: true,
                 className: "rounded-tl-lg",
             },
             {
                 name: "AlternativeNames",
                 keys: ['AlternativeNames'],
                 customBodyRender:(value: IIngredientData) => renderAlternativeNamesColumn(value, data.length),
-                sortable: true
+                
             },
             {
                 name: "Vegetarian",
@@ -79,7 +78,6 @@ const AddIngredient: React.FC<IngredientProps> = ({openAddIngredietComponent, se
                         customData(value,'Vegetarian')
                     );
                 },
-                sortable: true
             },
             {
                 name: "Vegan",
@@ -90,12 +88,10 @@ const AddIngredient: React.FC<IngredientProps> = ({openAddIngredietComponent, se
                     );
                 },
                 rowclassName: '',
-                sortable: true
             },
             {
                 name: "PlantBased",
                 keys: ['PlantBased'],
-                sortable: true,
                 customBodyRender: (value: IIngredientData) => {
                     return (
                         customData(value, 'PlantBased')

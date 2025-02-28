@@ -10,7 +10,7 @@ interface ProductDataState {
 const initialState: ProductDataState = {
   isLoading: false,
   productData: {
-    name: '',
+    product_name: '',
     requested_accreditation: '',
     notes: '',
   },
@@ -20,7 +20,7 @@ const initialState: ProductDataState = {
     per_page: 24,
     last_page: 0,
     total: 0,
-    sort_dir: '',
+    sort_dir: 'asc',
     sort_by: '',
     search: '',
     requested_accreditation: '',
@@ -83,6 +83,19 @@ const ProductDataSlice = createSlice({
       state.productTable.total = action.payload || 0;
     },
 
+    resetFilterItem : (state) => {
+      state.productTable.current_page = 1;
+      state.productTable.per_page = 24;
+      state.productTable.sort_by = '';
+      state.productTable.requested_accreditation = '';
+      state.productTable.accreditation_status = '';
+    },
+
+
+    setCreateProductData :  (state,action: PayloadAction<{key : 'product_name' | 'requested_accreditation' |'notes', value: string}>) => {
+      state.productData[action.payload.key] = action.payload.value
+    },
+
 
     setProductTablePagination: (
       state,
@@ -101,6 +114,6 @@ const ProductDataSlice = createSlice({
   },
 });
 
-export const { setLoading, setProductDetail, appendProductTable, setProductTable, setProductTablePagination, setSelectedTile, setSearch, setRequestedAccredation, setAccreditationStatus, setSortTableByKey, setcurrentPage , setcurrentItem, setTotalItem } =  ProductDataSlice.actions;
+export const { setLoading, setProductDetail, appendProductTable, setProductTable, setProductTablePagination, setSelectedTile, setSearch, setRequestedAccredation, setAccreditationStatus, setSortTableByKey, setcurrentPage , setcurrentItem, setTotalItem, resetFilterItem, setCreateProductData } =  ProductDataSlice.actions;
 
 export default ProductDataSlice.reducer;

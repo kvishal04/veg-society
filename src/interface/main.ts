@@ -28,6 +28,9 @@ export type TableConfig = {
     emptyState: {
       text: () => string;
     };
+    sort_by?: string;
+    sort_dir?: 'asc' | 'desc'
+
 };
 
 export interface ProductDetail {
@@ -61,7 +64,7 @@ export interface ProductData  {
 };
 
 export interface IproductCraeteData {
-  name: string;
+  product_name: string;
   requested_accreditation: string;
   notes: string;
 };
@@ -79,7 +82,7 @@ export interface  IproductTable {
   per_page: number;
   last_page: number;
   total: number;
-  sort_dir: string;
+  sort_dir: 'asc' | 'desc';
   sort_by: string;
   search: string,
   requested_accreditation: string,

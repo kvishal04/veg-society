@@ -41,7 +41,7 @@ export const statusData = [
 export const AccreditationData = [
     { value: '', label: 'All' },
     { value: 'Vegetarian', label: 'Vegetarian' },
-    { value: 'Plant', label: 'Plant' },
+    { value: 'Plant-Based', label: 'Plant' },
     { value: 'Vegan', label: 'Vegan' },
 ]
 

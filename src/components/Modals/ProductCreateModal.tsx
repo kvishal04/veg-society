@@ -7,6 +7,10 @@ import { AccreditationData as data } from "@/FakeJson/tabledata";
 import Input from "../reusable/Input";
 import Button from "../reusable/Button";
 import Textarea from "../reusable/TextArea";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "@/redux/store";
+import { resetFilterItem, setCreateProductData } from "@/redux/features/ProductDataSlice";
+import { useProductCreateMutation } from "@/redux/services/dashboardApi";
 
 
 const AccreditationData = [...data]
@@ -18,15 +22,20 @@ type ModalProps = {
 };
 
 const ProductCreateModal: React.FC<ModalProps> = ({ isOpen, onClose, onSave }) => {
-    const [accreditation, setAccreditation] = useState("Plant"); // ✅ Move this to the top
+    const { productData : { product_name, notes , requested_accreditation } } = useSelector(
+        (state: RootState) => state.ProductData
+    );
+    const dispatch = useDispatch()
+    const [createProduct] = useProductCreateMutation()
+
+    const submitData = async() => {
+        await createProduct({ product_name, notes , requested_accreditation }).unwrap()
+        dispatch(resetFilterItem())
+        onSave();
+    }
   
     if (!isOpen) return null; // ✅ This can stay, but hooks must be above it
   
-    const handleSelectChange = (value : string) => {
-      setAccreditation(value);
-    };
-  
-
     return (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
             <div className="bg-[#D9D9D9] w-[90%] md:w-[46rem] h-[40.5rem] rounded-xl shadow-lg p-6 relative text-black">
@@ -46,8 +55,8 @@ const ProductCreateModal: React.FC<ModalProps> = ({ isOpen, onClose, onSave }) =
                             <Input
                                 id="product_name"
                                 type="text"
-                                value={''}
-                                onChange={(e) => console.log(e.target.value)}
+                                value={product_name}
+                                onChange={(e) => dispatch(setCreateProductData({key: 'product_name', value: e.target.value}))}
                                 placeholder="Example Product Name"
                                 className="w-full mt-2 p-3 border-2 rounded-lg focus:ring-2 bg-gray-100 focus:ring-black outline-none placeholder-gray-500"
                             />
@@ -58,22 +67,22 @@ const ProductCreateModal: React.FC<ModalProps> = ({ isOpen, onClose, onSave }) =
                             <Select
                                 id="accreditation"
                                 className="w-full  mt-2 px-4 py-2  border-2 focus:ring-2  hover:bg-gray-100 focus:ring-black appearance-none  rounded-lg text-black outline-none"
-                                options={AccreditationData}
-                                value={accreditation}
-                                onChange={handleSelectChange}
+                                options={AccreditationData.filter((item)=>item.label !== 'All')}
+                                value={requested_accreditation}
+                                onChange={(value)=>dispatch(setCreateProductData({key: 'requested_accreditation', value}))}
                                 optionClassName="hover:bg-lightGreen"
                             />
                         </div>
 
                         <div className="mb-8">
                             <label htmlFor="notes" className="block text-lg font-medium">Notes</label>
-                            <Textarea  id="notes" className="w-full mt-1 p-2 border rounded-lg bg-gray-100 h-32" value={""} onChange={(e)=>console.log('text, area', e.target.value)} ></Textarea>
+                            <Textarea  id="notes" className="w-full mt-1 p-2 border rounded-lg bg-gray-100 h-32" value={notes} onChange={(e)=>dispatch(setCreateProductData({key: 'notes', value: e.target.value}))} ></Textarea>
                         </div>
                     </div>
 
                     {/* Modal Footer */}
                     <div className="flex justify-between mt-6 ">
-                        <Button onClick={onSave} variant="dark-green"  className="text-base lg:text-lg  lg:px-[5.5rem] lg:py-3   md:px-16 md:py-3  px-8 py-2 "> Save </Button>
+                        <Button onClick={submitData} variant="dark-green"  className="text-base lg:text-lg  lg:px-[5.5rem] lg:py-3   md:px-16 md:py-3  px-8 py-2 "> Save </Button>
                         <Button  onClick={onClose}  variant="white"  className="text-sm text-darkGreen border-lightGreen md:text-base lg:text-lg  lg:px-[5.5rem] lg:py-3  md:px-16 md:py-3  px-8 py-2 " > Close </Button>
                     </div>
                 </div>

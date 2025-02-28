@@ -21,6 +21,7 @@ const ProductNotesModal: React.FC<ModalProps> = ({ isOpen, onClose, onSave }) =>
   const { productNotes }: { productNotes: ProductNotes } = useSelector(
     (state: RootState) => state.productDetailReducer
   );
+  
 
   if (!isOpen) return null;
 

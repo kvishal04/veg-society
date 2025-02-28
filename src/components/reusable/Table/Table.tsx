@@ -33,26 +33,19 @@ const TableComponent: React.FC<TableComponentProps> = ({
   onCellClick,
   onSortClick
 }) => {
-  const [sortConfig, setSortConfig] = useState<{
-    key: string | null;
-    direction: "asc" | "desc";
-  }>({ key: null, direction: "asc" });
+
 
   const handleSort = (key: string) => {
-    setSortConfig((prev) => ({
-      key,
-      direction: prev.key === key && prev.direction === "asc" ? "desc" : "asc",
-    }));
+    onSortClick?.(key, config.sort_by === key ? config.sort_dir === "asc" ? "desc" : 'asc' : 'desc');
 
-    onSortClick?.(sortConfig.key || '', sortConfig.direction);
   };
   
   const sortedData = [...data]
 
   const getSortIcon = (col: TableColumn) => {
     if (!col.sortable) return null;
-    if (sortConfig.key === col.keys[0]) {
-      return sortConfig.direction === "asc" ? <UpIcon /> : <DownIcon />;
+    if (config.sort_by === col.keys[0]) {
+      return config.sort_dir === "asc" ? <UpIcon /> : <DownIcon />;
     }
     return <CombineIcon />;
   };

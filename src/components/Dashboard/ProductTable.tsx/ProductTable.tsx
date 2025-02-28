@@ -11,8 +11,8 @@ import { IdashboardFilterData, ProductData, TableConfig } from '@/interface/main
 import LogutModal from '@/components/Modals/LogutModal';
 import { AppDispatch, RootState } from '@/redux/store';
 import { useDispatch, useSelector } from 'react-redux';
-import { setcurrentItem, setcurrentPage, setProductTable, setSortTableByKey, setTotalItem } from '@/redux/features/ProductDataSlice';
-import { useProductTableMutation } from '@/redux/services/dashboardApi';
+import { resetFilterItem, setcurrentItem, setcurrentPage, setProductTable, setSortTableByKey, setTotalItem } from '@/redux/features/ProductDataSlice';
+import { useProductDeleteMutation, useProductTableMutation } from '@/redux/services/dashboardApi';
 import { debounce } from 'lodash';
 import { showToast, ToastMessage } from '@/utils/utills';
 import { ErrorCode, ErrorData } from '@/interface/error';
@@ -72,11 +72,18 @@ const ProductTable: React.FC = () => {
   
 
     const tableData: ProductData[] = [...data];
+    const [ productDelete ] = useProductDeleteMutation()
 
 
     const [deleteModal, setDeleteModal] = useState<boolean>(false);
     const [selectedProduct, setSelectedProduct] = useState<ProductData>();
-    const closeDeleteModal = () => setDeleteModal(false);
+    const closeDeleteModal = () => setDeleteModal(false)
+
+    const deleteProductFunc = async () => {
+       await productDelete({id: selectedProduct?.id || 0}).unwrap()
+       dispatch(resetFilterItem())
+        setDeleteModal(false);
+    }
     const openDeleteModal = () => setDeleteModal(true);
 
     const [fetchTableData] = useProductTableMutation();
@@ -138,7 +145,9 @@ const ProductTable: React.FC = () => {
         },
         emptyState: {
             text: () => 'N/A'
-        }
+        },
+        sort_by: sort_by,
+        sort_dir: sort_dir || 'asc',
     };
     
     const setSortKey = (key: string , value: 'asc' | 'desc') => {
@@ -181,7 +190,7 @@ const ProductTable: React.FC = () => {
             }   
             
             {/*  Treated as Deleted Modal */}
-            <LogutModal isOpen={deleteModal} itemName={selectedProduct?.product_name}  onClose={() => {closeDeleteModal()}} onSave={() => {closeDeleteModal()}} title='Delete' body='delete'/>
+            <LogutModal isOpen={deleteModal} itemName={selectedProduct?.product_name}  onClose={() => {closeDeleteModal()}} onSave={() => {deleteProductFunc()}} title='Delete' body='delete'/>
         </div>
     );
 }
