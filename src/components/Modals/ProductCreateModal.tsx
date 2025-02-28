@@ -67,7 +67,7 @@ const ProductCreateModal: React.FC<ModalProps> = ({ isOpen, onClose, onSave }) =
 
                         <div className="mb-8">
                             <label htmlFor="notes" className="block text-lg font-medium">Notes</label>
-                            <Textarea  id="notes" className="w-full mt-1 p-2 border rounded-lg bg-gray-100 h-32" value={""} onChange={(value)=>console.log('text, area')} ></Textarea>
+                            <Textarea  id="notes" className="w-full mt-1 p-2 border rounded-lg bg-gray-100 h-32" value={""} onChange={(e)=>console.log('text, area', e.target.value)} ></Textarea>
                         </div>
                     </div>
 

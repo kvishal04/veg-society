@@ -39,7 +39,7 @@ const ProductNotesModal: React.FC<ModalProps> = ({ isOpen, onClose, onSave }) =>
         {/* Modal Body */}
         <div className="mt-4 max-h-[20rem] overflow-y-auto pr-3 text-barlow custom-scrollbar">
           {productNotes?.data?.map((note, index) => (
-            <div key={index} className="mb-6">
+            <div key={note.created_at} className="mb-6">
               <p className="text-sm italic mb-4">{note.added_by}:</p>
               <p className="text-lg text-gray-700 mb-4">{note.note}</p>
               <p className="text-sm text-gray-700">{note.created_at}</p>
