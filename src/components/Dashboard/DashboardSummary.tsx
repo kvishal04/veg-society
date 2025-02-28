@@ -83,12 +83,9 @@ const DashboardSummary: React.FC = () => {
       {/* Right Section: Statistics Cards */}
       <div className="grid grid-cols-3 sm:grid-cols-3 xl:grid-cols-3 gap-4 w-full lg:w-3/5">
         {cardData.map(({ bgColor, icon, value, text }) => (
-          <div
-            role="button"
-            tabIndex={0}
+          <button
             key={text}
             onClick={() => onTileClick(text)}
-            onKeyDown={() => onTileClick(text)}
             className={`${bgColor} p-4 rounded-lg flex flex-col gap-4 items-start justify-evenly xl:justify-between xl:h-32 
               ${selectedTile && selectedTile !== text ? "opacity-50" : "opacity-100"}`}
           >
@@ -97,7 +94,7 @@ const DashboardSummary: React.FC = () => {
               <Paragraph className="text-3xl md:text-5xl font-bold">{value}</Paragraph>
             </div>
             <Paragraph className="text-sm md:text-base lg:text-[12px] 2xl:text-lg">{text}</Paragraph>
-          </div>
+          </button>
         ))}
       </div>
     </div>
