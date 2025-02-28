@@ -1,14 +1,11 @@
 // redux/features/loaderSlice.ts
-import { ProductDetail } from '@/interface/main';
+import { ProductDetail, ProductNotes } from '@/interface/main';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 interface ProductDetailState {
   isLoading: boolean;
   productDetail : ProductDetail;
-  productNotes : {
-    data : { key: string, value: string }[],
-    submit_data: string
-  }
+  productNotes : ProductNotes
 
 }
 
@@ -23,7 +20,6 @@ const initialState: ProductDetailState = {
   },
   productNotes : {
     data : [],
-    submit_data : ''
   }
 };
 
@@ -35,12 +31,19 @@ const ProductDetailSlice = createSlice({
       state.isLoading = action.payload;
     },
 
-    setProductDetail: (state, action: PayloadAction<ProductDetail>) => {
-        state.productDetail = action.payload
+    setProductDetailSummary: (state, action: PayloadAction<{productDetail : ProductDetail , productNotes : ProductNotes }>) => {
+        state.productDetail = action.payload.productDetail
+        state.productNotes = action.payload.productNotes
     },
+
+    setProductDetail: (state, action: PayloadAction<ProductDetail>) => {
+      state.productDetail = action.payload
+    },
+
+    
 
   },
 });
 
-export const { setLoading, setProductDetail } = ProductDetailSlice.actions;
+export const { setLoading, setProductDetail, setProductDetailSummary } = ProductDetailSlice.actions;
 export default ProductDetailSlice.reducer;

@@ -1,19 +1,26 @@
 "use client";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import Input from "../reusable/Input";
 import Select from "../reusable/Select";
-import { AccreditationData as data } from "@/FakeJson/tabledata";
+import { AccreditationData as data, productNotes } from "@/FakeJson/tabledata";
 import Details from "@/styles/logo/Details";
 import { useSearchParams } from "next/navigation";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
-import { setProductDetail } from "@/redux/features/productDetailSlice";
+import { setProductDetail, setProductDetailSummary } from "@/redux/features/productDetailSlice";
 import SkeletonLoad from "../reusable/Skeleton";
+import ProductNotesModal from "../Modals/ProductNotes";
+import Button from "../reusable/Button";
 
 const AccreditationData = [...data]
 const ProductSummary: React.FC = () => {
+
+  const [productNotesModal, setProductNotesModal] = useState<boolean>(false);
   const { productDetail } = useSelector((state: RootState) => state.productDetailReducer); 
   const dispatch = useDispatch()
+
+  const openModal = () => setProductNotesModal(true);
+  const closeModal = () => setProductNotesModal(false);
 
   const searchParams = useSearchParams();
   const mode = searchParams.get("mode");
@@ -52,13 +59,17 @@ const ProductSummary: React.FC = () => {
 
   useEffect(() => {
      setTimeout(() => {
-        return dispatch(setProductDetail({
-          name: 'Product name 1',
-          accreditation_status: 'Pending',
-          submit_date: "23-10-2024",
-          responce_date: "25-10-2024",
-          requested: 'Vegetarian'
+        return dispatch(setProductDetailSummary({
+          productDetail: {
+            name: 'Product name 1',
+            accreditation_status: 'Pending',
+            submit_date: "23-10-2024",
+            responce_date: "25-10-2024",
+            requested: 'Vegetarian'
+          },
+          productNotes: {...productNotes}
         }));
+        
       }, 2000);
   }, [])
   
@@ -86,53 +97,57 @@ const ProductSummary: React.FC = () => {
 
       <hr className="border-white" />
 
-    <div className="flex flex-col md:flex-row justify-start md:justify-between items-start  gap-8 lg:items-center">
-      <div className="flex flex-col lg:flex-row justify-start gap-4 items-start  w-full md:w-3/4  xl:w-[80%]">
-            {/* Accreditation Status */}
-        <div className="flex flex-col items-start justify-start w-full  2xl:w-[55%]">
-          <div className="flex items-end gap-2 mt-3 mb-4">
-            <div className=" text-lg lg:text-2xl">Accreditation Status:</div>
-            <span className="text-xl lg:text-2xl font-semibold">{productDetail.accreditation_status || <p className="w-20">  <SkeletonLoad baseColor="#ffffff"  count={1} />  </p> }</span>
+      <div className="flex flex-col md:flex-row justify-start md:justify-between items-start  gap-8 lg:items-center">
+        <div className="flex flex-col lg:flex-row justify-start gap-4 items-start  w-full md:w-3/4  xl:w-[80%]">
+              {/* Accreditation Status */}
+          <div className="flex flex-col items-start justify-start w-full  2xl:w-[55%]">
+            <div className="flex items-end gap-2 mt-3 mb-4">
+              <div className=" text-lg lg:text-2xl">Accreditation Status:</div>
+              <span className="text-xl lg:text-2xl font-semibold">{productDetail.accreditation_status || <p className="w-20">  <SkeletonLoad baseColor="#ffffff"  count={1} />  </p> }</span>
+            </div>
+
+            <div className="flex items-center gap-4 text-sm md:text-xl w-full lg:w-auto">
+              <span className="flex items-center gap-2 ">
+                <span className="w-5 h-5 bg-green-500 rounded-full"></span> Vegetarian
+              </span>
+              <span className="flex items-center gap-2">
+                <span className="w-5 h-5 bg-orange-500 rounded-full"></span> Vegan
+              </span>
+              <span className="flex items-center gap-2">
+                <span className="w-5 h-5 bg-red-500 rounded-full"></span> Plant-Based
+              </span>
+            </div>
           </div>
 
-          <div className="flex items-center gap-4 text-sm md:text-xl w-full lg:w-auto">
-            <span className="flex items-center gap-2 ">
-              <span className="w-5 h-5 bg-green-500 rounded-full"></span> Vegetarian
-            </span>
-            <span className="flex items-center gap-2">
-              <span className="w-5 h-5 bg-orange-500 rounded-full"></span> Vegan
-            </span>
-            <span className="flex items-center gap-2">
-              <span className="w-5 h-5 bg-red-500 rounded-full"></span> Plant-Based
-            </span>
+          {/* Requested Accreditation */}
+          <div className="flex flex-col items-start justify-start border-t-2 pt-4 lg:pt-0 lg:border-t-0 lg:border-l-2 border-white lg:pl-8 w-full">
+            <div className="flex items-center gap-1 text-2xl mb-2 w-full">
+              <span className="mr-2 text-xl lg:text-lg">Requested Accreditation:</span>
+              { renderSelect() }
+            </div>
+
+            {/* Submission & Response Dates */}
+            <div className="flex flex-col xl:flex-row justify-start items-start gap-2 text-base md:text-lg 2xl:text-lg md:w-full">
+              <p>Submitted on: <span className="ml-2">{productDetail.submit_date || <span className="w-20">  <SkeletonLoad baseColor="#ffffff"  count={1} />  </span> }</span></p>
+              <p className="xl:ml-4">Response Date: <span className="ml-2">{productDetail.responce_date || <span className="w-20">  <SkeletonLoad baseColor="#ffffff"  count={1} />  </span> }</span></p>
+            </div>
           </div>
         </div>
+      
 
-        {/* Requested Accreditation */}
-        <div className="flex flex-col items-start justify-start border-t-2 pt-4 lg:pt-0 lg:border-t-0 lg:border-l-2 border-white lg:pl-8 w-full">
-          <div className="flex items-center gap-1 text-2xl mb-2 w-full">
-            <span className="mr-2 text-xl lg:text-lg">Requested Accreditation:</span>
-            { renderSelect() }
-          </div>
+        {/* Floating Initials and View Notes Button */}
+        <div className="mt-4 flex justify-between items-center  w-full md:w-1/4 lg:w-auto">
 
-          {/* Submission & Response Dates */}
-          <div className="flex flex-col xl:flex-row justify-start items-start gap-2 text-base md:text-lg 2xl:text-lg md:w-full">
-            <p>Submitted on: <span className="ml-2">{productDetail.submit_date || <span className="w-20">  <SkeletonLoad baseColor="#ffffff"  count={1} />  </span> }</span></p>
-            <p className="xl:ml-4">Response Date: <span className="ml-2">{productDetail.responce_date || <span className="w-20">  <SkeletonLoad baseColor="#ffffff"  count={1} />  </span> }</span></p>
-          </div>
+          <Button onClick={openModal} className="flex gap-2 justify-start items-center bg-white text-darkGreen font-semibold  pr-8 2xl:pr-16 pl-2 2xl:pl-4 p py-2 rounded-lg shadow hover:bg-gray-200">
+            <Details className="text-xl text-darkGreen" />
+            <span className="text-darkGreen"> View Notes </span>
+          </Button>
         </div>
       </div>
-    
 
-      {/* Floating Initials and View Notes Button */}
-      <div className="mt-4 flex justify-between items-center  w-full md:w-1/4 lg:w-auto">
+      {/* Product Notes Modal */}
 
-        <button className= "flex gap-2 justify-start items-center bg-white text-green-900 font-semibold  pr-8 2xl:pr-16 pl-2 2xl:pl-4 p py-2 rounded-lg shadow hover:bg-gray-200">
-          <Details className="text-xl text-darkGreen" />
-          <span> View Notes </span>
-        </button>
-      </div>
-    </div>
+      <ProductNotesModal isOpen={productNotesModal} onClose={closeModal} onSave={closeModal}/>
     </div>
   );
 };

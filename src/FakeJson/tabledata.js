@@ -47,11 +47,11 @@ export const AccreditationData = [
 
 export const productNotes = {
     data: [
-      { key: "User Notes", value: "We are the rallying cry for the vegetarian movement, championing the cause and inspiring everyone to move towards a vegetarian or vegan lifestyle." },
-      { key: "Admin Notes", value: "Whether veggie, vegan or flexi, our support and advice empowers members and the general public on their journey towards a better life for all. We are the rallying cry for the vegetarian movement, championing the cause and inspiring everyone to move towards a vegetarian or vegan lifestyle." },
-      { key: "Admin Notes", value: "We are the rallying cry for the vegetarian movement, championing the cause and inspiring everyone to move towards a vegetarian or vegan lifestyle. Whether veggie, vegan or flexi, our support and advice empowers members and the general public on their journey towards a better life for all." }
+      {created_at: "12:32pm 23/12/2024",  added_by: "User Notes", note: "We are the rallying cry for the vegetarian movement, championing the cause and inspiring everyone to move towards a vegetarian or vegan lifestyle." },
+      {created_at: "12:32pm 23/12/2024", added_by: "Admin Notes", note: "Whether veggie, vegan or flexi, our support and advice empowers members and the general public on their journey towards a better life for all. We are the rallying cry for the vegetarian movement, championing the cause and inspiring everyone to move towards a vegetarian or vegan lifestyle." },
+      {created_at: "12:32pm 23/12/2024", added_by: "Admin Notes", note: "We are the rallying cry for the vegetarian movement, championing the cause and inspiring everyone to move towards a vegetarian or vegan lifestyle. Whether veggie, vegan or flexi, our support and advice empowers members and the general public on their journey towards a better life for all." }
     ],
-    submit_data: "12:32pm 23/12/2024"
+    
   };
   
 

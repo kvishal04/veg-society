@@ -6,6 +6,7 @@ import Select from "../reusable/Select";
 import { AccreditationData as data } from "@/FakeJson/tabledata";
 import Input from "../reusable/Input";
 import Button from "../reusable/Button";
+import Textarea from "../reusable/TextArea";
 
 
 const AccreditationData = [...data]
@@ -66,7 +67,7 @@ const ProductCreateModal: React.FC<ModalProps> = ({ isOpen, onClose, onSave }) =
 
                         <div className="mb-8">
                             <label htmlFor="notes" className="block text-lg font-medium">Notes</label>
-                            <textarea id="notes" className="w-full mt-1 p-2 border rounded-lg bg-gray-100 h-32"></textarea>
+                            <Textarea  id="notes" className="w-full mt-1 p-2 border rounded-lg bg-gray-100 h-32" value={""} onChange={(value)=>console.log('text, area')} ></Textarea>
                         </div>
                     </div>
 

@@ -89,3 +89,9 @@ interface PieData {
 
 // Use type instead of interface for an array type
 export type IchartData = PieData[];
+
+
+export interface ProductNotes {
+  data : { created_at: string, added_by: string, note: string }[]
+  
+}
