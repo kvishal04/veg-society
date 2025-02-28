@@ -1,32 +1,74 @@
 "use client";
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import CustomPieChart from "@/components/Charts/Piechart";
 import Badge from "@/styles/logo/Badge";
 import Paragraph from "@/components/reusable/Paragraph";
 import Right from "@/styles/logo/Right";
 import Wrong from "@/styles/logo/Wrong";
-
-const data = [
-  { name: "Vegetarian", value: 25, color: "#A6E3A1" },
-  { name: "Vegan", value: 3, color: "#f0f0f0" },
-  { name: "Plant Based", value: 2, color: "#032B2F" },
-];
+import { AppDispatch, RootState } from "@/redux/store";
+import { useDispatch, useSelector } from "react-redux";
+import { useDashboardSummaryQuery } from "@/redux/services/dashboardApi";
+import { IchartData } from "@/interface/main";
+import { setSelectedTile } from "@/redux/features/ProductDataSlice";
 
 const DashboardSummary: React.FC = () => {
+  const dispatch = useDispatch<AppDispatch>();
+  const { data: productdata } = useDashboardSummaryQuery(0);
+  const { selectedTile } = useSelector((state: RootState) => state.ProductData); 
+
+  const [chartData, setChartData] = useState<IchartData>([
+    { name: "Vegetarian", value: 25, color: "#A6E3A1" },
+    { name: "Vegan", value: 3, color: "#f0f0f0" },
+    { name: "Plant Based", value: 2, color: "#032B2F" },
+  ]);
+
+  useEffect(() => {
+    if (productdata) {
+      setChartData([
+        { name: "Vegetarian", value: productdata.accredited || 5, color: "#A6E3A1" },
+        { name: "Vegan", value: productdata.vegan || 23, color: "#f0f0f0" },
+        { name: "Plant Based", value: productdata.plant_based || 7, color: "#032B2F" },
+      ]);
+    }
+  }, [productdata]);
+
+  const onTileClick = (value: string) => {
+    dispatch(setSelectedTile(value));
+  };
+
+  const cardData = [
+    {
+      bgColor: "bg-customGreen",
+      icon: <Badge className="w-10 h-14 md:w-16 md:h-16" />,
+      value: productdata?.accredited,
+      text: "Products Accredited",
+    },
+    {
+      bgColor: "bg-customOrange",
+      icon: <Right className="w-10 h-10 md:w-16 md:h-16" />,
+      value: productdata?.pending,
+      text: "Products Pending",
+    },
+    {
+      bgColor: "bg-customRed",
+      icon: <Wrong className="w-10 h-10 md:w-16 md:h-16" />,
+      value: productdata?.rejected,
+      text: "Products Rejected",
+    },
+  ];
+
   return (
     <div className="font-henriette bg-darkGreen text-white p-2 md:p-8 xl:h-[11.5rem] flex flex-col lg:flex-row gap-6 w-full xl:py-8 xl:px-52">
       {/* Left Section: Pie Chart & Legend */}
       <div className="flex flex-row lg:items-center items-start gap-6 w-full lg:w-2/5">
-        <CustomPieChart data={data} />
+        <CustomPieChart chartData={chartData} />
 
         <div className="w-full text-sm">
           <div className="border-b-2 border-white mb-4 py-2">
-            <Paragraph className="text-2xl lg:text-xl xl:text-3xl">
-              Products Accredited
-            </Paragraph>
+            <Paragraph className="text-2xl lg:text-xl xl:text-3xl">Products Accredited</Paragraph>
           </div>
-          {data.map((item) => (
+          {chartData.map((item) => (
             <div key={item.name} className="flex items-center gap-2 mb-2">
               <span
                 className="w-5 h-5 inline-block rounded-full"
@@ -39,39 +81,24 @@ const DashboardSummary: React.FC = () => {
       </div>
 
       {/* Right Section: Statistics Cards */}
-      <div className="grid grid-cols-3 sm:grid-cols-3 xl:grid-cols-3 gap-4 w-full lg:w-3/5 ">
-        {/* Card 1 */}
-        <div className="bg-customGreen p-4 rounded-lg flex flex-col gap-4 items-start justify-evenly xl:justify-between   xl:h-32">
-          <div className="flex items-center gap-2 md:gap-2 ">
-            <Badge className="w-10 h-14 md:w-16 md:h-16" />
-            <Paragraph className="text-3xl md:text-5xl  font-bold">25</Paragraph>
+      <div className="grid grid-cols-3 sm:grid-cols-3 xl:grid-cols-3 gap-4 w-full lg:w-3/5">
+        {cardData.map(({ bgColor, icon, value, text }) => (
+          <div
+            role="button"
+            tabIndex={0}
+            key={text}
+            onClick={() => onTileClick(text)}
+            onKeyDown={() => onTileClick(text)}
+            className={`${bgColor} p-4 rounded-lg flex flex-col gap-4 items-start justify-evenly xl:justify-between xl:h-32 
+              ${selectedTile && selectedTile !== text ? "opacity-50" : "opacity-100"}`}
+          >
+            <div className="flex items-center gap-2 md:gap-8">
+              {icon}
+              <Paragraph className="text-3xl md:text-5xl font-bold">{value}</Paragraph>
+            </div>
+            <Paragraph className="text-sm md:text-base lg:text-[12px] 2xl:text-lg">{text}</Paragraph>
           </div>
-          <Paragraph className="text-sm md:text-base lg:text-[12px] 2xl:text-lg">
-            Products Accredited
-          </Paragraph>
-        </div>
-
-        {/* Card 2 */}
-        <div className="bg-customOrange p-4 rounded-lg flex flex-col items-start gap-4 justify-evenly xl:justify-between   xl:h-32">
-          <div className="flex items-center gap-4 md:gap-8 ">
-            <Right className="w-10 h-10 md:w-16 md:h-16" />
-            <Paragraph className="text-3xl md:text-5xl font-bold">3</Paragraph>
-          </div>
-          <Paragraph className="text-sm md:text-base lg:text-[12px] 2xl:text-lg">
-            Products Pending
-          </Paragraph>
-        </div>
-
-        {/* Card 3 */}
-        <div className="bg-customRed p-4 rounded-lg flex flex-col items-start gap-2 md:gap-4 justify-evenly xl:justify-between  xl:h-32">
-          <div className="flex items-center gap-4 md:gap-8 ">
-            <Wrong className="w-10 h-10 md:w-16 md:h-16" />
-            <Paragraph className="text-2xl md:text-5xl font-bold">2</Paragraph>
-          </div>
-          <Paragraph className="text-base lg:text-[12px] xl:text-[12px] 2xl:text-lg ">
-            Products Rejected
-          </Paragraph>
-        </div>
+        ))}
       </div>
     </div>
   );

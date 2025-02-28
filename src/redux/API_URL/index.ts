@@ -1,0 +1,5 @@
+export const LOGIN = '/login'
+export const LOGOUT = '/logout'
+export const FORGET_PASSWORD = '/forgot-password'
+export const RESET_PASSWORD = '/reset-password'
+export const DASHBOARD_SUMMARY = '/product-stats'

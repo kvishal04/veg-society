@@ -4,7 +4,11 @@ import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 interface ProductDetailState {
   isLoading: boolean;
-  productDetail : ProductDetail
+  productDetail : ProductDetail;
+  productNotes : {
+    data : { key: string, value: string }[],
+    submit_data: string
+  }
 
 }
 
@@ -16,6 +20,10 @@ const initialState: ProductDetailState = {
       requested: '',
       submit_date: '',
       responce_date: ''
+  },
+  productNotes : {
+    data : [],
+    submit_data : ''
   }
 };
 

@@ -13,7 +13,7 @@ export const getEnvVariable = (key: string, defaultValue?: string): string => {
 };  
 
 
-export const showToast = (message: string, type: "success" | "error" | "info" = "info") => {
+export const showToast = (message: string, type: string = '') => {
     switch (type) {
       case "success":
         toast.success(message);
@@ -36,4 +36,11 @@ export const checkEmail = (value: string) => {
 export const checkPassword = (value: string) => {
   const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/;
   return passwordRegex.test(value);
+}
+
+
+export const ToastMessage  = {
+  SHOW_SUCCESS : "success",
+  SHOW_ERROR : "Error",
+  SHOW_DEFAULT : ""
 }

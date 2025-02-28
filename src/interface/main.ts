@@ -59,3 +59,33 @@ export interface ProductData  {
     status: string;
     isDisable?: boolean;
 };
+
+export interface IproductCraeteData {
+  name: string;
+  requested_accreditation: string;
+  notes: string;
+};
+export interface  IdashboardSummary {
+    vegetarian: number,
+    vegan: number,
+    plant_based: number,
+    accredited: number,
+    pending: number,
+    rejected: number
+}
+export interface  IproductTable {
+  data: ProductData[];
+  currentPage: number;
+  currentItem: number;
+  lastPage: number;
+  totalItem: number;
+};
+
+interface PieData { 
+  name: string; 
+  value: number; 
+  color: string;
+}
+
+// Use type instead of interface for an array type
+export type IchartData = PieData[];

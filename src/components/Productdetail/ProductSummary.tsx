@@ -12,7 +12,7 @@ import SkeletonLoad from "../reusable/Skeleton";
 
 const AccreditationData = [...data]
 const ProductSummary: React.FC = () => {
-  const { productDetail } = useSelector((state: RootState) => state.productDetailReducer); 
+  const { productDetail, productNotes } = useSelector((state: RootState) => state.productDetailReducer); 
   const dispatch = useDispatch()
 
   const searchParams = useSearchParams();

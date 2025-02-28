@@ -1,13 +1,16 @@
 "use client";
 
+import { IchartData } from "@/interface/main";
 import { useEffect, useState } from "react";
 import { PieChart, Pie, Cell, Tooltip } from "recharts";
 
-interface PieData {
-  data: { name: string; value: number; color: string }[];
-}
 
-const CustomPieChart: React.FC<PieData> = ({ data }) => {
+type ChartProps = {
+  chartData : IchartData
+};
+
+
+const CustomPieChart: React.FC<ChartProps> = ({chartData}) => {
   const [isClient, setIsClient] = useState(false);
 
   useEffect(() => {
@@ -19,7 +22,7 @@ const CustomPieChart: React.FC<PieData> = ({ data }) => {
       {isClient && ( // Prevents hydration mismatch
         <PieChart width={150} height={150}>
           <Pie
-            data={data}
+            data={chartData}
             dataKey="value"
             cx="50%"
             cy="50%"
@@ -27,7 +30,7 @@ const CustomPieChart: React.FC<PieData> = ({ data }) => {
             innerRadius={0}
             paddingAngle={0}
           >
-            {data.map((entry) => (
+            {chartData.map((entry) => (
               <Cell key={`cell-${entry.name}`} fill={entry.color}  />
             ))}
           </Pie>

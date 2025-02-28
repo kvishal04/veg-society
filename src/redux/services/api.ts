@@ -2,6 +2,7 @@ import { BASE_URL} from "@/utils/utills";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { RootState } from "../store";
 import { DataCode } from "@/interface/error";
+import { FORGET_PASSWORD, LOGIN, LOGOUT, RESET_PASSWORD } from "../API_URL";
 
 export const api = createApi({
   reducerPath: "authApi",
@@ -24,7 +25,7 @@ export const api = createApi({
   endpoints: (builder) => ({
     loginUser: builder.mutation<DataCode, { email: string; password: string }>({
       query: (credentials) => ({
-        url: "/login",
+        url: LOGIN,
         method: "POST",
         body: credentials,
       }),
@@ -32,14 +33,14 @@ export const api = createApi({
 
     logoutUser: builder.mutation<DataCode, void>({
       query: () => ({
-        url: "/logout",
+        url: LOGOUT,
         method: "POST"
       }),
     }),  
     
     forgetUser: builder.mutation<DataCode, {email: string}>({
       query: (credentials) => ({
-        url: "/forgot-password",
+        url: FORGET_PASSWORD,
         method: "POST",
         body: credentials,
       }),
@@ -48,7 +49,7 @@ export const api = createApi({
 
     resetUser: builder.mutation<DataCode, {email: string, token: string, password: string, password_confirmation: string}>({
       query: (credentials) => ({
-        url: "/reset-password",
+        url: RESET_PASSWORD,
         method: "POST",
         body: credentials,
       }),

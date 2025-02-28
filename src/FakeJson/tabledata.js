@@ -33,15 +33,27 @@ export const producttabledata  = [
 
 
 export const statusData = [
+    { value: 'All', label: 'All' },
     { value: 'Pending', label: 'Pending' },
     { value: 'Accredited', label: 'Accredited' },
     { value: 'Rejected', label: 'Rejected' },
 ]
 export const AccreditationData = [
+    { value: 'All', label: 'All' },
     { value: 'Vegetarian', label: 'Vegetarian' },
     { value: 'Plant', label: 'Plant' },
     { value: 'Vegan', label: 'Vegan' },
 ]
+
+export const productNotes = {
+    data: [
+      { key: "User Notes", value: "We are the rallying cry for the vegetarian movement, championing the cause and inspiring everyone to move towards a vegetarian or vegan lifestyle." },
+      { key: "Admin Notes", value: "Whether veggie, vegan or flexi, our support and advice empowers members and the general public on their journey towards a better life for all. We are the rallying cry for the vegetarian movement, championing the cause and inspiring everyone to move towards a vegetarian or vegan lifestyle." },
+      { key: "Admin Notes", value: "We are the rallying cry for the vegetarian movement, championing the cause and inspiring everyone to move towards a vegetarian or vegan lifestyle. Whether veggie, vegan or flexi, our support and advice empowers members and the general public on their journey towards a better life for all." }
+    ],
+    submit_data: "12:32pm 23/12/2024"
+  };
+  
 
 export const IngredientData = [
     { Number: 1, Ingredient: "Ingredient Name 1", AlternativeNames: ["Alt name A", "Alt name B"], Vegetarian: 0, Vegan: 2, PlantBased: 1, DateAdded: "23/10/2024" },
