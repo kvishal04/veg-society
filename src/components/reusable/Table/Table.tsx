@@ -42,52 +42,40 @@ const TableComponent: React.FC<TableComponentProps> = ({
       direction: prev.key === key && prev.direction === "asc" ? "desc" : "asc",
     }));
   };
-  const sortedData = [...data].sort((a, b) => {
-    if (!sortConfig.key) return 0;
+
+  const isDate = (value: string): boolean => /^\d{2}\/\d{2}\/\d{4}$/.test(value);
+
+  const parseDate = (dateStr: string): Date | null => {
+    const [day, month, year] = dateStr.split("/").map(Number);
+    return new Date(year, month - 1, day);
+  };
   
-    let aValue = a[sortConfig.key];
-    let bValue = b[sortConfig.key];
+  const compareValues = (a: any, b: any, key: string, direction: "asc" | "desc") => {
+    let aValue = a[key];
+    let bValue = b[key];
   
-    // Handle null/undefined values safely
-    if (aValue == null) return sortConfig.direction === "asc" ? -1 : 1;
-    if (bValue == null) return sortConfig.direction === "asc" ? 1 : -1;
+    if (aValue == null) return direction === "asc" ? -1 : 1;
+    if (bValue == null) return direction === "asc" ? 1 : -1;
   
-    // Detect if the value is a date in "DD/MM/YYYY" format
-    const isDate = (value: string): boolean => /^\d{2}\/\d{2}\/\d{4}$/.test(value);
-  
-    // Convert "DD/MM/YYYY" string to Date object
-    const parseDate = (dateStr: string): Date | null => {
-      const parts = dateStr.split("/");
-      if (parts.length === 3) {
-        const [day, month, year] = parts.map(Number);
-        return new Date(year, month - 1, day); // Month is 0-based in JS
-      }
-      return null;
-    };
-  
-    // Check if both values are dates
     if (isDate(aValue) && isDate(bValue)) {
-      const dateA = parseDate(aValue);
-      const dateB = parseDate(bValue);
-      if (dateA && dateB) {
-        return sortConfig.direction === "asc"
-          ? dateA.getTime() - dateB.getTime()
-          : dateB.getTime() - dateA.getTime();
-      }
+      const dateA = parseDate(aValue)?.getTime() ?? 0;
+      const dateB = parseDate(bValue)?.getTime() ?? 0;
+      return direction === "asc" ? dateA - dateB : dateB - dateA;
     }
   
-    // Check if both values are numbers
     if (!isNaN(aValue) && !isNaN(bValue)) {
-      return sortConfig.direction === "asc"
-        ? Number(aValue) - Number(bValue)
-        : Number(bValue) - Number(aValue);
+      return direction === "asc" ? Number(aValue) - Number(bValue) : Number(bValue) - Number(aValue);
     }
   
-    // Default string comparison for other cases
-    return sortConfig.direction === "asc"
+    return direction === "asc"
       ? String(aValue).localeCompare(String(bValue), undefined, { numeric: true })
       : String(bValue).localeCompare(String(aValue), undefined, { numeric: true });
-  });
+  };
+  
+  const sortedData = [...data].sort((a, b) => 
+    sortConfig.key ? compareValues(a, b, sortConfig.key, sortConfig.direction) : 0
+  );
+  
   
   
   

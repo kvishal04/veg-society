@@ -1,4 +1,4 @@
-import { IdashboardSummary, IproductCraeteData, IproductTable, ProductData } from '@/interface/main';
+import { IproductCraeteData, IproductTable, ProductData } from '@/interface/main';
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 
 interface ProductDataState {
