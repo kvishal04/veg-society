@@ -2,7 +2,7 @@
 
 import { TableColumn, TableConfig } from "@/interface/main";
 import { Triangle } from "lucide-react";
-import React, { useState } from "react";
+import React from "react";
 
 
 type TableComponentProps = {
