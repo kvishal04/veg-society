@@ -91,6 +91,12 @@ const ProductDataSlice = createSlice({
       state.productTable.accreditation_status = '';
     },
 
+    resertProdctCreateForm : (state) => {
+      state.productData.notes= ''
+      state.productData.product_name= ''
+      state.productData.requested_accreditation= ''
+    },
+
 
     setCreateProductData :  (state,action: PayloadAction<{key : 'product_name' | 'requested_accreditation' |'notes', value: string}>) => {
       state.productData[action.payload.key] = action.payload.value
@@ -114,6 +120,6 @@ const ProductDataSlice = createSlice({
   },
 });
 
-export const { setLoading, setProductDetail, appendProductTable, setProductTable, setProductTablePagination, setSelectedTile, setSearch, setRequestedAccredation, setAccreditationStatus, setSortTableByKey, setcurrentPage , setcurrentItem, setTotalItem, resetFilterItem, setCreateProductData } =  ProductDataSlice.actions;
+export const { setLoading, setProductDetail, appendProductTable, setProductTable, setProductTablePagination, setSelectedTile, setSearch, setRequestedAccredation, setAccreditationStatus, setSortTableByKey, setcurrentPage , setcurrentItem, setTotalItem, resetFilterItem, setCreateProductData, resertProdctCreateForm } =  ProductDataSlice.actions;
 
 export default ProductDataSlice.reducer;
