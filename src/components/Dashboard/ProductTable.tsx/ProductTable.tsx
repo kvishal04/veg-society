@@ -172,29 +172,39 @@ const ProductTable: React.FC = () => {
         }, dispatch, fetchTableData)
     },[sort_by, sort_dir, search, requested_accreditation, accreditation_status, per_page, current_page])
 
-    return (
-        <div className='px-6 xl:px-52 py-8'>
-            <ProductSearchBar />
-             {isLoading ? (
+    const renderTableContent = () => {
+        if (isLoading) {
+            return (
                 <div className="max-h-[28rem] w-full overflow-y-auto custom-scrollbar text-barlow">
                     <SkeletonLoad count={18} />
                 </div>
-            ) : tableData.length === 0 ? (
-                <div className="text-center text-gray-500 text-lg py-4">No Data Found</div>
-            ) : (
-                <div>
-                    <div className="max-h-[28rem] overflow-y-auto custom-scrollbar text-barlow">
-                        <TableComponent data={tableData} config={tableConfig}  showItemQuantity={per_page} onSortClick={setSortKey} />
-                    </div>
-                    <Pagination 
-                        totalItems={total} 
-                        itemsPerPage={per_page} 
-                        currentPage={current_page} 
-                        onPageChange={(page: number) => dispatch(setcurrentPage(page))} 
-                        onItemsPerPageChange={(items: number) => dispatch(setcurrentItem(items))} 
-                    />
-                </div> 
-            )}
+            );
+        }
+        
+        if (tableData.length === 0) {
+            return <div className="text-center text-gray-500 text-lg py-4">No Data Found</div>;
+        }
+        
+        return (
+            <div>
+                <div className="max-h-[28rem] overflow-y-auto custom-scrollbar text-barlow">
+                    <TableComponent data={tableData} config={tableConfig} showItemQuantity={per_page} onSortClick={setSortKey} />
+                </div>
+                <Pagination 
+                    totalItems={total} 
+                    itemsPerPage={per_page} 
+                    currentPage={current_page} 
+                    onPageChange={(page) => dispatch(setcurrentPage(page))} 
+                    onItemsPerPageChange={(items) => dispatch(setcurrentItem(items))} 
+                />
+            </div>
+        );
+    };
+
+    return (
+        <div className='px-6 xl:px-52 py-8'>
+            <ProductSearchBar />
+            {renderTableContent()}
             {/*  Treated as Deleted Modal */}
             <LogutModal isOpen={deleteModal} itemName={selectedProduct?.product_name}  onClose={() => {closeDeleteModal()}} onSave={() => {deleteProductFunc()}} title='Delete' body='delete'/>
         </div>
