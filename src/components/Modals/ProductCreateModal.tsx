@@ -41,9 +41,25 @@ const ProductCreateModal: React.FC<ModalProps> = ({ isOpen, onClose, onSave }) =
     const submitData = async () => {
         if (!validateForm()) return;
         await createProduct({ product_name, notes, requested_accreditation }).unwrap();
-        dispatch(resetFilterItem(), resertProdctCreateForm());
+        dispatch(resetFilterItem());
+        dispatch( resertProdctCreateForm());
+        setErrors({
+            notes: '',
+            product_name: '',
+            requested_accreditation: ''  
+          })
         onSave();
     };
+
+    const onModalCLose = () => {
+        setErrors({
+          notes: '',
+          product_name: '',
+          requested_accreditation: ''  
+        })
+        dispatch(resertProdctCreateForm());
+        onClose()
+    }
 
     if (!isOpen) return null;
 
@@ -53,7 +69,7 @@ const ProductCreateModal: React.FC<ModalProps> = ({ isOpen, onClose, onSave }) =
                 <div className="bg-white h-full rounded-lg py-4 px-6">
                     <div className="flex justify-between items-center border-b pb-3">
                         <h2 className="text-lg font-semibold">Add New Product</h2>
-                        <button onClick={onClose} className="text-gray-500 hover:text-gray-800">
+                        <button onClick={onModalCLose} className="text-gray-500 hover:text-gray-800">
                             <PlusIcon className="rotate-45 text-5xl" />
                         </button>
                     </div>
@@ -67,12 +83,12 @@ const ProductCreateModal: React.FC<ModalProps> = ({ isOpen, onClose, onSave }) =
                                 value={product_name}
                                 onChange={(e) => {
                                     dispatch(setCreateProductData({ key: 'product_name', value: e.target.value }));
-                                    setErrors((prev) => ({ ...prev, product_name: "" }));
+                                    setErrors((prev) => ({ ...prev, product_name: !e.target.value.length ? 'Product name is required' : ""  }));
                                 }}
                                 placeholder="Example Product Name"
                                 className={`w-full mt-2 p-3 border-2 rounded-lg focus:ring-2 outline-none placeholder-gray-500 ${errors.product_name ? 'border-red-500' : 'border-gray-300'}`}
                             />
-                            {errors.product_name && <p className="text-red-500 text-sm">{errors.product_name}</p>}
+                            <p className="text-red-500 h-4 text-sm">{errors.product_name}</p>
                         </div>
 
                         <div className="my-8">
@@ -84,11 +100,11 @@ const ProductCreateModal: React.FC<ModalProps> = ({ isOpen, onClose, onSave }) =
                                 value={requested_accreditation}
                                 onChange={(value) => {
                                     dispatch(setCreateProductData({ key: 'requested_accreditation', value }));
-                                    setErrors((prev) => ({ ...prev, requested_accreditation: "" }));
+                                    setErrors((prev) => ({ ...prev,  requested_accreditation: !value.length ? 'Accreditation is required' : "" }));
                                 }}
                                 optionClassName="hover:bg-lightGreen"
                             />
-                            {errors.requested_accreditation && <p className="text-red-500 text-sm">{errors.requested_accreditation}</p>}
+                           <p className="text-red-500 h-4 text-sm">{errors.requested_accreditation}</p>
                         </div>
 
                         <div className="mb-8">
@@ -99,10 +115,10 @@ const ProductCreateModal: React.FC<ModalProps> = ({ isOpen, onClose, onSave }) =
                                 value={notes}
                                 onChange={(e) => {
                                     dispatch(setCreateProductData({ key: 'notes', value: e.target.value }));
-                                    setErrors((prev) => ({ ...prev, notes: "" }));
+                                    setErrors((prev) => ({ ...prev, notes: !e.target.value.length ? 'Notes is required' : ""}));
                                 }}
                             />
-                            {errors.notes && <p className="text-red-500 text-sm">{errors.notes}</p>}
+                          <p className="text-red-500 h-4 text-sm">{errors.notes}</p>
                         </div>
                     </div>
 
