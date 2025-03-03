@@ -106,7 +106,7 @@ export interface ProductNotes {
 
 export interface IdashboardFilterData { 
   sort_by: string,
-  sort_dir: 'asc' | 'desc',
+  sort_dir: string,
   search: string,
   requested_accreditation: string,
   accreditation_status: string,

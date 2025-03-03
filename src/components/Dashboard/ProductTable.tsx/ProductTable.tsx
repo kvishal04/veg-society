@@ -7,18 +7,16 @@ import ProductSearchBar from '../ProductSearch';
 import Pagination from '@/components/reusable/Table/Pagination';
 import EyeView from '@/styles/logo/Eye';
 import Link from 'next/link';
-import { IdashboardFilterData, ProductData, TableConfig } from '@/interface/main';
+import { ProductData, TableConfig } from '@/interface/main';
 import LogutModal from '@/components/Modals/LogutModal';
 import { AppDispatch, RootState } from '@/redux/store';
 import { useDispatch, useSelector } from 'react-redux';
-import { resetFilterItem, setcurrentItem, setcurrentPage, setLoading, setProductTable, setSortTableByKey, setTotalItem } from '@/redux/features/ProductDataSlice';
+import { resetFilterItem, setcurrentItem, setcurrentPage, setLoading, setProductTable, setSortTableByKey} from '@/redux/features/ProductDataSlice';
 import { useProductDeleteMutation, useProductTableMutation } from '@/redux/services/dashboardApi';
-import { debounce } from 'lodash';
-import { showToast, ToastMessage } from '@/utils/utills';
-import { ErrorCode, ErrorData } from '@/interface/error';
-import { ApiError } from '@/utils/customError';
+
 import 'react-loading-skeleton/dist/skeleton.css'
 import SkeletonLoad from '@/components/reusable/Skeleton';
+import useDasboardDebouncedSearch from '@/hooks/useDasboardDebouncedSearch';
 
 
 
@@ -47,26 +45,7 @@ const customStatusRender = (value: ProductData) => {
         );
     };
   
-  
-    const debouncedSearch = debounce(
-        async (data: IdashboardFilterData , dispatch: AppDispatch, fetchTable: any) => {
-          try {
-            const response = await fetchTable(data).unwrap();
-            dispatch(setProductTable(response.data.data));
-            dispatch(setTotalItem(response.data.total));
-            dispatch(setLoading(false));
-            showToast(response.message, ToastMessage.SHOW_SUCCESS);
-          } catch (err) {
-            const error = err as ErrorCode;
-            const errorInstance = new ApiError(error.data as ErrorData, error.status);
-            dispatch(setProductTable([]));
-            dispatch(setTotalItem(0));
-            dispatch(setLoading(false));
-            showToast(errorInstance.globalMessage || "Login failed", "error");
-          }
-        },
-        1000
-    );
+
 
 const ProductTable: React.FC = () => {
 
@@ -84,14 +63,14 @@ const ProductTable: React.FC = () => {
     const closeDeleteModal = () => setDeleteModal(false)
 
     const deleteProductFunc = async () => {
-       await productDelete({id: selectedProduct?.id || 0}).unwrap()
-       dispatch(resetFilterItem())
+        await productDelete({id: selectedProduct?.id || 0}).unwrap()
+        callSearch();
         setDeleteModal(false);
     }
     const openDeleteModal = () => setDeleteModal(true);
 
     const [fetchTableData] = useProductTableMutation();
-
+    const debouncedSearch = useDasboardDebouncedSearch(fetchTableData);
 
     const tableConfig : TableConfig = {
         tableClassName: 'min-w-full bg-white border border-gray-200 shadow-md rounded-lg',
@@ -151,25 +130,29 @@ const ProductTable: React.FC = () => {
             text: () => 'N/A'
         },
         sort_by: sort_by,
-        sort_dir: sort_dir || '',
+        sort_dir: sort_dir,
     };
     
     const setSortKey = (key: string , value: string) => {
         dispatch(setSortTableByKey({key, value}))
     }
 
-    useEffect(()=>{
-        dispatch(setProductTable([]));
-        dispatch(setLoading(true));
+    const callSearch = () => {
         debouncedSearch({
             sort_by,
-            sort_dir: sort_dir as 'asc' | 'desc',
+            sort_dir ,
             search,
             requested_accreditation,
             accreditation_status,
             per_page,
             page: current_page
-        }, dispatch, fetchTableData)
+        }, dispatch)
+    }
+
+    useEffect(()=>{
+        dispatch(setProductTable([]));
+        dispatch(setLoading(true));
+        callSearch();
     },[sort_by, sort_dir, search, requested_accreditation, accreditation_status, per_page, current_page])
 
     const renderTableContent = () => {
