@@ -11,7 +11,7 @@ import { ProductData, TableConfig } from '@/interface/main';
 import LogutModal from '@/components/Modals/LogutModal';
 import { AppDispatch, RootState } from '@/redux/store';
 import { useDispatch, useSelector } from 'react-redux';
-import { resetFilterItem, setcurrentItem, setcurrentPage, setLoading, setProductTable, setSortTableByKey} from '@/redux/features/ProductDataSlice';
+import { setcurrentItem, setcurrentPage, setLoading, setProductTable, setSortTableByKey} from '@/redux/features/ProductDataSlice';
 import { useProductDeleteMutation, useProductTableMutation } from '@/redux/services/dashboardApi';
 
 import 'react-loading-skeleton/dist/skeleton.css'
