@@ -53,7 +53,8 @@ export const dashboardApi = createApi({
                 url: PRODUCT_TABLE,
                 method: "POST",
                 body: credentials,
-            }),
+                providesTags: ["productTable"]
+            }), 
         }),
 
         productDelete: builder.mutation<DataCode, { id: number }>({

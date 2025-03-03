@@ -26,9 +26,9 @@ const DashboardSummary: React.FC = () => {
   useEffect(() => {
     if (productdata) {
       setChartData([
-        { name: "Vegetarian", value: productdata.accredited || 5, color: "#A6E3A1" },
-        { name: "Vegan", value: productdata.vegan || 23, color: "#f0f0f0" },
-        { name: "Plant Based", value: productdata.plant_based || 7, color: "#032B2F" },
+        { name: "Vegetarian", value: productdata.accredited || 1, color: "#A6E3A1" },
+        { name: "Vegan", value: productdata.vegan || 1, color: "#f0f0f0" },
+        { name: "Plant Based", value: productdata.plant_based || 1, color: "#032B2F" },
       ]);
     }
   }, [productdata]);

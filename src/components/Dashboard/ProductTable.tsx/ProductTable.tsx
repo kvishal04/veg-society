@@ -66,7 +66,7 @@ const customStatusRender = (value: ProductData) => {
           }
         },
         1000
-      );
+    );
 
 const ProductTable: React.FC = () => {
 
