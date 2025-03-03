@@ -5,7 +5,6 @@ import { IdashboardSummary, IproductCraeteData } from "@/interface/main";
 import { CREATE_PRODUCT, DASHBOARD_SUMMARY, DELETE_PRODUCT, PRODUCT_TABLE } from "../API_URL";
 import { DataCode } from "@/interface/error";
 import { logout } from "@/redux/features/authSlice"; // Import your logout action
-import { forEach } from "lodash";
 
 const baseQuery = fetchBaseQuery({
     baseUrl: BASE_URL + "dashboard/",
