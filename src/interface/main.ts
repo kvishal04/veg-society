@@ -99,10 +99,8 @@ interface PieData {
 export type IchartData = PieData[];
 
 
-export interface ProductNotes {
-  data : { created_at: string, added_by: string, note: string }[]
+export type ProductNotesArray  = { created_at: string, added_by: string, note: string }[];
   
-}
 
 export interface IdashboardFilterData { 
   sort_by: string,
@@ -112,4 +110,8 @@ export interface IdashboardFilterData {
   accreditation_status: string,
   per_page: number,
   page: number
+}
+
+export interface ProductNotes {
+  data: { created_at: string; added_by: string; note: string }[];
 }

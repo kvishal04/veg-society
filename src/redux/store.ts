@@ -6,6 +6,7 @@ import ProductDetailReducer from "@/redux/features/productDetailSlice";
 import IngredientDataReducer from "@/redux/features/IngredientDataSlice";
 import ProductDataReducer from "@/redux/features/ProductDataSlice";
 import { dashboardApi } from "@/redux/services/dashboardApi";
+import { productApi } from "@/redux/services/productApi";
 
 export const makeStore = () => {
   return configureStore({
@@ -16,11 +17,14 @@ export const makeStore = () => {
       IngredientData: IngredientDataReducer,
       ProductData: ProductDataReducer, 
       [api.reducerPath]: api.reducer,
-      [dashboardApi.reducerPath]: dashboardApi.reducer
+      [dashboardApi.reducerPath]: dashboardApi.reducer,
+      [productApi.reducerPath]: productApi.reducer
     },
     middleware: (getDefaultMiddleware) => {
       return getDefaultMiddleware()
-        .concat(api.middleware).concat(dashboardApi.middleware)
+        .concat(api.middleware)
+        .concat(dashboardApi.middleware)
+        .concat(productApi.middleware)
     },
   })
 }

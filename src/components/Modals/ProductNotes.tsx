@@ -1,27 +1,38 @@
 "use client";
 
 import { X } from "lucide-react";
-import React from "react";
-import { useSelector } from "react-redux";
+import React, { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
 import Button from "../reusable/Button";
 import Textarea from "../reusable/TextArea";
+import { useProductNotesMutation } from "@/redux/services/productApi";
+import { setProductNotes } from "@/redux/features/productDetailSlice";
+import { ProductNotesArray } from "@/interface/main";
+import { format, parseISO } from "date-fns";
 
-interface ProductNotes {
-  data: { created_at: string; added_by: string; note: string }[];
-}
 
 type ModalProps = {
   isOpen: boolean;
-  mode: string;
   onClose: () => void;
   onSave: () => void;
 };
 
-const ProductNotesModal: React.FC<ModalProps> = ({ isOpen, onClose, onSave, mode }) => {
-  const { productNotes }: { productNotes: ProductNotes } = useSelector(
+const ProductNotesModal: React.FC<ModalProps> = ({ isOpen, onClose, onSave }) => {
+  const { productNotes }: { productNotes: ProductNotesArray } = useSelector(
     (state: RootState) => state.productDetailReducer
   );
+
+  const dispatch  = useDispatch()
+  
+  const returnLocalDate = (utcDate : string) => {
+    const localDate = format(parseISO(utcDate), "hh:mma dd/MM/yyyy");
+    return localDate
+  }
+
+  useEffect(() => {
+  }, [])
+  
   
 
   if (!isOpen) return null;
@@ -40,11 +51,11 @@ const ProductNotesModal: React.FC<ModalProps> = ({ isOpen, onClose, onSave, mode
 
         {/* Modal Body */}
         <div className="mt-4 max-h-[20rem] overflow-y-auto pr-3 text-barlow custom-scrollbar">
-          {productNotes?.data?.map((note, index) => (
+          {productNotes?.map((note) => (
             <div key={note.created_at} className="mb-6">
               <p className="text-sm italic mb-4">{note.added_by}:</p>
               <p className="text-lg text-gray-700 mb-4">{note.note}</p>
-              <p className="text-sm text-gray-700">{note.created_at}</p>
+              <p className="text-sm text-gray-700">{returnLocalDate(note.created_at)}</p>
             </div>
           ))}
         </div>

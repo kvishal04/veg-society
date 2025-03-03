@@ -2,28 +2,38 @@
 import React, { useEffect, useState } from "react";
 import Input from "../reusable/Input";
 import Select from "../reusable/Select";
-import { AccreditationData as data, productNotes } from "@/FakeJson/tabledata";
+import { AccreditationData as data } from "@/FakeJson/tabledata";
 import Details from "@/styles/logo/Details";
-import { useSearchParams } from "next/navigation";
+import { useParams, useSearchParams } from "next/navigation";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
-import { setProductDetail, setProductDetailSummary } from "@/redux/features/productDetailSlice";
+import { setProductDetail, setProductNotes } from "@/redux/features/productDetailSlice";
 import SkeletonLoad from "../reusable/Skeleton";
 import ProductNotesModal from "../Modals/ProductNotes";
 import Button from "../reusable/Button";
+import { useProductNotesMutation } from "@/redux/services/productApi";
 
 const AccreditationData = [...data]
 const ProductSummary: React.FC = () => {
 
   const [productNotesModal, setProductNotesModal] = useState<boolean>(false);
   const { productDetail } = useSelector((state: RootState) => state.productDetailReducer); 
+  const productID = useParams()?.slug as string;
   const dispatch = useDispatch()
+  const [ProductNotes]  = useProductNotesMutation()
+
+  const loadNotesData = async() => {
+    const res = await ProductNotes({product_id: productID}).unwrap() ;
+    dispatch(setProductNotes(res))
+
+  }
 
   const openModal = () => setProductNotesModal(true);
   const closeModal = () => setProductNotesModal(false);
 
   const searchParams = useSearchParams();
   const mode = searchParams.get("mode");
+
 
   const renderSelect = () => {
     switch (true) {
@@ -58,20 +68,23 @@ const ProductSummary: React.FC = () => {
 
 
   useEffect(() => {
-     setTimeout(() => {
-        return dispatch(setProductDetailSummary({
-          productDetail: {
-            name: 'Product name 1',
-            accreditation_status: 'Pending',
-            submit_date: "23-10-2024",
-            responce_date: "25-10-2024",
-            requested: 'Vegetarian'
-          },
-          productNotes: {...productNotes}
-        }));
-        
-      }, 2000);
-  }, [])
+
+    if(productID){
+      console.log("sdfghjkl")
+      setTimeout(() => {
+         return dispatch(setProductDetail( {
+             name: 'Product name 1',
+             accreditation_status: 'Pending',
+             submit_date: "23-10-2024",
+             responce_date: "25-10-2024",
+             requested: 'Vegetarian'
+         }));
+         
+       }, 2000);
+       loadNotesData()
+    }
+   
+  }, [productID])
   
 
   return (
@@ -147,7 +160,7 @@ const ProductSummary: React.FC = () => {
 
       {/* Product Notes Modal */}
 
-      <ProductNotesModal mode={mode ?? ''} isOpen={productNotesModal} onClose={closeModal} onSave={closeModal}/>
+      <ProductNotesModal isOpen={productNotesModal} onClose={closeModal} onSave={closeModal}/>
     </div>
   );
 };
