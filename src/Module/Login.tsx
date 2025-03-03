@@ -25,7 +25,7 @@ const debouncedLogin = debounce(
     try {
       dispatch(setLoading(true));
       const response = await loginUser({ email, password }).unwrap();
-      dispatch(setUser({ user: { id: response.data.id, email, name: response.data.name, role: response.data.role }, token: response.data.token }));
+      dispatch(setUser({ user: { id: response.data.id, email, name: response.data.name, role: response.data.role }, token: response.data.token, company_name: response.data.company_details.company_name}));
       showToast(response.message, "success");
       dispatch(setLoading(false));
       router.push("/dashboard");

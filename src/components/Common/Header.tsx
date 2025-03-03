@@ -22,7 +22,7 @@ const Header: React.FC<HeaderProps> = ({ title = 'Company Name' }) => {
 
   const router = useRouter()
   const dispatch = useDispatch<AppDispatch>()
-  const {user, token} = useSelector((state: RootState) => state?.auth);
+  const {user, token, company_name} = useSelector((state: RootState) => state?.auth);
   const [productModal, setProductModal] = useState<boolean>(false);
   const openModal = () => setProductModal(true);
   const closeModal = () => setProductModal(false);
@@ -127,7 +127,7 @@ const Header: React.FC<HeaderProps> = ({ title = 'Company Name' }) => {
             />
           </div>
           <Heading level={1} className="font-henriette sm:text-xl md:text-3xl lg:text-3xl xl:text-5xl">
-            {title}
+            {company_name ?? title}
           </Heading>
         </div>
 
