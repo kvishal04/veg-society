@@ -11,7 +11,8 @@ const useDasboardDebouncedSearch = (fetchFunction: any, delay: number = 1000) =>
   return useCallback(
     debounce(async (data: IdashboardFilterData, dispatch: AppDispatch) => {
       try {
-        const response = await fetchFunction(data).unwrap();
+            dispatch(setLoading(true));
+            const response = await fetchFunction(data).unwrap();
             dispatch(setProductTable(response.data.data));
             dispatch(setTotalItem(response.data.total));
             dispatch(setLoading(false));
