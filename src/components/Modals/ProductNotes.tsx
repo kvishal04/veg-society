@@ -2,12 +2,10 @@
 
 import { X } from "lucide-react";
 import React, { useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
 import Button from "../reusable/Button";
 import Textarea from "../reusable/TextArea";
-import { useProductNotesMutation } from "@/redux/services/productApi";
-import { setProductNotes } from "@/redux/features/productDetailSlice";
 import { ProductNotesArray } from "@/interface/main";
 import { format, parseISO } from "date-fns";
 
@@ -23,7 +21,6 @@ const ProductNotesModal: React.FC<ModalProps> = ({ isOpen, onClose, onSave }) =>
     (state: RootState) => state.productDetailReducer
   );
 
-  const dispatch  = useDispatch()
   
   const returnLocalDate = (utcDate : string) => {
     const localDate = format(parseISO(utcDate), "hh:mma dd/MM/yyyy");
