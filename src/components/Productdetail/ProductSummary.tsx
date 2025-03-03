@@ -147,7 +147,7 @@ const ProductSummary: React.FC = () => {
 
       {/* Product Notes Modal */}
 
-      <ProductNotesModal isOpen={productNotesModal} onClose={closeModal} onSave={closeModal}/>
+      <ProductNotesModal mode={mode ?? ''} isOpen={productNotesModal} onClose={closeModal} onSave={closeModal}/>
     </div>
   );
 };

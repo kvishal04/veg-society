@@ -13,11 +13,12 @@ interface ProductNotes {
 
 type ModalProps = {
   isOpen: boolean;
+  mode: string;
   onClose: () => void;
   onSave: () => void;
 };
 
-const ProductNotesModal: React.FC<ModalProps> = ({ isOpen, onClose, onSave }) => {
+const ProductNotesModal: React.FC<ModalProps> = ({ isOpen, onClose, onSave, mode }) => {
   const { productNotes }: { productNotes: ProductNotes } = useSelector(
     (state: RootState) => state.productDetailReducer
   );
