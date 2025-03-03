@@ -24,7 +24,6 @@ const baseQueryWithAuthHandling = async (args: any, api: any, extraOptions: any)
     const result = await baseQuery(args, api, extraOptions);
 
     if (result.error && result.error.status === 401) {
-        showToast("Session expired. Please log in again.", ToastMessage.SHOW_ERROR);
         api.dispatch(logout()); // Dispatch logout action
     }
 

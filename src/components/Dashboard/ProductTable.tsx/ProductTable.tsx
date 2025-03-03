@@ -11,7 +11,7 @@ import { IdashboardFilterData, ProductData, TableConfig } from '@/interface/main
 import LogutModal from '@/components/Modals/LogutModal';
 import { AppDispatch, RootState } from '@/redux/store';
 import { useDispatch, useSelector } from 'react-redux';
-import { resetFilterItem, setcurrentItem, setcurrentPage, setProductTable, setSortTableByKey, setTotalItem } from '@/redux/features/ProductDataSlice';
+import { resetFilterItem, setcurrentItem, setcurrentPage, setLoading, setProductTable, setSortTableByKey, setTotalItem } from '@/redux/features/ProductDataSlice';
 import { useProductDeleteMutation, useProductTableMutation } from '@/redux/services/dashboardApi';
 import { debounce } from 'lodash';
 import { showToast, ToastMessage } from '@/utils/utills';
@@ -54,10 +54,14 @@ const customStatusRender = (value: ProductData) => {
             const response = await fetchTable(data).unwrap();
             dispatch(setProductTable(response.data.data));
             dispatch(setTotalItem(response.data.total));
+            dispatch(setLoading(false));
             showToast(response.message, ToastMessage.SHOW_SUCCESS);
           } catch (err) {
             const error = err as ErrorCode;
             const errorInstance = new ApiError(error.data as ErrorData, error.status);
+            dispatch(setProductTable([]));
+            dispatch(setTotalItem(0));
+            dispatch(setLoading(false));
             showToast(errorInstance.globalMessage || "Login failed", "error");
           }
         },
@@ -68,7 +72,7 @@ const ProductTable: React.FC = () => {
 
 
     const dispatch = useDispatch<AppDispatch>();
-    const { productTable : { current_page, per_page, data, sort_by, sort_dir, requested_accreditation, accreditation_status, search, total } } = useSelector((state: RootState) => state.ProductData); 
+    const {isLoading, productTable : { current_page, per_page, data, sort_by, sort_dir, requested_accreditation, accreditation_status, search, total } } = useSelector((state: RootState) => state.ProductData); 
   
 
     const tableData: ProductData[] = [...data];
@@ -156,6 +160,7 @@ const ProductTable: React.FC = () => {
 
     useEffect(()=>{
         dispatch(setProductTable([]));
+        dispatch(setLoading(true));
         debouncedSearch({
             sort_by,
             sort_dir: sort_dir as 'asc' | 'desc',
@@ -170,11 +175,13 @@ const ProductTable: React.FC = () => {
     return (
         <div className='px-6 xl:px-52 py-8'>
             <ProductSearchBar />
-            {tableData.length === 0 ?  
-                <div className="max-h-[28rem] w-full  overflow-y-auto custom-scrollbar text-barlow">
-                    <SkeletonLoad  count={18} />
+             {isLoading ? (
+                <div className="max-h-[28rem] w-full overflow-y-auto custom-scrollbar text-barlow">
+                    <SkeletonLoad count={18} />
                 </div>
-                :
+            ) : tableData.length === 0 ? (
+                <div className="text-center text-gray-500 text-lg py-4">No Data Found</div>
+            ) : (
                 <div>
                     <div className="max-h-[28rem] overflow-y-auto custom-scrollbar text-barlow">
                         <TableComponent data={tableData} config={tableConfig}  showItemQuantity={per_page} onSortClick={setSortKey} />
@@ -187,8 +194,7 @@ const ProductTable: React.FC = () => {
                         onItemsPerPageChange={(items: number) => dispatch(setcurrentItem(items))} 
                     />
                 </div> 
-            }   
-            
+            )}
             {/*  Treated as Deleted Modal */}
             <LogutModal isOpen={deleteModal} itemName={selectedProduct?.product_name}  onClose={() => {closeDeleteModal()}} onSave={() => {deleteProductFunc()}} title='Delete' body='delete'/>
         </div>
