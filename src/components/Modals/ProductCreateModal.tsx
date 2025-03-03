@@ -9,7 +9,7 @@ import Button from "../reusable/Button";
 import Textarea from "../reusable/TextArea";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
-import { resetFilterItem, setCreateProductData } from "@/redux/features/ProductDataSlice";
+import { resetFilterItem, setCreateProductData, resertProdctCreateForm } from "@/redux/features/ProductDataSlice";
 import { useProductCreateMutation } from "@/redux/services/dashboardApi";
 
 const AccreditationData = [...data];
@@ -41,7 +41,7 @@ const ProductCreateModal: React.FC<ModalProps> = ({ isOpen, onClose, onSave }) =
     const submitData = async () => {
         if (!validateForm()) return;
         await createProduct({ product_name, notes, requested_accreditation }).unwrap();
-        dispatch(resetFilterItem());
+        dispatch(resetFilterItem(), resertProdctCreateForm());
         onSave();
     };
 
