@@ -29,7 +29,7 @@ export type TableConfig = {
       text: () => string;
     };
     sort_by?: string;
-    sort_dir?: 'asc' | 'desc'
+    sort_dir?: string;
 
 };
 
@@ -82,7 +82,7 @@ export interface  IproductTable {
   per_page: number;
   last_page: number;
   total: number;
-  sort_dir: 'asc' | 'desc';
+  sort_dir: string;
   sort_by: string;
   search: string,
   requested_accreditation: string,

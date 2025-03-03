@@ -20,7 +20,7 @@ const initialState: ProductDataState = {
     per_page: 24,
     last_page: 0,
     total: 0,
-    sort_dir: 'asc',
+    sort_dir: '',
     sort_by: '',
     search: '',
     requested_accreditation: '',
@@ -65,7 +65,7 @@ const ProductDataSlice = createSlice({
       state.productTable.accreditation_status = action.payload;
     },
 
-    setSortTableByKey : (state, action: PayloadAction<{key: string, value: 'asc'| 'desc'}>) => {
+    setSortTableByKey : (state, action: PayloadAction<{key: string, value: string}>) => {
       state.productTable.sort_by = action.payload.key;
       state.productTable.sort_dir = action.payload.value;
     },

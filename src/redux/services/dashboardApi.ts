@@ -5,6 +5,7 @@ import { IdashboardSummary, IproductCraeteData } from "@/interface/main";
 import { CREATE_PRODUCT, DASHBOARD_SUMMARY, DELETE_PRODUCT, PRODUCT_TABLE } from "../API_URL";
 import { DataCode } from "@/interface/error";
 import { logout } from "@/redux/features/authSlice"; // Import your logout action
+import { forEach } from "lodash";
 
 const baseQuery = fetchBaseQuery({
     baseUrl: BASE_URL + "dashboard/",
@@ -48,7 +49,7 @@ export const dashboardApi = createApi({
             },
         }),
 
-        productTable: builder.mutation<DataCode, { sort_by: string; sort_dir: "asc" | "desc"; search: string; requested_accreditation: string; accreditation_status: string; per_page: number; page: number }>({
+        productTable: builder.mutation<DataCode, { sort_by: string; sort_dir: string; search: string; requested_accreditation: string; accreditation_status: string; per_page: number; page: number }>({
             query: (credentials) => ({
                 url: PRODUCT_TABLE,
                 method: "POST",
@@ -85,9 +86,27 @@ export const dashboardApi = createApi({
                 showToast(_response.message, ToastMessage.SHOW_SUCCESS);
                 return _response.data;
             },
+
             transformErrorResponse: (_response: { status: number; data: any; message: string }) => {
-                showToast(_response.message, ToastMessage.SHOW_ERROR);
-                return _response.message;
+                console.log("_response", _response);
+            
+                // Extract validation errors properly
+                if (_response.data?.type === "VALIDATION_ERROR" && _response.data.data) {
+                    const validationErrors = _response.data.data;
+                    let errorMessage = _response.data.message;
+            
+                    // Loop through the validation errors object
+                    for (const key in validationErrors) {
+                        if (validationErrors.hasOwnProperty(key)) {
+                            errorMessage += ` ${validationErrors[key].join(" ")}`;
+                        }
+                    }
+                    showToast(errorMessage, ToastMessage.SHOW_ERROR);
+                    return errorMessage;
+                }
+            
+                showToast(_response.data?.message || "Something went wrong", ToastMessage.SHOW_ERROR);
+                return _response.data?.message || "Something went wrong";
             },
         }),
     }),

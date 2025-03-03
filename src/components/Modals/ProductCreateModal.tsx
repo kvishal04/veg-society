@@ -9,8 +9,11 @@ import Button from "../reusable/Button";
 import Textarea from "../reusable/TextArea";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
-import { setCreateProductData, resertProdctCreateForm, setSearch } from "@/redux/features/ProductDataSlice";
-import { useProductCreateMutation } from "@/redux/services/dashboardApi";
+import { setCreateProductData, resertProdctCreateForm, setSearch, setProductTable, setTotalItem, setLoading } from "@/redux/features/ProductDataSlice";
+import { useProductCreateMutation, useProductDeleteMutation, useProductTableMutation } from "@/redux/services/dashboardApi";
+import { showToast, ToastMessage } from "@/utils/utills";
+import { ErrorCode, ErrorData } from "@/interface/error";
+import { ApiError } from "@/utils/customError";
 
 const AccreditationData = [...data];
 
@@ -27,6 +30,7 @@ const ProductCreateModal: React.FC<ModalProps> = ({ isOpen, onClose, onSave }) =
     const dispatch = useDispatch();
     const [createProduct] = useProductCreateMutation();
 
+
     const [errors, setErrors] = useState<{ product_name?: string; notes?: string; requested_accreditation?: string }>({});
 
     const validateForm = () => {
@@ -39,16 +43,21 @@ const ProductCreateModal: React.FC<ModalProps> = ({ isOpen, onClose, onSave }) =
     };
 
     const submitData = async () => {
-        if (!validateForm()) return;
-        await createProduct({ product_name, notes, requested_accreditation }).unwrap();
-        dispatch(setSearch(product_name));
-        dispatch( resertProdctCreateForm());
-        setErrors({
-            notes: '',
-            product_name: '',
-            requested_accreditation: ''  
-          })
-        onSave();
+        try {
+            if (!validateForm()) return;
+            await createProduct({ product_name, notes, requested_accreditation }).unwrap();
+            await debouncedSearch()
+            dispatch( resertProdctCreateForm());
+            setErrors({
+                notes: '',
+                product_name: '',
+                requested_accreditation: ''  
+              })
+            onSave();
+        } catch (error) {
+            
+        }
+       
     };
 
     const onModalCLose = () => {
@@ -60,6 +69,36 @@ const ProductCreateModal: React.FC<ModalProps> = ({ isOpen, onClose, onSave }) =
         dispatch(resertProdctCreateForm());
         onClose()
     }
+
+     const [fetchTableData] = useProductTableMutation();
+
+     const debouncedSearch = async() =>{
+            try {
+                dispatch(setLoading(true));
+                const response = await fetchTableData({
+                    sort_by: "",
+                    sort_dir: "",
+                    search: "",
+                    requested_accreditation: "",
+                    accreditation_status: "",
+                    per_page: 24,
+                    page: 1
+                }).unwrap();
+
+                dispatch(setProductTable(response.data.data));
+                dispatch(setTotalItem(response.data.total));
+                dispatch(setLoading(false));
+                showToast(response.message, ToastMessage.SHOW_SUCCESS);
+            } catch (err) {
+                const error = err as ErrorCode;
+                const errorInstance = new ApiError(error.data as ErrorData, error.status);
+                dispatch(setProductTable([]));
+                dispatch(setTotalItem(0));
+                dispatch(setLoading(false));
+                showToast(errorInstance.globalMessage || "Login failed", "error");
+              }
+        }
+          
 
     if (!isOpen) return null;
 

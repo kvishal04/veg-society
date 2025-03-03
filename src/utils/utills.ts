@@ -41,6 +41,6 @@ export const checkPassword = (value: string) => {
 
 export const ToastMessage  = {
   SHOW_SUCCESS : "success",
-  SHOW_ERROR : "Error",
+  SHOW_ERROR : "error",
   SHOW_DEFAULT : ""
 }

@@ -151,10 +151,10 @@ const ProductTable: React.FC = () => {
             text: () => 'N/A'
         },
         sort_by: sort_by,
-        sort_dir: sort_dir || 'asc',
+        sort_dir: sort_dir || '',
     };
     
-    const setSortKey = (key: string , value: 'asc' | 'desc') => {
+    const setSortKey = (key: string , value: string) => {
         dispatch(setSortTableByKey({key, value}))
     }
 
