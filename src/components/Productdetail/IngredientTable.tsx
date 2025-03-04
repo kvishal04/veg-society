@@ -185,7 +185,7 @@ const IngredientTable: React.FC = () => {
     
     return (
       <div>
-        {(!openAddIngredietComponent && IngredientTableData.length > 0)  &&
+        {(!openAddIngredietComponent && total > 0)  &&
         <Pagination
             totalItems={IngredientTableData.length + newData.length}
             itemsPerPage={per_page}

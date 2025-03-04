@@ -42,7 +42,7 @@ const AddIngredient: React.FC<IngredientProps> = ({openAddIngredietComponent, se
     const [showNotListedForm, setShowNotListedForm] = useState(false);
 
 
-    const {IngredientTable : { total } , newData } = useSelector((state: RootState) => state.IngredientData); 
+    const {IngredientTable : { total }  } = useSelector((state: RootState) => state.IngredientData); 
 
     const onCellClick = (key: string, row: Record<string, any>) => {
         const typedRow = row as IIngredientData; // Explicit type assertion

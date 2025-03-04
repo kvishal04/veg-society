@@ -27,15 +27,14 @@ const ProductSummary: React.FC = () => {
 
 
   const renderSelect = () => {
-    switch (true) {
-      case productDetail.requested_accreditation && mode === '0':
+   
+      if(productDetail.requested_accreditation && mode === '0'){
         return (
           <p id="accreditation" className="w-20 p-2 text-lg bg-transparent"> 
             {productDetail.requested_accreditation} 
           </p> 
         );
-  
-      default:
+      }else{
         return (
           <div className="">
             <Select
@@ -49,7 +48,7 @@ const ProductSummary: React.FC = () => {
           </div>
           
         );
-    }
+      }
   };
 
 
