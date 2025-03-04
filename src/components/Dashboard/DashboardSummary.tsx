@@ -18,17 +18,21 @@ const DashboardSummary: React.FC = () => {
   const { productTable : { accreditation_status } } = useSelector((state: RootState) => state.ProductData); 
 
   const [chartData, setChartData] = useState<IchartData>([
-    { name: "Vegetarian", value: 25, color: "#A6E3A1" },
-    { name: "Vegan", value: 3, color: "#f0f0f0" },
-    { name: "Plant Based", value: 2, color: "#032B2F" },
+    { name: "Vegetarian", value: 0, color: "#A6E3A1" },
+    { name: "Vegan", value: 0, color: "#f0f0f0" },
+    { name: "Plant Based", value: 0, color: "#032B2F" },
   ]);
+
+  const [showCharData, setShowCharData] = useState<boolean>(false)
 
   useEffect(() => {
     if (productdata) {
+
+      setShowCharData((productdata.accredited && productdata.vegan && productdata.plant_based) ? true : false)
       setChartData([
-        { name: "Vegetarian", value: productdata.accredited || 1, color: "#A6E3A1" },
-        { name: "Vegan", value: productdata.vegan || 1, color: "#f0f0f0" },
-        { name: "Plant Based", value: productdata.plant_based || 1, color: "#032B2F" },
+        { name: "Vegetarian", value: productdata.accredited, color: "#A6E3A1" },
+        { name: "Vegan", value: productdata.vegan, color: "#f0f0f0" },
+        { name: "Plant Based", value: productdata.plant_based, color: "#032B2F" },
       ]);
     }
   }, [productdata]);
@@ -65,7 +69,9 @@ const DashboardSummary: React.FC = () => {
     <div className="font-henriette bg-darkGreen text-white p-2 md:p-8 xl:h-[11.5rem] flex flex-col lg:flex-row gap-6 w-full xl:py-8 xl:px-52">
       {/* Left Section: Pie Chart & Legend */}
       <div className="flex flex-row lg:items-center items-start gap-6 w-full lg:w-2/5">
-        <CustomPieChart chartData={chartData} />
+        {showCharData &&
+          <CustomPieChart chartData={chartData} />
+        }
 
         <div className="w-full text-sm">
           <div className="border-b-2 border-white mb-4 py-2">

@@ -1,7 +1,7 @@
 import { BASE_URL, showToast, ToastMessage,} from "@/utils/utills";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { RootState } from "../store";
-import { NOTES, SAVE } from "../API_URL";
+import { FETCH_PRODUCT_DETAILS, NOTES, SAVE } from "../API_URL";
 import { DataCode } from "@/interface/error";
 import { logout } from "@/redux/features/authSlice"; // Import your logout action
 import { ProductNotesArray } from "@/interface/main";
@@ -33,7 +33,6 @@ const baseQueryWithAuthHandling = async (args: any, api: any, extraOptions: any)
 export const productApi = createApi({
     reducerPath: "productApi",
     baseQuery: baseQueryWithAuthHandling,
-    tagTypes: ["ingredientTable", "Delete", "Notes", "dashboardSummary"],
     endpoints: (builder) => ({
        
         ProductNotes: builder.mutation<ProductNotesArray, { product_id: string }>({
@@ -46,7 +45,11 @@ export const productApi = createApi({
               showToast(_response.message, ToastMessage.SHOW_SUCCESS);
               return _response.data as ProductNotesArray;  // Ensure compatibility here
             },
-          }),
+            transformErrorResponse: (_response: { status: number; data: { message: string } }) => {
+                showToast(_response.data.message, ToastMessage.SHOW_ERROR);
+                return [];
+            },
+        }),
 
         SaveNotes: builder.mutation<DataCode, { product_id : string , note: string}>({
             query: (credentials) => ({
@@ -62,13 +65,19 @@ export const productApi = createApi({
                     showToast(_response.data.message, ToastMessage.SHOW_ERROR);
                     return [];
                 },
-            }), 
-            invalidatesTags: ["Notes"],
-           
+            }),
+        }),
+
+        fetchIngredientData: builder.mutation<DataCode, { product_id: string, sort_by: string; sort_dir: string; search: string; requested_accreditation: string; per_page: number; page: number }>({
+            query: (credentials) => ({
+              url: FETCH_PRODUCT_DETAILS,
+              method: "POST",
+              body: credentials,
+            })
         }),
 
        
     }),
 });
 
-export const { useProductNotesMutation, useSaveNotesMutation } = productApi;
+export const { useProductNotesMutation, useSaveNotesMutation, useFetchIngredientDataMutation } = productApi;

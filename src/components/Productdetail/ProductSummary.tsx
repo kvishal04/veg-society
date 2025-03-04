@@ -8,7 +8,6 @@ import { useParams, useSearchParams } from "next/navigation";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
 import { setProductDetail } from "@/redux/features/productDetailSlice";
-import SkeletonLoad from "../reusable/Skeleton";
 import ProductNotesModal from "../Modals/ProductNotes";
 import Button from "../reusable/Button";
 
@@ -29,15 +28,10 @@ const ProductSummary: React.FC = () => {
 
   const renderSelect = () => {
     switch (true) {
-      case productDetail.requested === "":
-        return (
-          <span className="w-20">  <SkeletonLoad baseColor="#ffffff"  count={1} />  </span> 
-        );
-  
-      case productDetail.requested && mode === '0':
+      case productDetail.requested_accreditation && mode === '0':
         return (
           <p id="accreditation" className="w-20 p-2 text-lg bg-transparent"> 
-            {productDetail.requested} 
+            {productDetail.requested_accreditation} 
           </p> 
         );
   
@@ -48,9 +42,9 @@ const ProductSummary: React.FC = () => {
             options={AccreditationData}
             id="accreditation"
             className="w-full hover:bg-slate-400 text-center mt-2 px-4 py-2 gap-4  text-xl bg-[#004537]  border border-darkGreen  focus:ring-black appearance-none  rounded-lg text-white outline-none"
-            value={productDetail.requested}
+            value={productDetail.requested_accreditation}
             optionClassName="text-base text-center hover:bg-green-400"
-            onChange={(value) => dispatch(setProductDetail({...productDetail, requested: value}))}
+            onChange={(value) => dispatch(setProductDetail({...productDetail, requested_accreditation: value}))}
           />
           </div>
           
@@ -64,11 +58,14 @@ const ProductSummary: React.FC = () => {
     if(productID){
       setTimeout(() => {
          return dispatch(setProductDetail( {
-             name: 'Product name 1',
-             accreditation_status: 'Pending',
-             submit_date: "23-10-2024",
-             responce_date: "25-10-2024",
-             requested: 'Vegetarian'
+           product_name: 'Product name 1',
+           accreditation_status: 'Pending',
+           submitted_on: "23-10-2024",
+           response_date: "25-10-2024",
+           requested_accreditation: 'Vegetarian',
+           id: 0,
+           current_accreditation: "",
+           ready_for_accreditation: false
          }));
          
        }, 2000);
@@ -85,17 +82,14 @@ const ProductSummary: React.FC = () => {
         <label className="w-48 text-2xl font-medium " htmlFor="productName">
           Product Name:
         </label>
-        {productDetail.name === '' ? <p className="w-40">  <SkeletonLoad baseColor="#ffffff"  count={1} />  </p> : <>
-        {mode === '0' ? <p id="productName" className="w-full p-3 text-2xl bg-transparent"> {productDetail.name} </p> :
+        {mode === '0' ? <p id="productName" className="w-full p-3 text-2xl bg-transparent"> {productDetail.product_name} </p> :
           <Input
             id="productName"
             type="text"
-            value={productDetail.name}
-            onChange={(e) => dispatch(setProductDetail({...productDetail, name: e.target.value}))}
+            value={productDetail.product_name}
+            onChange={(e) => dispatch(setProductDetail({...productDetail, product_name: e.target.value}))}
             className={"w-full p-3 text-2xl bg-[#004537] rounded-md border border-green-600"}
           /> }
-          </>
-        }
       </div>
 
       <hr className="border-white" />
@@ -106,7 +100,7 @@ const ProductSummary: React.FC = () => {
           <div className="flex flex-col items-start justify-start w-full  2xl:w-[55%]">
             <div className="flex items-end gap-2 mt-3 mb-4">
               <div className=" text-lg lg:text-2xl">Accreditation Status:</div>
-              <span className="text-xl lg:text-2xl font-semibold">{productDetail.accreditation_status || <p className="w-20">  <SkeletonLoad baseColor="#ffffff"  count={1} />  </p> }</span>
+              <span className="text-xl lg:text-2xl font-semibold">{productDetail.accreditation_status }</span>
             </div>
 
             <div className="flex items-center gap-4 text-sm md:text-xl w-full lg:w-auto">
@@ -131,8 +125,8 @@ const ProductSummary: React.FC = () => {
 
             {/* Submission & Response Dates */}
             <div className="flex flex-col xl:flex-row justify-start items-start gap-2 text-base md:text-lg 2xl:text-lg md:w-full">
-              <p>Submitted on: <span className="ml-2">{productDetail.submit_date || <span className="w-20">  <SkeletonLoad baseColor="#ffffff"  count={1} />  </span> }</span></p>
-              <p className="xl:ml-4">Response Date: <span className="ml-2">{productDetail.responce_date || <span className="w-20">  <SkeletonLoad baseColor="#ffffff"  count={1} />  </span> }</span></p>
+              <p>Submitted on: <span className="ml-2">{productDetail.submitted_on}</span></p>
+              <p className="xl:ml-4">Response Date: <span className="ml-2">{productDetail.response_date}</span></p>
             </div>
           </div>
         </div>

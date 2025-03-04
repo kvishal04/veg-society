@@ -25,7 +25,6 @@ const initialState: ProductDataState = {
     search: '',
     requested_accreditation: '',
     accreditation_status: '',
-
   },
 };
 

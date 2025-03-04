@@ -13,11 +13,14 @@ interface ProductDetailState {
 const initialState: ProductDetailState = {
   isLoading: false,
   productDetail : {
-      name: '',
-      accreditation_status: '',
-      requested: '',
-      submit_date: '',
-      responce_date: ''
+    product_name: '',
+    accreditation_status: '',
+    requested_accreditation: '',
+    submitted_on: '',
+    response_date: '',
+    id: 0,
+    current_accreditation: '',
+    ready_for_accreditation: false
   },
   productNotes :  [],
   notes: ''

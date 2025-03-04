@@ -3,7 +3,6 @@
 import React, { useEffect, useState } from "react";
 import TableComponent from "@/components/reusable/Table/Table";
 import Pagination from "@/components/reusable/Table/Pagination";
-import { IngredientData } from "@/FakeJson/tabledata";
 import IngredientSearchBar from "./IngredientSeach";
 import EyeView from "@/styles/logo/Eye";
 import AddIngredient from "./AddIngredient/AddIngredient";
@@ -11,13 +10,16 @@ import Button from "../reusable/Button";
 import { IIngredientData, TableConfig } from "@/interface/main";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
-import { loadProductIngredientTable } from "@/redux/features/IngredientDataSlice";
+import { setcurrentItem, setcurrentPage, setSortTableByKey } from "@/redux/features/IngredientDataSlice";
 import 'react-loading-skeleton/dist/skeleton.css'
 import SkeletonLoad from "../reusable/Skeleton";
+import { useFetchIngredientDataMutation } from "@/redux/services/productApi";
+import useIngredientDebounceSerach from "@/hooks/useIngredientDebounceSerach";
+import { useParams } from "next/navigation";
 
 
 
-const customBodyRender = (value: IIngredientData, key: "Vegetarian" | "Vegan" | "PlantBased") => {
+const customBodyRender = (value: IIngredientData, key: "vegetarian" | "vegan" | "plant_based") => {
   let bgColor = "bg-customOrange"; // Default case
 
   if (value[key] === 1) {
@@ -33,7 +35,7 @@ const customBodyRender = (value: IIngredientData, key: "Vegetarian" | "Vegan" | 
 const renderAlternativeNamesColumn = (value: IIngredientData,) => {
     return (
         <div className={`text-black text-barlow`}>
-            {value.AlternativeNames.join(', ')}
+            {value.alternate_names.map((item)=> item.alternate_name).join(', ')}
         </div>  
     );
 };
@@ -50,16 +52,14 @@ const renderActionColumn = (value: IIngredientData ) => {
 
 
 const IngredientTable: React.FC = () => {
-  const [currentPage, setCurrentPage] = useState(1);
-  const [itemsPerPage, setItemsPerPage] = useState(24);
+  const productID = useParams()?.slug as string;
   const [openAddIngredietComponent, setOpenAddIngredietComponent] = useState<boolean>(false);
-  const { IngredientTableData , newData } = useSelector((state: RootState) => state.IngredientData); 
+  const {isLoading, IngredientTable : { IngredientTableData, sort_by, sort_dir, search ,current_page,  per_page, requested_accreditation, total } , newData } = useSelector((state: RootState) => state.IngredientData); 
   const dispatch = useDispatch()
 
-  // Pagination logic
-  const indexOfLastItem = currentPage * itemsPerPage;
-  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentItems = [...IngredientTableData, ...newData].slice(indexOfFirstItem, indexOfLastItem);
+  const [fetchTableData] = useFetchIngredientDataMutation();
+  const debouncedSearch = useIngredientDebounceSerach(fetchTableData);
+
 
   const tableConfig: TableConfig = {
     tableClassName: "min-w-full bg-white border border-gray-200 shadow-md rounded-lg",
@@ -75,32 +75,32 @@ const IngredientTable: React.FC = () => {
     columns: [
       {
         name: "Number",
-        keys: ["Number"],
+        keys: ["id"],
         sortable: true,
         className: "rounded-tl-lg md:max-w-16",
       },
       {
         name: "Ingredient",
-        keys: ["Ingredient"],
+        keys: ["ingredient_name"],
         sortable: true,
         className: ""
       },
       {
         name: "AlternativeNames",
-        keys: ["AlternativeNames"],
+        keys: ["alternate_names"],
         customBodyRender: (value: IIngredientData) => renderAlternativeNamesColumn(value),
         sortable: true,
       },
       {
         name: "Vegetarian",
         keys: ["Vegetarian"],
-        customBodyRender: (value: IIngredientData) => customBodyRender(value, "Vegetarian"),
+        customBodyRender: (value: IIngredientData) => customBodyRender(value, "vegetarian"),
         sortable: true,
       },
       {
         name: "Vegan",
         keys: ["Vegan"],
-        customBodyRender: (value: IIngredientData) => customBodyRender(value, "Vegan"),
+        customBodyRender: (value: IIngredientData) => customBodyRender(value, "vegan"),
         rowclassName: "",
         sortable: true,
       },
@@ -108,7 +108,7 @@ const IngredientTable: React.FC = () => {
         name: "PlantBased",
         keys: ["PlantBased"],
         sortable: true,
-        customBodyRender: (value: IIngredientData) => customBodyRender(value, "PlantBased"),
+        customBodyRender: (value: IIngredientData) => customBodyRender(value, "plant_based"),
       },
       {
         name: "Date Added",
@@ -131,43 +131,86 @@ const IngredientTable: React.FC = () => {
     },
   };
 
-  useEffect(() => {
-    setTimeout(() => {
-      return dispatch(loadProductIngredientTable(IngredientData));
-    }, 2000);
-  }, [])
+  const setSortKey = (key: string , value: string) => {
+        dispatch(setSortTableByKey({key, value}))
+  }
+    const callSearch = () => {
+      debouncedSearch({
+        sort_by,
+        sort_dir,
+        search,
+        requested_accreditation,
+        per_page,
+        page: current_page,
+        product_id: productID
+      }, dispatch)
+    }
   
+
+  useEffect(() => {
+    callSearch();
+  }, [sort_by, sort_dir, search, requested_accreditation, per_page, current_page, productID])
+  
+
+  const renderTableContent = () => {
+    if (isLoading) {
+        return (
+            <div className="max-h-[28rem] w-full overflow-y-auto custom-scrollbar text-barlow">
+                <SkeletonLoad count={18} />
+            </div>
+        );
+    }
+    
+    if (IngredientTableData.length === 0) {
+        return <div className="text-center text-gray-500 text-lg py-4">No Data Found</div>;
+    }
+    
+    return (
+        <div>
+            <div className="max-h-[28rem] overflow-y-auto custom-scrollbar text-barlow">
+              <TableComponent data={IngredientTableData} config={tableConfig} showItemQuantity={per_page} onSortClick={setSortKey} /> 
+            </div>
+        </div>
+    );
+  };
+
+  const renderPaginationContent = () => {
+    if (isLoading) {
+        return (
+            <div className="max-h-[28rem] w-full overflow-y-auto custom-scrollbar text-barlow">
+                <SkeletonLoad count={18} />
+            </div>
+        );
+    }
+    
+    return (
+      <div>
+        {(!openAddIngredietComponent && IngredientTableData.length > 0)  &&
+        <Pagination
+            totalItems={IngredientTableData.length + newData.length}
+            itemsPerPage={per_page}
+            currentPage={current_page}
+            onPageChange={(page) => dispatch(setcurrentPage(page))} 
+            onItemsPerPageChange={(items) => dispatch(setcurrentItem(items))} 
+          />
+        }
+      </div>
+    );
+  };
+
 
   return (
     <div className="px-6 2xl:px-52 py-8">
       <IngredientSearchBar />
-      <div className="max-h-[28rem] overflow-y-auto custom-scrollbar text-barlow">
-        {currentItems.length === 0 ? <SkeletonLoad count={18} /> :
-          <TableComponent data={currentItems} config={tableConfig} showItemQuantity={itemsPerPage} />
-        }
-      </div>
-      <AddIngredient openAddIngredietComponent={openAddIngredietComponent} setOpenAddIngredietComponent={setOpenAddIngredietComponent} />
+        {renderTableContent()}
+        <AddIngredient openAddIngredietComponent={openAddIngredietComponent} setOpenAddIngredietComponent={setOpenAddIngredietComponent} />
 
       <div className="flex justify-between mt-8 ">
           <div>
             <Button className='md:px-8 px-4 py-2 md:py-3 text-base md:text-lg' onClick={() => {setOpenAddIngredietComponent(true)}} variant="dark-green"><b>+</b> Add Ingredient</Button>
           </div>
 
-          <div>
-            {!openAddIngredietComponent &&
-            <Pagination
-                totalItems={IngredientTableData.length + newData.length}
-                itemsPerPage={itemsPerPage}
-                currentPage={currentPage}
-                onPageChange={(page: number) => setCurrentPage(page)}
-                onItemsPerPageChange={(items: number) => {
-                setItemsPerPage(items);
-                setCurrentPage(1);
-              }}
-              />
-            }
-          </div>
-           
+            {renderPaginationContent()}
             <div>
               <Button className='md:px-8 px-4 py-2 md:py-3 text-base md:text-lg' onClick={() => {}} variant="dark-green">Submit Changes</Button>
             </div>

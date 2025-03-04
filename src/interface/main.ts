@@ -33,24 +33,52 @@ export type TableConfig = {
 
 };
 
+// export interface ProductDetail {
+//     name: string
+//     accreditation_status : string
+//     submit_date: string
+//     responce_date: string
+//     requested: string
+// }
+
 export interface ProductDetail {
-    name: string
-    accreditation_status : string
-    submit_date: string
-    responce_date: string
-    requested: string
+  id: number;
+  product_name: string;
+  requested_accreditation: string;
+  current_accreditation: string;
+  accreditation_status: string;
+  ready_for_accreditation: boolean;
+  submitted_on: string;
+  response_date: string | null;
 }
 
 export interface IIngredientData {
-    Number: number;
-    Ingredient: string;
-    AlternativeNames: string[];
-    Vegetarian: number;
-    Vegan: number;
-    PlantBased: number;
-    DateAdded: string;
+    id: number;
+    ingredient_name: string;
+    alternate_names: {  
+      id: number,
+      ingredient_id: number,
+      alternate_name: string
+    }[],
+    vegetarian: number;
+    vegan: number;
+    plant_based: number;
+    date_added: string;
+    is_verified?: boolean;
     isDisable?: boolean;
     notExisted?: boolean
+}
+
+export interface IIngredientTable {
+  IngredientTableData: IIngredientData[];
+  current_page: number;
+  per_page: number;
+  last_page: number;
+  total: number;
+  sort_dir: string;
+  sort_by: string;
+  search: string,
+  requested_accreditation: string,
 }
 
 export interface ProductData  {
@@ -108,6 +136,16 @@ export interface IdashboardFilterData {
   search: string,
   requested_accreditation: string,
   accreditation_status: string,
+  per_page: number,
+  page: number
+}
+
+export interface IIngredientilterData { 
+  sort_by: string,
+  sort_dir: string,
+  search: string,
+  requested_accreditation: string,
+  product_id: string
   per_page: number,
   page: number
 }

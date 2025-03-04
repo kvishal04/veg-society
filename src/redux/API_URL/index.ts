@@ -11,3 +11,4 @@ export const DELETE_PRODUCT = '/delete-product'
 
 export const NOTES = '/notes'
 export const SAVE = '/save'
+export const FETCH_PRODUCT_DETAILS = '/details'

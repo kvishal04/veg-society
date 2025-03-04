@@ -7,17 +7,19 @@ import AddIngredientSearchBar from './AddIngredientSearchBar';
 import Button from '@/components/reusable/Button';
 import Textarea from '@/components/reusable/TextArea';
 import { IIngredientData } from '@/interface/main';
+import { useSelector } from 'react-redux';
+import { RootState } from '@/redux/store';
 
 const renderAlternativeNamesColumn = (value: IIngredientData, dataLength: number) => {
     return (
-        <div className={`text-black text-barlow`}>
-            {value.AlternativeNames.join(', ')}
+        <div className={`text-black text-barlow`} id={`${dataLength}`}>
+            {value.alternate_names.map(item=>item.alternate_name).join(', ')}
         </div>  
     );
 };
 
 
-const customData =  (value: IIngredientData, key: 'Vegetarian' | 'Vegan' | 'PlantBased') => {
+const customData =  (value: IIngredientData, key: 'vegetarian' | 'vegan' | 'plant_based') => {
     let bgColor = "bg-customOrange"; // Default case
 
     if (value[key] === 1) {
@@ -40,6 +42,7 @@ const AddIngredient: React.FC<IngredientProps> = ({openAddIngredietComponent, se
     const [showNotListedForm, setShowNotListedForm] = useState(false);
 
 
+    const {IngredientTable : { total } , newData } = useSelector((state: RootState) => state.IngredientData); 
 
     const onCellClick = (key: string, row: Record<string, any>) => {
         const typedRow = row as IIngredientData; // Explicit type assertion
@@ -57,44 +60,44 @@ const AddIngredient: React.FC<IngredientProps> = ({openAddIngredietComponent, se
         thIconClassName: 'flex flex-row items-center gap-2 text-barlow-semi-bold',
         tBodyClassName: '',
         tdClassname: 'py-2 px-4',
-        showItemQuantity: 20,
+        showItemQuantity: 100,
         columns: [
             {
                 name: "Ingredient",
-                keys: ['Ingredient'],
+                keys: ['ingredient_name'],
                 className: "rounded-tl-lg",
             },
             {
                 name: "AlternativeNames",
-                keys: ['AlternativeNames'],
+                keys: ['alternate_names'],
                 customBodyRender:(value: IIngredientData) => renderAlternativeNamesColumn(value, data.length),
                 
             },
             {
                 name: "Vegetarian",
-                keys: ['Vegetarian'],
+                keys: ['vegetarian'],
                 customBodyRender: (value: IIngredientData) => {
                     return (
-                        customData(value,'Vegetarian')
+                        customData(value,'vegetarian')
                     );
                 },
             },
             {
                 name: "Vegan",
-                keys: ['Vegan'],
+                keys: ['vegan'],
                 customBodyRender: (value: IIngredientData) => {
                     return (
-                        customData(value, 'Vegan')
+                        customData(value, 'vegan')
                     );
                 },
                 rowclassName: '',
             },
             {
-                name: "PlantBased",
-                keys: ['PlantBased'],
+                name: "Plant Based",
+                keys: ['plant_based'],
                 customBodyRender: (value: IIngredientData) => {
                     return (
-                        customData(value, 'PlantBased')
+                        customData(value, 'plant_based')
                     );
                 },
                 className: "rounded-tr-lg",
@@ -123,7 +126,7 @@ const AddIngredient: React.FC<IngredientProps> = ({openAddIngredietComponent, se
             {!showNotListedForm  ? (
                 <div className="text-barlow w-full md:w-[79%] px-2 bg-white">
                     <div className='sticky top-0 left-0 flex items-center gap-4 md:gap-20 bg-white'>
-                        {data.length + 1} <AddIngredientSearchBar />
+                        {total + 1} <AddIngredientSearchBar />
                     </div>
                     <div className='bg-white ml-4 md:ml-24 h-[18rem] md:h-[10rem] overflow-y-auto custom-scrollbar mt-2'>
                         <TableComponent 
