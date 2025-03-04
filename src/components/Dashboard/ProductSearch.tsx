@@ -27,7 +27,7 @@ const ProductSearchBar = () => {
   }
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-5 gap-7 w-full pb-7 rounded-lg">
+    <div className="grid grid-cols-1 md:grid-cols-5 gap-7 w-full pb-7 rounded-lg text-barlow">
   {/* Search Input */}
   <div className="relative flex items-center w-full md:col-span-3">
     <Input
@@ -44,7 +44,7 @@ const ProductSearchBar = () => {
   {/* Accreditation Dropdown */}
   <Select
     id="accreditation"
-    className="text-center w-full px-4 py-2  text-barlow  font-bold bg-white border border-darkGreen focus:ring-black appearance-none  rounded-lg text-darkGreen outline-none"
+    className="text-center w-full px-4 py-2  font-bold bg-white border border-darkGreen focus:ring-black appearance-none  rounded-lg text-darkGreen outline-none"
     options={AccreditationData}
     value={requested_accreditation}
     onChange={handleSelectChange}
@@ -54,7 +54,7 @@ const ProductSearchBar = () => {
   {/* Status Dropdown */}
   <Select
     id="status"
-    className="w-full px-4 py-2 text-center  text-barlow font-bold  bg-white border border-darkGreen hover:bg-gray-100 focus:ring-black appearance-none  rounded-lg text-darkGreen outline-none"
+    className="w-full px-4 py-2 text-center  font-bold  bg-white border border-darkGreen hover:bg-gray-100 focus:ring-black appearance-none  rounded-lg text-darkGreen outline-none"
     options={statusData}
     value={accreditation_status}
     onChange={handleSelectChangeStatus}
