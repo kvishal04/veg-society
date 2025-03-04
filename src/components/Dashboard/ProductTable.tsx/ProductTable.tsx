@@ -82,7 +82,6 @@ const ProductTable: React.FC = () => {
         thIconClassName: 'flex flex-row items-center gap-2 text-barlow-semi-bold',
         tBodyClassName: '',
         tdClassname: 'py-2 px-4',
-        showItemQuantity: per_page,
         columns: [
             {
                 name: "Number",
@@ -105,7 +104,7 @@ const ProductTable: React.FC = () => {
                 sortable: true
             },
             {
-                name: "Response",
+                name: "Response Date",
                 keys: ['response_date'],
                 sortable: true
             },
@@ -171,7 +170,7 @@ const ProductTable: React.FC = () => {
         return (
             <div>
                 <div className="max-h-[28rem] overflow-y-auto custom-scrollbar text-barlow">
-                    <TableComponent data={tableData} config={tableConfig} showItemQuantity={per_page} onSortClick={setSortKey} />
+                    <TableComponent data={tableData} config={tableConfig} onSortClick={setSortKey} />
                 </div>
                 <Pagination 
                     totalItems={total} 

@@ -20,7 +20,10 @@ const initialState: ProductDetailState = {
     response_date: '',
     id: 0,
     current_accreditation: '',
-    ready_for_accreditation: false
+    ready_for_accreditation: false,
+    vegetarianStatus: 1,
+    veganStatus: 2,
+    plantBasedStatus: 0
   },
   productNotes :  [],
   notes: ''

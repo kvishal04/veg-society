@@ -12,6 +12,19 @@ import ProductNotesModal from "../Modals/ProductNotes";
 import Button from "../reusable/Button";
 
 const AccreditationData = [...data]
+
+const customSpanRender = (value: number ) => {
+  let bgColor = "bg-customOrange"; // Default case
+
+  if (value === 1) {
+    bgColor = "bg-lightGreen";
+  } else if (value === 0) {
+    bgColor = "bg-customRed";
+  }
+
+  return <span className={`h-5 w-5 rounded-full ${bgColor}`}></span>;
+};
+
 const ProductSummary: React.FC = () => {
 
   const [productNotesModal, setProductNotesModal] = useState<boolean>(false);
@@ -64,7 +77,10 @@ const ProductSummary: React.FC = () => {
            requested_accreditation: 'Vegetarian',
            id: 0,
            current_accreditation: "",
-           ready_for_accreditation: false
+           ready_for_accreditation: false,
+           vegetarianStatus: 0,
+           veganStatus: 1,
+           plantBasedStatus: 2
          }));
          
        }, 2000);
@@ -104,13 +120,13 @@ const ProductSummary: React.FC = () => {
 
             <div className="flex items-center gap-4 text-sm md:text-xl w-full lg:w-auto">
               <span className="flex items-center gap-2 ">
-                <span className="w-5 h-5 bg-green-500 rounded-full"></span> Vegetarian
+                {customSpanRender(productDetail.vegetarianStatus)} Vegetarian
               </span>
               <span className="flex items-center gap-2">
-                <span className="w-5 h-5 bg-orange-500 rounded-full"></span> Vegan
+                {customSpanRender(productDetail.veganStatus)}  Vegan
               </span>
               <span className="flex items-center gap-2">
-                <span className="w-5 h-5 bg-red-500 rounded-full"></span> Plant-Based
+              {customSpanRender(productDetail.plantBasedStatus)}  Plant-Based
               </span>
             </div>
           </div>

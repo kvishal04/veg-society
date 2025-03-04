@@ -2,13 +2,15 @@
 
 import React, { useEffect, useState } from 'react'
 import TableComponent from '@/components/reusable/Table/Table';
-import { IngredientData } from '@/FakeJson/tabledata'
 import AddIngredientSearchBar from './AddIngredientSearchBar';
 import Button from '@/components/reusable/Button';
 import Textarea from '@/components/reusable/TextArea';
-import { IIngredientData } from '@/interface/main';
-import { useSelector } from 'react-redux';
+import { IIngredientData, TableConfig } from '@/interface/main';
+import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
+import useIngredientDebounceSerach from '@/hooks/useIngredientDebounceSerach';
+import { useFetchLiveIngredientDataMutation } from '@/redux/services/ingredientApi';
+import { appendNewData } from '@/redux/features/IngredientDataSlice';
 
 const renderAlternativeNamesColumn = (value: IIngredientData, dataLength: number) => {
     return (
@@ -38,18 +40,20 @@ interface IngredientProps {
 
 const AddIngredient: React.FC<IngredientProps> = ({openAddIngredietComponent, setOpenAddIngredietComponent}) => {
     const [selectedRows, setSelectedRows] = useState<IIngredientData[]>([]);
-    const [data, setData] = useState<IIngredientData[]>([]);
     const [showNotListedForm, setShowNotListedForm] = useState(false);
+    const [fetchTableData] =  useFetchLiveIngredientDataMutation()
+    const debounce = useIngredientDebounceSerach(fetchTableData)
 
+    const dispatch = useDispatch();
 
-    const {IngredientTable : { total }  } = useSelector((state: RootState) => state.IngredientData); 
+    const {IngredientTable : { IngredientTableData, total }, newData, liveIngredientSearchTableData : { tableData, liveSearch }  } = useSelector((state: RootState) => state.IngredientData); 
 
     const onCellClick = (key: string, row: Record<string, any>) => {
         const typedRow = row as IIngredientData; // Explicit type assertion
         setSelectedRows([typedRow]);
     }
 
-    const tableConfig = {
+    const tableConfig: TableConfig = {
         tableClassName: 'min-w-full bg-white border-none shadow-md rounded-lg',
         tHeadClassName: 'bg-darkGreen text-white border-none rounded-lg sticky top-0 z-10 ',
         thClassName: 'py-2 px-2 text-left border-none cursor-pointer gap-2',
@@ -60,7 +64,6 @@ const AddIngredient: React.FC<IngredientProps> = ({openAddIngredietComponent, se
         thIconClassName: 'flex flex-row items-center gap-2 text-barlow-semi-bold',
         tBodyClassName: '',
         tdClassname: 'py-2 px-4',
-        showItemQuantity: 100,
         columns: [
             {
                 name: "Ingredient",
@@ -70,7 +73,7 @@ const AddIngredient: React.FC<IngredientProps> = ({openAddIngredietComponent, se
             {
                 name: "AlternativeNames",
                 keys: ['alternate_names'],
-                customBodyRender:(value: IIngredientData) => renderAlternativeNamesColumn(value, data.length),
+                customBodyRender:(value: IIngredientData) => renderAlternativeNamesColumn(value, tableData.length),
                 
             },
             {
@@ -102,7 +105,6 @@ const AddIngredient: React.FC<IngredientProps> = ({openAddIngredietComponent, se
                 },
                 className: "rounded-tr-lg",
             },
-          
         ],
         rows: {
             className: ''
@@ -112,9 +114,16 @@ const AddIngredient: React.FC<IngredientProps> = ({openAddIngredietComponent, se
         }
     };
 
-    useEffect(() => {
-        setData(IngredientData)
-    }, [selectedRows]);
+    const addSelectedDatatoNewData = () => {
+        dispatch(appendNewData(selectedRows[0]))
+        setSelectedRows([])
+    }
+
+    useEffect(()=>{
+        if(liveSearch.length > 1){
+            debounce(liveSearch, dispatch);
+        }
+    },[liveSearch])
 
 
     return (
@@ -126,16 +135,17 @@ const AddIngredient: React.FC<IngredientProps> = ({openAddIngredietComponent, se
             {!showNotListedForm  ? (
                 <div className="text-barlow w-full md:w-[79%] px-2 bg-white">
                     <div className='sticky top-0 left-0 flex items-center gap-4 md:gap-20 bg-white'>
-                        {total + 1} <AddIngredientSearchBar />
+                        {total + newData.length + 1} <AddIngredientSearchBar />
                     </div>
-                    <div className='bg-white ml-4 md:ml-24 h-[18rem] md:h-[10rem] overflow-y-auto custom-scrollbar mt-2'>
-                        <TableComponent 
-                            data={data} 
-                            config={tableConfig}  
-                            showItemQuantity={data.length} 
-                            onCellClick={onCellClick}
-                        />
-                    </div>
+                    {tableData.length > 0 &&
+                        <div className='bg-white ml-4 md:ml-24 h-[18rem] md:h-[10rem] overflow-y-auto custom-scrollbar mt-2'>
+                            <TableComponent 
+                                data={tableData} 
+                                config={tableConfig}  
+                                onCellClick={onCellClick}
+                            />
+                        </div>
+                    }
                 </div>
             ) : (
                 /* Not Listed Form Section */
@@ -190,7 +200,7 @@ const AddIngredient: React.FC<IngredientProps> = ({openAddIngredietComponent, se
             {/* Buttons Section */}
             {!showNotListedForm && (
                 <div className='flex flex-row md:flex-col mt-4 md:mt-0 md:sticky justify-start md:justify-evenly md:top-0 md:right-0 gap-4 px-4 py-4'>
-                    <Button onClick={() => {}} variant="dark-green" className="flex-grow text-base lg:text-lg lg:px-[4rem] lg:py-3 md:px-8 md:py-3 px-3 py-2"> Next </Button>
+                    <Button onClick={() => {addSelectedDatatoNewData()}} variant="dark-green" className="flex-grow text-base lg:text-lg lg:px-[4rem] lg:py-3 md:px-8 md:py-3 px-3 py-2"> Next </Button>
     
                     <Button onClick={() => setShowNotListedForm(true)} variant="clear-green" className="flex-grow text-base lg:text-lg lg:px-[4rem] lg:py-3 md:px-8 md:py-3 px-3 py-2"> Not Listed? </Button>
     

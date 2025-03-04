@@ -14,7 +14,7 @@ import { setcurrentItem, setcurrentPage, setSortTableByKey } from "@/redux/featu
 import 'react-loading-skeleton/dist/skeleton.css'
 import SkeletonLoad from "../reusable/Skeleton";
 import { useFetchIngredientDataMutation } from "@/redux/services/productApi";
-import useIngredientDebounceSerach from "@/hooks/useIngredientDebounceSerach";
+import useProductDetailDebounceSerach from "@/hooks/useProductDetailDebounceSerach";
 import { useParams } from "next/navigation";
 
 
@@ -58,7 +58,7 @@ const IngredientTable: React.FC = () => {
   const dispatch = useDispatch()
 
   const [fetchTableData] = useFetchIngredientDataMutation();
-  const debouncedSearch = useIngredientDebounceSerach(fetchTableData);
+  const debouncedSearch = useProductDetailDebounceSerach(fetchTableData);
 
 
   const tableConfig: TableConfig = {
@@ -71,7 +71,6 @@ const IngredientTable: React.FC = () => {
     thIconClassName: "flex flex-row items-center gap-2 text-barlow-semi-bold",
     tBodyClassName: "",
     tdClassname: "py-2 px-4",
-    showItemQuantity: 20,
     columns: [
       {
         name: "Number",
@@ -93,26 +92,26 @@ const IngredientTable: React.FC = () => {
       },
       {
         name: "Vegetarian",
-        keys: ["Vegetarian"],
+        keys: ["vegetarian"],
         customBodyRender: (value: IIngredientData) => customBodyRender(value, "vegetarian"),
         sortable: true,
       },
       {
         name: "Vegan",
-        keys: ["Vegan"],
+        keys: ["vegan"],
         customBodyRender: (value: IIngredientData) => customBodyRender(value, "vegan"),
         rowclassName: "",
         sortable: true,
       },
       {
         name: "PlantBased",
-        keys: ["PlantBased"],
+        keys: ["plant_based"],
         sortable: true,
         customBodyRender: (value: IIngredientData) => customBodyRender(value, "plant_based"),
       },
       {
         name: "Date Added",
-        keys: ["DateAdded"],
+        keys: ["date_added"],
         sortable: true,
       },
       {
@@ -161,14 +160,14 @@ const IngredientTable: React.FC = () => {
         );
     }
     
-    if (IngredientTableData.length === 0) {
+    if ([...IngredientTableData, ...newData].length === 0) {
         return <div className="text-center text-gray-500 text-lg py-4">No Data Found</div>;
     }
     
     return (
         <div>
             <div className="max-h-[28rem] overflow-y-auto custom-scrollbar text-barlow">
-              <TableComponent data={IngredientTableData} config={tableConfig} showItemQuantity={per_page} onSortClick={setSortKey} /> 
+              <TableComponent data={[...IngredientTableData, ...newData]} config={tableConfig} onSortClick={setSortKey} /> 
             </div>
         </div>
     );

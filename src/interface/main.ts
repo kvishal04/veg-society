@@ -20,7 +20,6 @@ export type TableConfig = {
     thClassName: string;
     thIconClassName: string;
     tdClassname: string;
-    showItemQuantity: number;
     columns: TableColumn[];
     rows: {
       className: string;
@@ -50,6 +49,9 @@ export interface ProductDetail {
   ready_for_accreditation: boolean;
   submitted_on: string;
   response_date: string | null;
+  vegetarianStatus: number,
+  veganStatus: number,
+  plantBasedStatus: number
 }
 
 export interface IIngredientData {

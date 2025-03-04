@@ -8,7 +8,6 @@ import React from "react";
 type TableComponentProps = {
   data: Record<string, any>[];
   config: TableConfig;
-  showItemQuantity: number;
   onCellClick?: (cellData: any, row: Record<string, any>) => void;
   onSortClick?: (sort_key: string, sort_dir: 'asc' | 'desc' ) => void;
 };
@@ -29,7 +28,6 @@ const CombineIcon: React.FC = () => (
 const TableComponent: React.FC<TableComponentProps> = ({
   data,
   config,
-  showItemQuantity,
   onCellClick,
   onSortClick
 }) => {
@@ -80,7 +78,7 @@ const TableComponent: React.FC<TableComponentProps> = ({
       </thead>
       <tbody className={config.tBodyClassName}>
         {sortedData.length > 0 ? (
-          sortedData.slice(0, showItemQuantity).map((row) => (
+          sortedData.map((row) => (
             <tr
                 key={row.id || JSON.stringify(row)}
                 className={config.trClassName.class(row)}

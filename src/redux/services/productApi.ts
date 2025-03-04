@@ -76,6 +76,14 @@ export const productApi = createApi({
             })
         }),
 
+        fetchLiveIngredientData: builder.mutation<DataCode, { search: string }>({
+            query: (credentials) => ({
+              url: FETCH_PRODUCT_DETAILS,
+              method: "POST",
+              body: credentials,
+            })
+        }),
+
        
     }),
 });

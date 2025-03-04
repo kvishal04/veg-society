@@ -1,11 +1,16 @@
 "use client";  // This makes the component a Client Component
 
-import React, { useState } from "react";
+import React from "react";
 import { Search } from "lucide-react";
 import Input from "@/components/reusable/Input";
+import { RootState } from "@/redux/store";
+import { useDispatch, useSelector } from "react-redux";
+import { setLiveSearch } from "@/redux/features/IngredientDataSlice";
 
 const AddIngredientSearchBar = () => {
-  const [searchTerm, setSearchTerm] = useState("");
+  const dispatch = useDispatch()
+  const {liveIngredientSearchTableData : { liveSearch }  } = useSelector((state: RootState) => state.IngredientData); 
+  
   return (
     <div className="grid grid-cols-1 md:grid-cols-5 gap-7 w-full  mt-2 rounded-lg">
   {/* Search Input */}
@@ -13,8 +18,8 @@ const AddIngredientSearchBar = () => {
     <Input
       id="search"
       type="text"
-      value={searchTerm}
-      onChange={(e) => setSearchTerm(e.target.value)}
+      value={liveSearch}
+      onChange={(e) => dispatch(setLiveSearch(e.target.value))}
       placeholder="Start Typing ..."
       className="w-full p-2 border-2 rounded-xl focus:ring-2 focus:ring-green-500 outline-none placeholder-gray-400"
     />
