@@ -7,11 +7,10 @@ import Details from "@/styles/logo/Details";
 import { useParams, useSearchParams } from "next/navigation";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
-import { setProductDetail, setProductNotes } from "@/redux/features/productDetailSlice";
+import { setProductDetail } from "@/redux/features/productDetailSlice";
 import SkeletonLoad from "../reusable/Skeleton";
 import ProductNotesModal from "../Modals/ProductNotes";
 import Button from "../reusable/Button";
-import { useProductNotesMutation } from "@/redux/services/productApi";
 
 const AccreditationData = [...data]
 const ProductSummary: React.FC = () => {
@@ -20,13 +19,6 @@ const ProductSummary: React.FC = () => {
   const { productDetail } = useSelector((state: RootState) => state.productDetailReducer); 
   const productID = useParams()?.slug as string;
   const dispatch = useDispatch()
-  const [ProductNotes]  = useProductNotesMutation()
-
-  const loadNotesData = async() => {
-    const res = await ProductNotes({product_id: productID}).unwrap() ;
-    dispatch(setProductNotes(res))
-
-  }
 
   const openModal = () => setProductNotesModal(true);
   const closeModal = () => setProductNotesModal(false);
@@ -70,7 +62,6 @@ const ProductSummary: React.FC = () => {
   useEffect(() => {
 
     if(productID){
-      console.log("sdfghjkl")
       setTimeout(() => {
          return dispatch(setProductDetail( {
              name: 'Product name 1',
@@ -81,7 +72,6 @@ const ProductSummary: React.FC = () => {
          }));
          
        }, 2000);
-       loadNotesData()
     }
    
   }, [productID])
@@ -160,7 +150,7 @@ const ProductSummary: React.FC = () => {
 
       {/* Product Notes Modal */}
 
-      <ProductNotesModal isOpen={productNotesModal} onClose={closeModal} onSave={closeModal}/>
+      <ProductNotesModal productID={productID} isOpen={productNotesModal} onClose={closeModal} onSave={closeModal}/>
     </div>
   );
 };

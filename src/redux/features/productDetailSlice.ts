@@ -6,6 +6,7 @@ interface ProductDetailState {
   isLoading: boolean;
   productDetail : ProductDetail;
   productNotes : ProductNotesArray
+  notes: string
 
 }
 
@@ -19,6 +20,7 @@ const initialState: ProductDetailState = {
       responce_date: ''
   },
   productNotes :  [],
+  notes: ''
 };
 
 const ProductDetailSlice = createSlice({
@@ -41,9 +43,13 @@ const ProductDetailSlice = createSlice({
     setProductNotes: (state, action: PayloadAction<ProductNotesArray>) => {
       state.productNotes = action.payload
     },
+
+    setNote : (state, action: PayloadAction<string>) => {
+      state.notes = action.payload
+    },
  
   },
 });
 
-export const { setLoading, setProductDetail, setProductDetailSummary, setProductNotes } = ProductDetailSlice.actions;
+export const { setLoading, setProductDetail, setProductDetailSummary, setProductNotes, setNote } = ProductDetailSlice.actions;
 export default ProductDetailSlice.reducer;

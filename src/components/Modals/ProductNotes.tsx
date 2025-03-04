@@ -1,43 +1,66 @@
 "use client";
 
 import { X } from "lucide-react";
-import React, { useEffect } from "react";
-import { useSelector } from "react-redux";
+import React, { useEffect, useRef } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
 import Button from "../reusable/Button";
 import Textarea from "../reusable/TextArea";
-import { ProductNotesArray } from "@/interface/main";
 import { format, parseISO } from "date-fns";
-
+import { useProductNotesMutation, useSaveNotesMutation } from "@/redux/services/productApi";
+import { setProductNotes, setNote } from "@/redux/features/productDetailSlice";
 
 type ModalProps = {
+  productID: string;
   isOpen: boolean;
   onClose: () => void;
   onSave: () => void;
 };
 
-const ProductNotesModal: React.FC<ModalProps> = ({ isOpen, onClose, onSave }) => {
-  const { productNotes }: { productNotes: ProductNotesArray } = useSelector(
-    (state: RootState) => state.productDetailReducer
-  );
+const ProductNotesModal: React.FC<ModalProps> = ({ isOpen, onClose, onSave, productID }) => {
+  const { productNotes, notes } = useSelector((state: RootState) => state.productDetailReducer);
+  const modalRef = useRef<HTMLDivElement>(null);
+  const dispatch = useDispatch();
+  const [ProductNotes] = useProductNotesMutation();
+  const [SaveNotes] = useSaveNotesMutation();
 
-  
-  const returnLocalDate = (utcDate : string) => {
-    const localDate = format(parseISO(utcDate), "hh:mma dd/MM/yyyy");
-    return localDate
-  }
+  const returnLocalDate = (utcDate: string) => {
+    return format(parseISO(utcDate), "hh:mma dd/MM/yyyy");
+  };
+
+  const loadNotesData = async () => {
+    const res = await ProductNotes({ product_id: productID }).unwrap();
+    dispatch(setProductNotes(res));
+  };
+
+  const uploadNotes = async () => {
+    await SaveNotes({ product_id: productID, note: notes }).unwrap();
+    loadNotesData();
+    dispatch(setNote(""));
+  };
 
   useEffect(() => {
-  }, [])
+    const handleClickOutside = (event: MouseEvent) => {
+      if (modalRef.current && !modalRef.current.contains(event.target as Node)) {
+        onClose();
+      }
+    };
   
+    if (typeof window !== "undefined" && typeof document !== "undefined") {
+      document.addEventListener("mousedown", handleClickOutside);
+    }
   
-
+    return () => {
+      if (typeof window !== "undefined" && typeof document !== "undefined") {
+        document.removeEventListener("mousedown", handleClickOutside);
+      }
+    };
+  }, [onClose]);
   if (!isOpen) return null;
 
   return (
     <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
-      <div className="bg-white w-[90%] md:w-[46rem] rounded-xl shadow-lg p-6 relative text-black">
-        
+      <div ref={modalRef} className="bg-white w-[90%] md:w-[46rem] rounded-xl shadow-lg p-6 relative text-black">
         {/* Modal Header */}
         <div className="flex justify-between items-center border-b pb-3">
           <h2 className="text-lg font-semibold">Notes</h2>
@@ -57,14 +80,20 @@ const ProductNotesModal: React.FC<ModalProps> = ({ isOpen, onClose, onSave }) =>
           ))}
         </div>
 
+        {/* Input Section */}
         <div className="mb-8">
-            <label htmlFor="notes" className="block text-lg font-medium">Add Note</label>
-            <Textarea  id="notes" className="w-full mt-1 p-2 border rounded-lg bg-gray-100 h-32" value={""} onChange={(e)=>console.log('text, area', e.target.value)} ></Textarea>
+          <label htmlFor="notes" className="block text-lg font-medium">Add Note</label>
+          <Textarea
+            id="notes"
+            className="w-full mt-1 p-2 border rounded-lg bg-gray-100 h-32"
+            value={notes}
+            onChange={(e) => dispatch(setNote(e.target.value))}
+          />
         </div>
 
         {/* Modal Footer */}
         <div className="mt-6 flex justify-start">
-          <Button onClick={onSave} variant="dark-green" className="text-lg px-20 py-3">
+          <Button onClick={uploadNotes} variant="dark-green" className="text-lg px-20 py-3">
             Save
           </Button>
         </div>
