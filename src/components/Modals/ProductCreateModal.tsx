@@ -83,7 +83,7 @@ const ProductCreateModal: React.FC<ModalProps> = ({ isOpen, onClose, onSave }) =
 
     return (
         <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
-            <div className="bg-[#D9D9D9] w-[90%] md:w-[46rem] h-[44.5rem] rounded-xl shadow-lg p-6 relative text-black">
+            <div className="bg-[#D9D9D9] w-[90%] md:w-[46rem] h-[42.5rem] rounded-xl shadow-lg p-6 relative text-black">
                 <div className="bg-white h-full rounded-lg py-4 px-6">
                     <div className="flex justify-between items-center border-b pb-3">
                         <h2 className="text-lg font-semibold">Add New Product</h2>
@@ -104,7 +104,7 @@ const ProductCreateModal: React.FC<ModalProps> = ({ isOpen, onClose, onSave }) =
                                     setErrors((prev) => ({ ...prev, product_name: !e.target.value.length ? 'Product name is required' : ""  }));
                                 }}
                                 placeholder="Example Product Name"
-                                className={`w-full mt-2 p-3 border-2 rounded-lg focus:ring-2 outline-none placeholder-gray-500 ${errors.product_name ? 'border-red-500' : 'border-gray-300'}`}
+                                className={`w-full mt-2 p-2 border-2 rounded-lg focus:ring-2 outline-none placeholder-gray-500 ${errors.product_name ? 'border-red-500' : 'border-gray-300'}`}
                             />
                             <p className="text-red-500 h-4 text-sm">{errors.product_name}</p>
                         </div>
