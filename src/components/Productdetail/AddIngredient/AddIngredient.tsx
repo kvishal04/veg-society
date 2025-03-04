@@ -46,7 +46,7 @@ const AddIngredient: React.FC<IngredientProps> = ({openAddIngredietComponent, se
 
     const dispatch = useDispatch();
 
-    const {IngredientTable : { IngredientTableData, total }, newData, liveIngredientSearchTableData : { tableData, liveSearch }  } = useSelector((state: RootState) => state.IngredientData); 
+    const {IngredientTable : { total }, newData, liveIngredientSearchTableData : { tableData, liveSearch }  } = useSelector((state: RootState) => state.IngredientData); 
 
     const onCellClick = (key: string, row: Record<string, any>) => {
         const typedRow = row as IIngredientData; // Explicit type assertion
