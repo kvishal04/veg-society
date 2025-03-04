@@ -11,6 +11,7 @@ import { RootState } from '@/redux/store';
 import useIngredientDebounceSerach from '@/hooks/useIngredientDebounceSerach';
 import { useFetchLiveIngredientDataMutation } from '@/redux/services/ingredientApi';
 import { appendNewData } from '@/redux/features/IngredientDataSlice';
+import { showToast, ToastMessage } from '@/utils/utills';
 
 const renderAlternativeNamesColumn = (value: IIngredientData, dataLength: number) => {
     return (
@@ -46,7 +47,7 @@ const AddIngredient: React.FC<IngredientProps> = ({openAddIngredietComponent, se
 
     const dispatch = useDispatch();
 
-    const {IngredientTable : { total }, newData, liveIngredientSearchTableData : { tableData, liveSearch }  } = useSelector((state: RootState) => state.IngredientData); 
+    const {IngredientTable : { IngredientTableData }, newData, liveIngredientSearchTableData : { tableData, liveSearch }  } = useSelector((state: RootState) => state.IngredientData); 
 
     const onCellClick = (key: string, row: Record<string, any>) => {
         const typedRow = row as IIngredientData; // Explicit type assertion
@@ -115,6 +116,13 @@ const AddIngredient: React.FC<IngredientProps> = ({openAddIngredietComponent, se
     };
 
     const addSelectedDatatoNewData = () => {
+
+        if([...IngredientTableData, ...newData].some((item)=> item.ingredient_name === selectedRows[0].ingredient_name)){
+            showToast('Ingredient Already added', ToastMessage.SHOW_ERROR)
+            return
+        }
+
+
         dispatch(appendNewData(selectedRows[0]))
         setSelectedRows([])
     }
@@ -135,7 +143,7 @@ const AddIngredient: React.FC<IngredientProps> = ({openAddIngredietComponent, se
             {!showNotListedForm  ? (
                 <div className="text-barlow w-full md:w-[79%] px-2 bg-white">
                     <div className='sticky top-0 left-0 flex items-center gap-4 md:gap-20 bg-white'>
-                        {total + newData.length + 1} <AddIngredientSearchBar />
+                        {IngredientTableData.length + newData.length + 1} <AddIngredientSearchBar />
                     </div>
                     {tableData.length > 0 &&
                         <div className='bg-white ml-4 md:ml-24 h-[18rem] md:h-[10rem] overflow-y-auto custom-scrollbar mt-2'>

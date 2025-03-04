@@ -21,6 +21,9 @@ export const showToast = (message: string, type: string = '') => {
       case "error":
         toast.error(message);
         break;
+      case "warning":
+        toast.custom(message, {className: 'textWhite' })
+        break;
       default:
         toast(message); // Default toast
         break;
@@ -42,5 +45,6 @@ export const checkPassword = (value: string) => {
 export const ToastMessage  = {
   SHOW_SUCCESS : "success",
   SHOW_ERROR : "error",
+  SHOW_WARNING : "warning",
   SHOW_DEFAULT : ""
 }
