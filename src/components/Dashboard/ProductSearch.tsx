@@ -44,21 +44,21 @@ const ProductSearchBar = () => {
   {/* Accreditation Dropdown */}
   <Select
     id="accreditation"
-    className="text-center w-full px-4 py-2  bg-white border border-darkGreen focus:ring-black appearance-none  rounded-lg text-darkGreen outline-none"
+    className="text-center w-full px-4 py-2  text-barlow  font-bold bg-white border border-darkGreen focus:ring-black appearance-none  rounded-lg text-darkGreen outline-none"
     options={AccreditationData}
     value={requested_accreditation}
     onChange={handleSelectChange}
-    optionClassName="text-center hover:bg-lightGreen "
+    optionClassName="text-center font-bold hover:bg-lightGreen "
   />
 
   {/* Status Dropdown */}
   <Select
     id="status"
-    className="w-full px-4 py-2 text-center  bg-white border border-darkGreen hover:bg-gray-100 focus:ring-black appearance-none  rounded-lg text-darkGreen outline-none"
+    className="w-full px-4 py-2 text-center  text-barlow font-bold  bg-white border border-darkGreen hover:bg-gray-100 focus:ring-black appearance-none  rounded-lg text-darkGreen outline-none"
     options={statusData}
     value={accreditation_status}
     onChange={handleSelectChangeStatus}
-    optionClassName="text-center hover:bg-lightGreen"
+    optionClassName="text-center  font-bold hover:bg-lightGreen"
   />
 </div>
 

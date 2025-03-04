@@ -72,7 +72,7 @@ const AddIngredient: React.FC<IngredientProps> = ({openAddIngredietComponent, se
                 className: "rounded-tl-lg",
             },
             {
-                name: "AlternativeNames",
+                name: "Alternative Names",
                 keys: ['alternate_names'],
                 customBodyRender:(value: IIngredientData) => renderAlternativeNamesColumn(value, tableData.length),
                 

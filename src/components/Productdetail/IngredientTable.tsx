@@ -85,7 +85,7 @@ const IngredientTable: React.FC = () => {
         className: ""
       },
       {
-        name: "AlternativeNames",
+        name: "Alternative Names",
         keys: ["alternate_names"],
         customBodyRender: (value: IIngredientData) => renderAlternativeNamesColumn(value),
         sortable: true,
