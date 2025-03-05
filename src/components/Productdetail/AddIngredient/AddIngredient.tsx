@@ -44,7 +44,7 @@ interface IngredientProps {
 const AddIngredient: React.FC<IngredientProps> = ({openAddIngredietComponent, setOpenAddIngredietComponent, scrollToBottom}) => {
     const [selectedRows, setSelectedRows] = useState<IIngredientData[]>([]);
     const [showNotListedForm, setShowNotListedForm] = useState(false);
-    const [manuallIngrdient , setManuallIngredient] = useState<ImannualIngredient>({
+    const [manuallIngredient , setManuallIngredient] = useState<ImannualIngredient>({
         alternate_names : '',
         ingredient_name: '',
         notes: '',
@@ -145,7 +145,7 @@ const AddIngredient: React.FC<IngredientProps> = ({openAddIngredietComponent, se
     const AddingridientManually = async() => {
 
         try {
-            const res = await AddMannualIngredient(manuallIngrdient).unwrap()
+            const res = await AddMannualIngredient(manuallIngredient).unwrap()
             dispatch(appendNewData({...res, date_added: returnLocalDate( (new Date).toISOString() , 'dd/MM/yyyy')}))
             scrollToBottom()
         } catch (error) {
@@ -194,8 +194,8 @@ const AddIngredient: React.FC<IngredientProps> = ({openAddIngredietComponent, se
                             id="ingredient"
                             placeholder="Enter ingredient name"  
                             className="border p-2 mb-2 h-12 lg:h-28 text-lg font-bold underline"
-                            value={manuallIngrdient.ingredient_name} 
-                            onChange={(e) => {setManuallIngredient({...manuallIngrdient, ingredient_name : e.target.value})}}
+                            value={manuallIngredient.ingredient_name} 
+                            onChange={(e) => {setManuallIngredient({...manuallIngredient, ingredient_name : e.target.value})}}
                         />
                     </div>
             
@@ -206,8 +206,8 @@ const AddIngredient: React.FC<IngredientProps> = ({openAddIngredietComponent, se
                             id="Alt_Names"
                             placeholder="Enter alternative names"  
                             className="border p-2 mb-2  h-16 lg:h-28 text-lg"
-                            value={manuallIngrdient.alternate_names} 
-                            onChange={(e) => {setManuallIngredient({...manuallIngrdient, alternate_names : e.target.value})}}
+                            value={manuallIngredient.alternate_names} 
+                            onChange={(e) => {setManuallIngredient({...manuallIngredient, alternate_names : e.target.value})}}
                         />
                     </div>
             
@@ -218,8 +218,8 @@ const AddIngredient: React.FC<IngredientProps> = ({openAddIngredietComponent, se
                             id={'Notes'}
                             placeholder="Enter notes"  
                             className="border p-2 mb-2  h-24 lg:h-28 text-lg"
-                            value={manuallIngrdient.notes} 
-                            onChange={(e) => {setManuallIngredient({...manuallIngrdient, notes : e.target.value})}}
+                            value={manuallIngredient.notes} 
+                            onChange={(e) => {setManuallIngredient({...manuallIngredient, notes : e.target.value})}}
                         />
                     </div>
                     </div>

@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, RefObject } from "react";
+import React, { useEffect, RefObject } from "react";
 import { TableColumn, TableConfig } from "@/interface/main";
 import { Triangle } from "lucide-react";
 
@@ -28,7 +28,6 @@ const TableComponent: React.FC<TableComponentProps> = ({
   onSortClick,
   scrollRef, // Accept scrollRef for the last row
 }) => {
-  const lastRowRef = useRef<HTMLTableRowElement | null>(null); // Ref for the last row
 
   useEffect(() => {
     if (scrollRef?.current) {
