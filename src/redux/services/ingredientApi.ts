@@ -1,7 +1,7 @@
 import { BASE_URL} from "@/utils/utills";
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 import { RootState } from "../store";
-import { SEARCH } from "../API_URL";
+import { FETCH_INGREDIENT_DETAILS, SEARCH } from "../API_URL";
 import { DataCode } from "@/interface/error";
 import { logout } from "@/redux/features/authSlice"; // Import your logout action
 
@@ -43,8 +43,16 @@ export const ingredientApi = createApi({
             })
         }),
 
+        fetchLiveIngredientDeatil: builder.mutation<DataCode, { ingredient_id: string }>({
+            query: (credentials) => ({
+              url: FETCH_INGREDIENT_DETAILS,
+              method: "POST",
+              body: credentials,
+            })
+        }),
+
        
     }),
 });
 
-export const { useFetchLiveIngredientDataMutation } = ingredientApi;
+export const { useFetchLiveIngredientDataMutation, useFetchLiveIngredientDeatilMutation } = ingredientApi;

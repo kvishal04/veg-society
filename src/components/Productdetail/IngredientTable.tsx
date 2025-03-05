@@ -11,7 +11,7 @@ import { IIngredientData, TableConfig } from "@/interface/main";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
 import { changeHandleType, removeFromNewData, setcurrentItem, setcurrentPage, setSortTableByKey } from "@/redux/features/IngredientDataSlice";
-import 'react-loading-skeleton/dist/skeleton.css'
+
 import SkeletonLoad from "../reusable/Skeleton";
 import { useFetchIngredientDataMutation, useRemoveIngredientMutation } from "@/redux/services/productApi";
 import useProductDetailDebounceSerach from "@/hooks/useProductDetailDebounceSerach";
@@ -19,6 +19,7 @@ import { useParams, useSearchParams } from "next/navigation";
 import { Trash2 } from "lucide-react";
 import SubmitModal from "../Modals/SubmitModal";
 import LogutModal from "../Modals/LogutModal";
+import Link from "next/link";
 
 
 
@@ -43,10 +44,12 @@ const renderAlternativeNamesColumn = (value: IIngredientData,) => {
     );
 };
 
-const renderActionColumn = (value: IIngredientData, mode : string,  openModal: () => void, setSelectedProduct: Function) => {
+const renderActionColumn = (value: IIngredientData, mode : string,  openModal: () => void, setSelectedProduct: Function, productID: string) => {
     return (
         <div className="flex space-x-4">
+          <Link href={`/dashboard/product/${productID}/ingredient/${value.id}`}>
             <EyeView className="text-darkGreen cursor-pointer hover:text-green-500" />
+          </Link>
             {mode === '1' ? 
               <button onClick={()=>{setSelectedProduct(value); openModal();}}>
                       <Trash2  id={`${value.id}`}  className="text-darkGreen cursor-pointer hover:text-red-300" size={18} />
@@ -163,7 +166,7 @@ const IngredientTable: React.FC = () => {
         keys: ["action"],
         sortable: false,
         className: "rounded-tr-lg",
-        customBodyRender: (value: IIngredientData) => renderActionColumn(value, mode || "0", openDeleteModal, setSelectedIngredient ),
+        customBodyRender: (value: IIngredientData) => renderActionColumn(value, mode || "0", openDeleteModal, setSelectedIngredient, productID ),
       },
     ],
     rows: {

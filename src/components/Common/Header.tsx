@@ -38,6 +38,7 @@ const Header: React.FC<HeaderProps> = ({ title = 'Company Name' }) => {
   const pathname = usePathname();
   const mode = searchParams.get("mode");
   const isProductPage = pathname.includes("/product/");
+  const isIngredientPage = pathname.includes("/ingredient/");
   
   const logoutUserFunc = async () => {
     try {
@@ -58,16 +59,26 @@ const Header: React.FC<HeaderProps> = ({ title = 'Company Name' }) => {
 
   const renderButton = () => {
     switch (true) {
-      case isProductPage && mode === "0":
+      
+      case isIngredientPage :
         return (
           <Link
             className="bg-darkGreen hover:bg-green-800 rounded-lg border-2 border-lightGreen text-sm md:text-base lg:text-lg lg:px-[2.2rem] lg:py-3 md:px-4 md:py-2 px-3 py-1"
-            href={`${pathname}?mode=1`}
+            href={`/dashboard/product/${productID}?mode=0`}
           >
-            Edit Product
+            Back to Product
           </Link>
         );
-  
+        case isProductPage && mode === "0":
+              return (
+                <Link
+                  className="bg-darkGreen hover:bg-green-800 rounded-lg border-2 border-lightGreen text-sm md:text-base lg:text-lg lg:px-[2.2rem] lg:py-3 md:px-4 md:py-2 px-3 py-1"
+                  href={`${pathname}?mode=1`}
+                >
+                  Edit Product
+                </Link>
+              );
+        
       case isProductPage:
         return (
           <Button

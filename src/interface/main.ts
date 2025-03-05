@@ -54,6 +54,7 @@ export interface ProductDetail {
 
 export interface IIngredientData {
     id: number;
+    user_id?: number;
     ingredient_name: string;
     alternate_names: {  
       id: number,
@@ -66,7 +67,12 @@ export interface IIngredientData {
     date_added: string;
     is_verified?: boolean;
     isDisable?: boolean;
-    notExisted?: boolean
+    notExisted?: boolean;
+    added_by?: string
+    notes?: string;
+    created_at?: string;
+    updated_at?: string;
+
 }
 
 export interface IIngredientTable {

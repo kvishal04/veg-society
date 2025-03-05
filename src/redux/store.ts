@@ -5,6 +5,7 @@ import loaderReducer from "@/redux/features/loaderSlice";
 import ProductDetailReducer from "@/redux/features/productDetailSlice";
 import IngredientDataReducer from "@/redux/features/IngredientDataSlice";
 import ProductDataReducer from "@/redux/features/ProductDataSlice";
+import IngredientDetailReducer from "@/redux/features/IngredientDetailSice";
 import { dashboardApi } from "@/redux/services/dashboardApi";
 import { productApi } from "@/redux/services/productApi";
 import { ingredientApi } from "./services/ingredientApi";
@@ -17,6 +18,7 @@ export const makeStore = () => {
       productDetailReducer : ProductDetailReducer,
       IngredientData: IngredientDataReducer,
       ProductData: ProductDataReducer, 
+      IngredientDetailReducer: IngredientDetailReducer, 
       [api.reducerPath]: api.reducer,
       [dashboardApi.reducerPath]: dashboardApi.reducer,
       [productApi.reducerPath]: productApi.reducer,
