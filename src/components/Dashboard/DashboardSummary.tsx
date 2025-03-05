@@ -27,15 +27,14 @@ const DashboardSummary: React.FC = () => {
 
   useEffect(() => {
     if (productdata) {
-
-        if(productdata.accredited && productdata.vegan && productdata.plant_based){
+        if(productdata.vegetarian || productdata.vegan || productdata.plant_based){
           setShowCharData(true)
         }else{
           setShowCharData(false)
         }
       
       setChartData([
-        { name: "Vegetarian", value: productdata.accredited, color: "#A6E3A1" },
+        { name: "Vegetarian", value: productdata.vegetarian, color: "#A6E3A1" },
         { name: "Vegan", value: productdata.vegan, color: "#f0f0f0" },
         { name: "Plant Based", value: productdata.plant_based, color: "#032B2F" },
       ]);
