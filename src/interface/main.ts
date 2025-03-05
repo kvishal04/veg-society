@@ -6,7 +6,7 @@ export type TableColumn = {
   sortable?: boolean;
   className?: string;
   rowclassName?: string;
-  customBodyRender?: (row: any) => JSX.Element;
+  customBodyRender?: (row: any , index: number) => JSX.Element;
 };
 
 
@@ -32,13 +32,11 @@ export type TableConfig = {
 
 };
 
-// export interface ProductDetail {
-//     name: string
-//     accreditation_status : string
-//     submit_date: string
-//     responce_date: string
-//     requested: string
-// }
+export interface ImannualIngredient {
+  ingredient_name: string;
+  notes: string,
+  alternate_names : string
+}
 
 export interface ProductDetail {
   id: number;
@@ -154,4 +152,11 @@ export interface IIngredientilterData {
 
 export interface ProductNotes {
   data: { created_at: string; added_by: string; note: string }[];
+}
+
+export interface ISaveIngredients {
+  product_id: string,
+  "ingredient_ids": number[] | string[],
+  product_name: string,
+  requested_accreditation: string
 }

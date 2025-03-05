@@ -57,20 +57,20 @@ export const dashboardApi = createApi({
             }), 
         }),
 
-        productDelete: builder.mutation<DataCode, { id: number }>({
+        productDelete: builder.mutation<boolean, { id: number }>({
             query: (credentials) => ({
                 url: DELETE_PRODUCT + `/${credentials.id}`,
                 method: "DELETE",
-                invalidatesTags: ["productTable"],
-                transformResponse: (_response: { status: number; data: boolean; message: string }) => {
-                    showToast(_response.message, ToastMessage.SHOW_SUCCESS);
-                    return _response.data;
-                },
-                transformErrorResponse: (_response: { status: number; data: boolean; message: string }) => {
-                    showToast(_response.message, ToastMessage.SHOW_ERROR);
-                    return _response.message;
-                },
             }),
+            invalidatesTags: ["productTable"],
+            transformResponse: (_response: { status: number; data: boolean; message: string }) => {
+                showToast(_response.message, ToastMessage.SHOW_SUCCESS);
+                return _response.data;
+            },
+            transformErrorResponse: (_response: { status: number; data: boolean; message: string }) => {
+                showToast(_response.message, ToastMessage.SHOW_ERROR);
+                return _response.message;
+            },
             
         }),
 
@@ -86,9 +86,7 @@ export const dashboardApi = createApi({
                 return _response.data;
             },
 
-            transformErrorResponse: (_response: { status: number; data: any; message: string }) => {
-                console.log("_response", _response);
-            
+            transformErrorResponse: (_response: { status: number; data: any; message: string }) => {            
                 // Extract validation errors properly
                 if (_response.data?.type === "VALIDATION_ERROR" && _response.data.data) {
                     const validationErrors = _response.data.data;

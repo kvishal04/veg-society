@@ -28,7 +28,6 @@ const customStatusRender = (value: ProductData) => {
         );
     };
   
-  
   const renderActionColumn = (value: ProductData, openModal: () => void, setSelectedProduct: Function ) => {
     return (
             <div className="flex space-x-4">

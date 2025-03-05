@@ -6,9 +6,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/redux/store";
 import Button from "../reusable/Button";
 import Textarea from "../reusable/TextArea";
-import { format, parseISO } from "date-fns";
 import { useProductNotesMutation, useSaveNotesMutation } from "@/redux/services/productApi";
 import { setProductNotes, setNote } from "@/redux/features/productDetailSlice";
+import { returnLocalDate } from "@/utils/utills";
 
 type ModalProps = {
   productID: string;
@@ -23,10 +23,6 @@ const ProductNotesModal: React.FC<ModalProps> = ({ isOpen, onClose, onSave, prod
   const dispatch = useDispatch();
   const [ProductNotes] = useProductNotesMutation();
   const [SaveNotes] = useSaveNotesMutation();
-
-  const returnLocalDate = (utcDate: string) => {
-    return format(parseISO(utcDate), "hh:mma dd/MM/yyyy");
-  };
 
   const loadNotesData = async () => {
     const res = await ProductNotes({ product_id: productID }).unwrap();

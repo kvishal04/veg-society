@@ -1,4 +1,5 @@
 import toast from "react-hot-toast";
+import { format, parseISO } from "date-fns";
 
 export const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL || "https://vegetariansociety.newsoftdemo.info/api/v1/"; // Default fallback
 
@@ -48,3 +49,7 @@ export const ToastMessage  = {
   SHOW_WARNING : "warning",
   SHOW_DEFAULT : ""
 }
+
+export const returnLocalDate = (utcDate: string , formatStr: string = 'hh:mma dd/MM/yyyy') => {
+    return format(parseISO(utcDate), formatStr);
+  };

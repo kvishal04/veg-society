@@ -1,23 +1,19 @@
-"use client";
-
+import React, { useEffect, useRef, RefObject } from "react";
 import { TableColumn, TableConfig } from "@/interface/main";
 import { Triangle } from "lucide-react";
-import React from "react";
-
 
 type TableComponentProps = {
   data: Record<string, any>[];
   config: TableConfig;
   onCellClick?: (cellData: any, row: Record<string, any>) => void;
-  onSortClick?: (sort_key: string, sort_dir: 'asc' | 'desc' ) => void;
+  onSortClick?: (sort_key: string, sort_dir: "asc" | "desc") => void;
+  scrollRef?: RefObject<HTMLTableRowElement | null>; // Updated ref type
 };
 
 const DownIcon: React.FC = () => (
   <Triangle strokeWidth={1.75} fill="white" size={10} className="rotate-180" />
 );
-const UpIcon: React.FC = () => (
-  <Triangle strokeWidth={1.75} fill="white" size={10} />
-);
+const UpIcon: React.FC = () => <Triangle strokeWidth={1.75} fill="white" size={10} />;
 const CombineIcon: React.FC = () => (
   <>
     <UpIcon />
@@ -29,22 +25,26 @@ const TableComponent: React.FC<TableComponentProps> = ({
   data,
   config,
   onCellClick,
-  onSortClick
+  onSortClick,
+  scrollRef, // Accept scrollRef for the last row
 }) => {
+  const lastRowRef = useRef<HTMLTableRowElement | null>(null); // Ref for the last row
 
+  useEffect(() => {
+    if (scrollRef?.current) {
+      scrollRef.current.scrollIntoView({ behavior: "smooth", block: "nearest" });
+    }
+  }, [data]); // Trigger scrolling when data updates
 
   const handleSort = (key: string) => {
-    let newSortDir : 'desc' | 'asc' = 'desc';
-
+    let newSortDir: "desc" | "asc" = "desc";
     if (config.sort_by === key) {
-        newSortDir = config.sort_dir === "asc" ? "desc" : "asc";
+      newSortDir = config.sort_dir === "asc" ? "desc" : "asc";
     }
-
     onSortClick?.(key, newSortDir);
-};
+  };
 
-  
-  const sortedData = [...data]
+  const sortedData = [...data];
 
   const getSortIcon = (col: TableColumn) => {
     if (!col.sortable) return null;
@@ -78,12 +78,12 @@ const TableComponent: React.FC<TableComponentProps> = ({
       </thead>
       <tbody className={config.tBodyClassName}>
         {sortedData.length > 0 ? (
-          sortedData.map((row) => (
+          sortedData.map((row, index) => (
             <tr
-                key={row.id || JSON.stringify(row)}
-                className={config.trClassName.class(row)}
-               
-              >
+              key={row.id || JSON.stringify(row)}
+              className={config.trClassName.class(row)}
+              ref={index === sortedData.length - 1 ? scrollRef : null} // Attach ref to the last row
+            >
               {config.columns.map((col) => (
                 <td
                   key={col.name}
@@ -96,7 +96,7 @@ const TableComponent: React.FC<TableComponentProps> = ({
                   }}
                 >
                   {col.customBodyRender
-                    ? col.customBodyRender(row)
+                    ? col.customBodyRender(row, index)
                     : row[col.keys[0]] || config.emptyState.text()}
                 </td>
               ))}

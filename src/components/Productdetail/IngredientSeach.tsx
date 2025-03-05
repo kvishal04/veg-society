@@ -1,19 +1,23 @@
 "use client";  // This makes the component a Client Component
 
 import Select from "@/components/reusable/Select";
-import React, { useState } from "react";
+import React from "react";
 import { Search } from "lucide-react";
 import Input from "@/components/reusable/Input";
 import { AccreditationData as data, } from "@/FakeJson/tabledata";
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "@/redux/store";
+import { setRequestedAccredation, setSearch } from "@/redux/features/IngredientDataSlice";
 
 const AccreditationData = [...data]
 
 const IngredientSearchBar = () => {
-  const [searchTerm, setSearchTerm] = useState("");
-  const [accreditation, setAccreditation] = useState("Plant");
+
+  const { IngredientTable : { search, requested_accreditation } } = useSelector((state: RootState) => state.IngredientData); 
+  const dispatch = useDispatch()
 
   const handleSelectChange = (value: string) => {
-    setAccreditation(value);
+    dispatch(setRequestedAccredation(value))
   }
 
   return (
@@ -23,8 +27,8 @@ const IngredientSearchBar = () => {
     <Input
       id="search"
       type="text"
-      value={searchTerm}
-      onChange={(e) => setSearchTerm(e.target.value)}
+      value={search}
+      onChange={(e) => dispatch(setSearch(e.target.value))}
       placeholder="Search"
       className="w-full p-2 border-2 rounded-xl focus:ring-2 focus:ring-green-500 outline-none placeholder-green-700"
     />
@@ -36,7 +40,7 @@ const IngredientSearchBar = () => {
     id="accreditation"
     className="w-full text-center mt-2 px-4 py-2   bg-white border border-darkGreen  focus:ring-black appearance-none  rounded-lg text-darkGreen outline-none"
     options={AccreditationData}
-    value={accreditation}
+    value={requested_accreditation}
     onChange={handleSelectChange}
     optionClassName="text-center hover:bg-green-400 "
   />

@@ -5,13 +5,14 @@ import TableComponent from '@/components/reusable/Table/Table';
 import AddIngredientSearchBar from './AddIngredientSearchBar';
 import Button from '@/components/reusable/Button';
 import Textarea from '@/components/reusable/TextArea';
-import { IIngredientData, TableConfig } from '@/interface/main';
+import { IIngredientData, ImannualIngredient, TableConfig } from '@/interface/main';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '@/redux/store';
 import useIngredientDebounceSerach from '@/hooks/useIngredientDebounceSerach';
 import { useFetchLiveIngredientDataMutation } from '@/redux/services/ingredientApi';
 import { appendNewData } from '@/redux/features/IngredientDataSlice';
-import { showToast, ToastMessage } from '@/utils/utills';
+import { returnLocalDate, showToast, ToastMessage } from '@/utils/utills';
+import { useAddManuallIngredientMutation } from '@/redux/services/productApi';
 
 const renderAlternativeNamesColumn = (value: IIngredientData, dataLength: number) => {
     return (
@@ -37,13 +38,21 @@ const customData =  (value: IIngredientData, key: 'vegetarian' | 'vegan' | 'plan
 interface IngredientProps {
     openAddIngredietComponent: boolean
     setOpenAddIngredietComponent: Function
+    scrollToBottom: Function
 }
 
-const AddIngredient: React.FC<IngredientProps> = ({openAddIngredietComponent, setOpenAddIngredietComponent}) => {
+const AddIngredient: React.FC<IngredientProps> = ({openAddIngredietComponent, setOpenAddIngredietComponent, scrollToBottom}) => {
     const [selectedRows, setSelectedRows] = useState<IIngredientData[]>([]);
     const [showNotListedForm, setShowNotListedForm] = useState(false);
-    const [fetchTableData] =  useFetchLiveIngredientDataMutation()
-    const debounce = useIngredientDebounceSerach(fetchTableData)
+    const [manuallIngrdient , setManuallIngredient] = useState<ImannualIngredient>({
+        alternate_names : '',
+        ingredient_name: '',
+        notes: '',
+         
+    })
+    const [fetchTableData] =  useFetchLiveIngredientDataMutation();
+    const [AddMannualIngredient] =  useAddManuallIngredientMutation();
+    const debounce = useIngredientDebounceSerach(fetchTableData);
 
     const dispatch = useDispatch();
 
@@ -117,14 +126,32 @@ const AddIngredient: React.FC<IngredientProps> = ({openAddIngredietComponent, se
 
     const addSelectedDatatoNewData = () => {
 
+        if(selectedRows.length === 0){
+            showToast('Select ingredient first', ToastMessage.SHOW_ERROR)
+            return
+        }
+
         if([...IngredientTableData, ...newData].some((item)=> item.ingredient_name === selectedRows[0].ingredient_name)){
             showToast('Ingredient Already added', ToastMessage.SHOW_ERROR)
             return
         }
 
 
-        dispatch(appendNewData(selectedRows[0]))
+        dispatch(appendNewData({...selectedRows[0], date_added: returnLocalDate( (new Date).toISOString() , 'dd/MM/yyyy')}))
+        scrollToBottom()
         setSelectedRows([])
+    }
+
+    const AddingridientManually = async() => {
+
+        try {
+            const res = await AddMannualIngredient(manuallIngrdient).unwrap()
+            dispatch(appendNewData({...res, date_added: returnLocalDate( (new Date).toISOString() , 'dd/MM/yyyy')}))
+            scrollToBottom()
+        } catch (error) {
+            console.log("error", error)
+        }
+        setShowNotListedForm(false);
     }
 
     useEffect(()=>{
@@ -137,7 +164,7 @@ const AddIngredient: React.FC<IngredientProps> = ({openAddIngredietComponent, se
     return (
         <>
         {
-            openAddIngredietComponent && <div className='text-barlow h-[28rem] md:h-[16rem] w-full border border-gray-800 mt-7 rounded-lg flex flex-col md:flex-row relative bg-white p-1'>
+            openAddIngredietComponent && <div className='text-barlow h-[28rem] lg:h-[16rem] w-full border border-gray-800 mt-7 rounded-lg flex flex-col md:flex-row relative bg-white p-1'>
             
             {/* Main Table Section */}
             {!showNotListedForm  ? (
@@ -146,7 +173,7 @@ const AddIngredient: React.FC<IngredientProps> = ({openAddIngredietComponent, se
                         {IngredientTableData.length + newData.length + 1} <AddIngredientSearchBar />
                     </div>
                     {tableData.length > 0 &&
-                        <div className='bg-white ml-4 md:ml-24 h-[18rem] md:h-[10rem] overflow-y-auto custom-scrollbar mt-2'>
+                        <div className='bg-white ml-4 md:ml-24 h-[18rem] lg:h-[10rem] overflow-y-auto custom-scrollbar mt-2'>
                             <TableComponent 
                                 data={tableData} 
                                 config={tableConfig}  
@@ -167,8 +194,8 @@ const AddIngredient: React.FC<IngredientProps> = ({openAddIngredietComponent, se
                             id="ingredient"
                             placeholder="Enter ingredient name"  
                             className="border p-2 mb-2 h-12 lg:h-28 text-lg font-bold underline"
-                            value={''} 
-                            onChange={(e) => {}} 
+                            value={manuallIngrdient.ingredient_name} 
+                            onChange={(e) => {setManuallIngredient({...manuallIngrdient, ingredient_name : e.target.value})}}
                         />
                     </div>
             
@@ -179,8 +206,8 @@ const AddIngredient: React.FC<IngredientProps> = ({openAddIngredietComponent, se
                             id="Alt_Names"
                             placeholder="Enter alternative names"  
                             className="border p-2 mb-2  h-16 lg:h-28 text-lg"
-                            value={''} 
-                            onChange={(e) => {}} 
+                            value={manuallIngrdient.alternate_names} 
+                            onChange={(e) => {setManuallIngredient({...manuallIngrdient, alternate_names : e.target.value})}}
                         />
                     </div>
             
@@ -191,8 +218,8 @@ const AddIngredient: React.FC<IngredientProps> = ({openAddIngredietComponent, se
                             id={'Notes'}
                             placeholder="Enter notes"  
                             className="border p-2 mb-2  h-24 lg:h-28 text-lg"
-                            value={''} 
-                            onChange={(e) => {}} 
+                            value={manuallIngrdient.notes} 
+                            onChange={(e) => {setManuallIngredient({...manuallIngrdient, notes : e.target.value})}}
                         />
                     </div>
                     </div>
@@ -200,7 +227,7 @@ const AddIngredient: React.FC<IngredientProps> = ({openAddIngredietComponent, se
                 {/* Buttons Section */}
                     <div className="flex justify-end gap-2 mt-1">
                         <Button className='text-base lg:text-lg lg:px-[4rem] lg:py-3 md:px-8 md:py-3 px-3 py-2' onClick={() => setShowNotListedForm(false)} variant="clear-green">Back</Button>
-                        <Button className='text-base lg:text-lg lg:px-[4rem] lg:py-3 md:px-8 md:py-3 px-3 py-2' onClick={() => {setShowNotListedForm(false)}} variant="dark-green">Submit</Button>
+                        <Button className='text-base lg:text-lg lg:px-[4rem] lg:py-3 md:px-8 md:py-3 px-3 py-2' onClick={() => {AddingridientManually()}} variant="dark-green">Submit</Button>
                     </div>
                 </div>                
             )}

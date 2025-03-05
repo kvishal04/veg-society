@@ -10,6 +10,7 @@ interface IngredientDataState {
     tableData : IIngredientData[]
   }
   newData: IIngredientData[];
+  handleType: 'SAVE' | 'SUBMIT'
 }
 
 const initialState: IngredientDataState = {
@@ -30,7 +31,8 @@ const initialState: IngredientDataState = {
     liveSearch: '',
     tableData: []
   },
-  newData: []
+  newData: [],
+  handleType: 'SAVE'
 };
 
 const IngredientDataSlice = createSlice({
@@ -51,6 +53,14 @@ const IngredientDataSlice = createSlice({
 
     appendNewData:  (state, action: PayloadAction<IIngredientData>) => {
         state.newData.push(action.payload)
+    },
+
+    removeFromNewData :  (state, action: PayloadAction<number>) => {
+      state.newData = state.newData.filter((item)=>item.id !== action.payload)
+    },
+
+    clearNewData: (state) => {
+      state.newData = [];
     },
 
     addNonexitingData:  (state, action: PayloadAction<IIngredientData>) => {
@@ -94,9 +104,13 @@ const IngredientDataSlice = createSlice({
       state.IngredientTable.requested_accreditation = '';
     },
 
+    changeHandleType :(state,action: PayloadAction<'SAVE' | 'SUBMIT'>) => {
+      state.handleType = action.payload;
+    },
+
 
   },
 });
 
-export const { setLoading , appendNewData, addNonexitingData, loadProductIngredientTable, resetFilterItem,setRequestedAccredation, setSearch, setSortTableByKey, setTotalItem, setcurrentItem, setcurrentPage, loadLiveIngredientTable, setLiveSearch } = IngredientDataSlice.actions;
+export const { setLoading , appendNewData, addNonexitingData, loadProductIngredientTable, resetFilterItem,setRequestedAccredation, setSearch, setSortTableByKey, setTotalItem, setcurrentItem, setcurrentPage, loadLiveIngredientTable, setLiveSearch, removeFromNewData , clearNewData, changeHandleType} = IngredientDataSlice.actions;
 export default IngredientDataSlice.reducer;

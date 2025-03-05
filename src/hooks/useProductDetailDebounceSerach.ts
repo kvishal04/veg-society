@@ -6,6 +6,7 @@ import { ErrorCode, ErrorData } from "@/interface/error";
 import { ApiError } from "@/utils/customError";
 import { setLoading, loadProductIngredientTable, setTotalItem } from "@/redux/features/IngredientDataSlice";
 import { IIngredientilterData } from "@/interface/main";
+import { setProductDetail } from "@/redux/features/productDetailSlice";
 
 const useProductDetailDebounceSerach = (fetchFunction: any, delay: number = 1000) => {
   return useCallback(
@@ -13,9 +14,9 @@ const useProductDetailDebounceSerach = (fetchFunction: any, delay: number = 1000
       try {
             dispatch(setLoading(true));
             const response = await fetchFunction(data).unwrap();
-            console.log("response",response)
             dispatch(loadProductIngredientTable(response.data.ingredients.data));
             dispatch(setTotalItem(response.data.ingredients.total));
+            dispatch(setProductDetail(response.data.product));
             dispatch(setLoading(false));
             showToast(response.message, ToastMessage.SHOW_SUCCESS);
         } catch (err) {

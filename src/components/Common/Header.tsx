@@ -6,13 +6,15 @@ import { AppDispatch, RootState } from "@/redux/store";
 import Image from "next/image";
 import ProductCreateModal from "@/components/Modals/ProductCreateModal";
 import { logout } from "@/redux/features/authSlice";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { useParams, usePathname, useRouter, useSearchParams } from "next/navigation";
 import LogutModal from "../Modals/LogutModal";
 import {useLogoutUserMutation } from "@/redux/services/api";
 import { setLoading } from "@/redux/features/loaderSlice";
 import { showToast } from "@/utils/utills";
 import User from "@/styles/logo/User";
 import Link from "next/link";
+import SubmitModal from "../Modals/SubmitModal";
+import { changeHandleType } from "@/redux/features/IngredientDataSlice";
 
 interface HeaderProps {
   title?: string;
@@ -22,6 +24,7 @@ const Header: React.FC<HeaderProps> = ({ title = 'Company Name' }) => {
 
   const router = useRouter()
   const dispatch = useDispatch<AppDispatch>()
+  const productID = useParams()?.slug as string;
   const {user, token, company_name} = useSelector((state: RootState) => state?.auth);
   const [productModal, setProductModal] = useState<boolean>(false);
   const openModal = () => setProductModal(true);
@@ -51,6 +54,8 @@ const Header: React.FC<HeaderProps> = ({ title = 'Company Name' }) => {
     }
   };
 
+  const [submitModal, setSubmitModal] = useState<boolean>(false);
+
   const renderButton = () => {
     switch (true) {
       case isProductPage && mode === "0":
@@ -66,7 +71,7 @@ const Header: React.FC<HeaderProps> = ({ title = 'Company Name' }) => {
       case isProductPage:
         return (
           <Button
-            onClick={openModal}
+            onClick={() => { dispatch(changeHandleType('SAVE')); setSubmitModal(true)}} 
             variant="dark-green"
             className="text-sm md:text-base lg:text-lg lg:px-[2.2rem] lg:py-3 md:px-4 md:py-2 px-3 py-1"
           >
@@ -148,6 +153,11 @@ const Header: React.FC<HeaderProps> = ({ title = 'Company Name' }) => {
       <LogutModal isOpen={logoutModal}
         onClose={closeLogoutModal}
         onSave={() => {logoutUserFunc()}}/>
+
+    <SubmitModal isOpen={submitModal}  
+      onClose={() => {setSubmitModal(false)}} 
+      onSave={() => {setSubmitModal(false)}} button1="Submit Changes" button2="Save" 
+      body="Product data will be saved locally in your dashboard only. You can submit this product later for the accreditation to the Vegetarian Society." body2="Do you want to submit the changes to The Vegetarian Society now?" productID={productID} />
     </header>
   );
 };
