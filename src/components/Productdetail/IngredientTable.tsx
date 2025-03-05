@@ -253,35 +253,38 @@ const IngredientTable: React.FC = () => {
           />
 
         <div className="flex flex-col sm:flex-row justify-between mt-8 gap-4">
-          <div className="flex justify-between sm:w-1/5 w-full">
-            <Button 
-              className="md:px-4 px-4 py-2 md:py-3 text-base md:text-lg" 
-              onClick={() => setOpenAddIngredietComponent(true)} 
-              variant="dark-green"
-            >
-              <b>+</b> Add Ingredient
-            </Button>
-            
-            <Button 
-              className="md:px-8 px-4 py-2 md:py-3 text-base md:text-lg sm:hidden" 
-              onClick={() => {}} 
-              variant="dark-green"
-            >
-              Submit Changes
-            </Button>
-          </div>
+          {mode === '1' &&
+            <div className="flex justify-between sm:w-1/5 w-full">
+              <Button 
+                className="md:px-4 px-4 py-2 md:py-3 text-base md:text-lg" 
+                onClick={() => setOpenAddIngredietComponent(true)} 
+                variant="dark-green"
+              >
+                <b>+</b> Add Ingredient
+              </Button>
+              
+              <Button 
+                className="md:px-8 px-4 py-2 md:py-3 text-base md:text-lg sm:hidden" 
+                onClick={() => {}} 
+                variant="dark-green"
+              >
+                Submit Changes
+              </Button>
+            </div>
+          }
 
-          <div className="w-full sm:w-3/5">{renderPaginationContent()}</div>
-
-          <div className="hidden w-1/5 sm:flex sm:justify-end">
-            <Button 
-              className="md:px-8 px-4 py-2 md:py-3 text-base md:text-lg" 
-              onClick={() => { dispatch(changeHandleType('SUBMIT')); setSubmitModal(true)}} 
-              variant="dark-green"
-            >
-              Submit Changes
-            </Button>
-          </div>
+          <div className={`w-full ${mode=== '0' ? '' : 'sm:w-3/5'} `}>{renderPaginationContent()}</div>
+          {mode === '1' &&
+            <div className="hidden w-1/5 sm:flex sm:justify-end">
+              <Button 
+                className="md:px-8 px-4 py-2 md:py-3 text-base md:text-lg" 
+                onClick={() => { dispatch(changeHandleType('SUBMIT')); setSubmitModal(true)}} 
+                variant="dark-green"
+              >
+                Submit Changes
+              </Button>
+            </div>
+          }
         </div>
 
 

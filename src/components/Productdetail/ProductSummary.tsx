@@ -43,7 +43,7 @@ const ProductSummary: React.FC = () => {
    
       if(productDetail.requested_accreditation && mode === '0'){
         return (
-          <p id="accreditation" className="w-20 p-2 text-lg bg-transparent"> 
+          <p id="accreditation" className="w-32 p-2 text-lg bg-transparent"> 
             {productDetail.requested_accreditation} 
           </p> 
         );
@@ -109,7 +109,7 @@ const ProductSummary: React.FC = () => {
           </div>
 
           {/* Requested Accreditation */}
-          <div className="flex flex-col items-start justify-start border-t-2 pt-4 lg:pt-0 lg:border-t-0 lg:border-l-2 border-white lg:pl-8 w-full">
+          <div className="flex flex-col items-start justify-start border-t-2 pt-4 mt-2 lg:pt-0 lg:border-t-0 lg:border-l-2 border-white lg:pl-8 w-full">
             <div className="flex items-center gap-1 text-2xl mb-2 w-full">
               <span className="mr-2 text-xl lg:text-lg">Requested Accreditation:</span>
               { renderSelect() }
